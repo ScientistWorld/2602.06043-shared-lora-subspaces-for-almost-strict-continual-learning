@@ -25,5 +25,9 @@
 - Patched the method to reconstruct previous adapters from the current shared factors and coefficients before each SVD merge, then discard dense temporary merge factors.
 - A fresh compute job is required before claiming `method_runs` or higher for the corrected implementation.
 
+### [2026-06-13 19:49] - none
+- Continuation audit confirmed `scoring/scores.json` and prediction summaries still predate the strict-merge patch.
+- Kept the milestone below `method_runs` and prepared another CPU test submission to regenerate scores from the corrected implementation.
+
 ## Stop Justification
 - Not stopped. A corrected strict-merge implementation is being submitted for verification.

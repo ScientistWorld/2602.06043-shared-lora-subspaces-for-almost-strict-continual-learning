@@ -40,6 +40,7 @@
 - Patched `method/share_linear.py` to reconstruct old task adapters from `alpha`, `beta`, and coefficient tensors before each merge, matching the paper's strict shared-state procedure more closely.
 - Patched `eval/evaluate_predictions.py` to require parameter metadata rather than silently treating missing metadata as zero cost.
 - Patched `scripts/reproduce.sh` to clear prediction directories before rerunning, avoiding stale-score contamination.
+- Continuation audit found that current `scoring/scores.json` and checkpoint summaries still predate the strict-merge patch, so the corrected implementation remains unverified.
 
 ## What Remains
 
