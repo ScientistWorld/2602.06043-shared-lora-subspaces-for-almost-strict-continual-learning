@@ -14,4 +14,4 @@ Methods may change the representation update rule, adaptation training, capacity
 
 ## Out of Bounds
 
-Do not replace the problem with full independent models per task, external-data pretraining, test-set transduction, or a classifier that ignores the continual parameter-efficiency objective. A method that improves accuracy only by storing one full adapter or model per task without reporting that cost does not address the paper's research direction.
+Do not replace the problem with full independent models per task, external-data pretraining, test-set transduction, or a classifier that ignores the continual parameter-efficiency objective. A method that improves accuracy only by storing one full task-specific state or model per task without reporting that cost does not address the paper's research direction.

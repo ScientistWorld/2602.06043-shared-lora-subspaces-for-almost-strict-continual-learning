@@ -8,7 +8,7 @@ The benchmark problem is parameter-efficient continual finetuning. A solution re
 
 ## Why It Matters
 
-Real deployments often need to update large pretrained models as new domains, datasets, or user needs arrive. Training and serving a full model or a separate adapter for every task becomes expensive, hard to maintain, and weak at sharing knowledge across tasks. A good solution would let one deployed model keep improving over time without unbounded growth.
+Real deployments often need to update large pretrained models as new domains, datasets, or user needs arrive. Training and serving a full model or a separate task-specific adaptation state for every task becomes expensive, hard to maintain, and weak at sharing knowledge across tasks. A good solution would let one deployed model keep improving over time without unbounded growth.
 
 ## Success Criteria
 

@@ -8,11 +8,11 @@ For natural language understanding, report Matthews correlation for CoLA, Pearso
 
 For image classification, report final top-1 accuracy after the complete task stream, with higher values better.
 
-For continual-learning constraints, report trainable parameter count, stored model or adapter size, and forgetting. Forgetting is the drop from each task's best historical score to its score after the final task, averaged where applicable; lower is better. Parameter count and stored size are also lower-is-better constraint metrics.
+For continual-learning constraints, report trainable parameter count, stored adaptation-state size, and forgetting. Forgetting is the drop from each task's best historical score to its score after the final task, averaged where applicable; lower is better. Parameter count and stored size are also lower-is-better constraint metrics.
 
 ## Baselines and Targets
 
-Reference comparisons should include an upper-bound setting that is not constrained by continual learning, a sequential full-finetuning or linear-head baseline where applicable, and parameter-efficient non-continual or task-specific-adapter baselines when available. The paper's reported headline targets are stored in `scoring/reference.json`.
+Reference comparisons should include an upper-bound setting that is not constrained by continual learning, a sequential full-finetuning or linear-head baseline where applicable, and parameter-efficient non-continual or task-specific-state baselines when available. The paper's reported headline targets are stored in `scoring/reference.json`.
 
 For a scaled reproduction, the absolute numbers may be lower if smaller datasets, fewer tasks, or shorter training are used. The scoring should still preserve the same comparison shape: benefit metrics must be evaluated together with parameter, memory, and forgetting constraints.
 

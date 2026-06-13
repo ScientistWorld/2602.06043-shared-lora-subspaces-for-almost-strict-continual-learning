@@ -3,4 +3,4 @@ action: done
 gpus: 0
 test: false
 milestone: core_claim_plus
-notes: "Final verification passed after independent audit and scoring metadata cleanup: core_claim_plus gym is ready, with scaled synthetic limitation documented."
+notes: "Final verification passed: core_claim_plus gym is ready; only limitation is the documented scaled synthetic benchmark."

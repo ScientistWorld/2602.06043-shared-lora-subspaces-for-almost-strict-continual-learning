@@ -2,27 +2,23 @@
 
 ## Initial Assessment
 
-The workspace entered final verification at `core_claim_plus`. The claimed milestone is justified: the method code implements the paper's core shared continual-adaptation computation on a scaled deterministic benchmark, prior CPU jobs produced prediction artifacts, and `python validate.py --compare` passes with two scored task streams.
+The workspace entered final verification at `core_claim_plus`, and that milestone is justified. The implemented method runs on two deterministic scaled task streams, `scoring/scores.json` contains real reproduced results for both streams, and `python validate.py --compare` passes. The method/evaluation split is clean: `eval/` and `data/` do not import from `method/`, and evaluation reads prediction CSV/summary JSON artifacts rather than rerunning the method.
 
 ## Issues Found
 
-- **Minor:** `scoring/reference.json` mixed paper-scale headline values with scaled synthetic benchmark references without explicit notes explaining the provenance and expected mismatch.
-- **Minor:** `scoring/TARGETS.md` did not list all constraint metrics now present in `scores.json`, specifically temporary adaptation parameter metrics.
-- **Minor:** `scoring/CONSTRAINTS.md` mentioned only the default seed in prose while the gym scores both seed 13 and seed 21 streams.
-- **Minor:** `scoring/DIRECTION.md` contained more method-specific wording than needed for a high-level direction file.
-- **Cosmetic:** Historical `jobs/` logs and `trajectory/` JSONL files were tracked even though they are generated artifacts and ignored by `.gitignore`.
+- **Minor:** Strict method-agnostic files used avoidable "adapter" wording. This was not an implementation leak, but it was more paper-adjacent than needed for from-scratch scientist agents.
+- **Minor:** Local bare-Python execution of `scripts/evaluate_train.sh` failed because the login-node Python environment lacks `numpy`. This is not a packaging blocker because `environment/setup.sh` installs `numpy`, and the packaged validation artifacts pass. `scripts/evaluate.sh` itself is lightweight and method-agnostic.
+- **Cosmetic:** The repository still has unrelated pre-existing dirty root metadata changes (`README.md`, `manifest.json`, deleted `trajectory/*`). They were not created by this verification pass and were left untouched.
 
 ## Fixes Applied
 
-- Added notes to both experiments in `scoring/reference.json` explaining that this is a scaled synthetic gym and clarifying which values are paper-scale context versus measured scaled-stream references.
-- Updated `scoring/TARGETS.md` and `scoring/CONSTRAINTS.md` so they match the actual scored experiments and metrics.
-- Reworded `scoring/DIRECTION.md` to describe the allowed research direction without giving from-scratch agents the paper's exact mechanism.
-- Removed tracked generated `jobs/` and `trajectory/` artifacts from the repository.
-- Confirmed `python validate.py --compare` passes after the changes.
+- Reworded `briefing/problem.md` and `briefing/evaluation.md` to describe task-specific adaptation state generically instead of naming adapters.
+- Reworded `scoring/DIRECTION.md` to keep the out-of-bounds guidance method-safe.
+- Re-ran `python validate.py --compare`; all scoring and structure checks pass.
 
 ## Final Judgment
 
-The workspace is ready to serve as a research gym. Problem/evaluation files are method-agnostic, evaluation reads generic prediction artifacts, scoring includes both benefit and constraint metrics, and train/test scoring artifacts are present and structurally valid. The main limitation is that the reproduction is a scaled synthetic benchmark rather than the paper's full RoBERTa/GLUE or vision experiments.
+The workspace is ready to serve as a research gym in both improve and from-scratch modes. The scoring rubric rewards final accuracy and per-task accuracy while measuring forgetting and parameter-efficiency constraints. The train/test split artifacts are present, method keys match, and the held-out slice is wired through generic prediction artifacts.
 
 - Milestone: core_claim_plus
 - Ready for gym use: yes
