@@ -2,4 +2,4 @@
 action: submit
 gpus: 0
 test: false
-notes: "Run evaluate_{train,test}.sh against saved prediction artifacts; populate split scores."
+notes: "Resubmit split scoring after fixing evaluate_{train,test}.sh positional checkpoint argument handling."

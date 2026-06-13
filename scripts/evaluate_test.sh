@@ -11,4 +11,8 @@ cd /home/user
 
 mkdir -p scoring
 
+if [[ $# -gt 0 && "$1" != --* ]]; then
+  set -- --prediction-root "$1" "${@:2}"
+fi
+
 python -m eval.test.evaluate "$@"
