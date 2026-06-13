@@ -15,4 +15,4 @@
 - Evaluation reports both benefit and constraint metrics: final/per-task accuracy, average forgetting, parameter fraction, and compression ratio.
 
 ## Stop Justification
-- Completed at `core_claim_plus`: the core Share claim is reproduced on the default scaled stream and repeated on a second deterministic stream with benefit and constraint metrics.
+- Completed at milestone `core_claim_plus`.
