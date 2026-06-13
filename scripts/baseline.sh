@@ -17,4 +17,25 @@ set -e
 
 cd /home/user
 
-# TODO: run baseline
+name="${1:-lora}"
+
+case "$name" in
+  lora)
+    python -m baseline.lora_linear \
+      --kind lora \
+      --data data/synthetic_share_tasks.npz \
+      --output-dir checkpoints/lora/predictions
+    ;;
+  frozen)
+    python -m baseline.lora_linear \
+      --kind frozen \
+      --data data/synthetic_share_tasks.npz \
+      --output-dir checkpoints/frozen/predictions
+    ;;
+  *)
+    echo "Unknown baseline: $name" >&2
+    exit 2
+    ;;
+esac
+
+bash scripts/evaluate.sh

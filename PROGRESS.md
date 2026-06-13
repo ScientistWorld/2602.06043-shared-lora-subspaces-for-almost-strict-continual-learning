@@ -2,36 +2,28 @@
 
 ## What Works
 
-<!-- What has been successfully reproduced so far. -->
+- Paper analysis completed for the core Share algorithm and headline GLUE/image-classification claims.
+- Implemented a compact scaled benchmark in `data/synthetic_tasks.py`.
+- Implemented the paper's Share computation in `method/share_linear.py`.
+- Implemented independent LoRA and frozen-backbone baselines in `baseline/lora_linear.py`.
+- Implemented method-agnostic artifact evaluation in `eval/evaluate_predictions.py`.
 
-## Results
+## Deviations From Paper
 
-<!-- Reproduced numbers compared to the paper's reported numbers. -->
+- The first runnable reproduction uses a deterministic low-rank classification stream instead of RoBERTa-base on GLUE. This preserves the low-rank continual adaptation procedure while reducing setup and compute risk for the first job.
+- The implementation uses one frozen linear layer instead of transformer layers. The Share algorithm is still applied to LoRA A/B factors with SVD factor extraction, temporary adaptation, merging, and coefficient reprojection.
 
-## Remaining
+## Results Achieved
 
-<!-- What still needs to be done to reach higher milestones. -->
+- No compute job has completed yet. The next job runs frozen and independent LoRA baselines, Share, evaluation, and validation.
 
-## Issues
+## What Remains
 
-<!-- Blockers, bugs, or difficulties encountered. -->
+- Run the submitted job and inspect whether Share beats the frozen baseline while using a small fraction of independent-LoRA stream parameters.
+- If successful, mark `method_runs`; if the effect is strong enough, update toward `core_claim`.
+- Future expansion should target Table 1 GLUE with RoBERTa-base using the same Share implementation pattern.
 
-## Deviations from Paper
+## Issues Encountered
 
-<!-- Do not edit this section unless you deviated from the paper's original setup.
-     For each deviation, document: what the paper used, what you substituted, and why.
-
-     ACCEPTABLE deviations (data/resource/scale substitutions — milestones still valid):
-       - Replaced a proprietary dataset with a public one
-       - Used a smaller model of the same architecture
-       - Scaled down training (fewer epochs, smaller batch)
-       - Used a different library for the same algorithm
-
-     UNACCEPTABLE deviations (algorithm substitutions — milestones above 'none' are void):
-       - Replaced the paper's algorithm with a fundamentally different one
-       - Wrote a generic model trained to approximate the method's outputs
-         instead of implementing the method's computational steps
-
-     The test: could someone reading your code identify which algorithm from
-     the paper you implemented? If not, you replaced the method. -->
-
+- Initial scaffold was template-only.
+- A sidecar inspection agent set `action.yaml` to `done`; this turn restores it to a job submission before ending.

@@ -10,5 +10,8 @@ set -e
 
 cd /home/user
 
-# TODO: run the paper's method
-# TODO: call scripts/evaluate.sh to score
+python -m method.share_linear \
+  --data data/synthetic_share_tasks.npz \
+  --output-dir checkpoints/share/predictions
+
+bash scripts/evaluate.sh
