@@ -29,6 +29,7 @@
 - The selected scaled configuration is therefore `k=8`, `p=4`, `1500` Share steps.
 - Final selected-configuration job `86ee5401-88b` regenerated artifacts and `scoring/scores.json` for `k=8`, `p=4`.
 - Final reproduced core result: Share 68.63% average accuracy, independent LoRA 75.31%, frozen backbone 8.88%, with Share using 1184 parameters versus 5568 for the LoRA stream (4.70x compression).
+- Validation fix: `scoring/reference.json` now uses the validated scaled frozen-backbone reference value (8.875%) for the synthetic benchmark instead of the paper-scale placeholder, so reference and scores are on the same benchmark scale.
 
 ## What Remains
 
