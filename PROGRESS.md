@@ -45,6 +45,7 @@
 - Corrected strict-merge default stream: Share 68.25% final average accuracy, independent LoRA 75.31%, frozen backbone 8.88%; Share uses 1184 parameters versus 5568 for independent LoRA (4.70x compression) with 1.44 average forgetting points.
 - Corrected strict-merge seed-21 stream: Share 67.56% final average accuracy, independent LoRA 75.06%, frozen backbone 7.94%; Share keeps the same 4.70x compression with 2.19 average forgetting points.
 - The corrected run restores `core_claim_plus`: the paper's core computation is implemented without retaining dense past adapters, and the scaled core claim holds across two deterministic continual streams.
+- Final packaging audit regenerated `scoring/scores.json` from existing prediction artifacts so it includes all declared constraint metrics, including temporary adaptation parameter count and temporary parameter fraction, and `python validate.py --compare` passes.
 
 ## What Remains
 

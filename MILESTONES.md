@@ -35,5 +35,9 @@
 - Corrected default stream: Share reaches 68.25% final average accuracy versus 8.88% frozen and 75.31% independent LoRA, while using 1184 parameters versus 5568 for the LoRA stream (4.70x compression).
 - Corrected seed-21 stream: Share reaches 67.56% final average accuracy versus 7.94% frozen and 75.06% independent LoRA, with the same 4.70x compression.
 
+### [2026-06-13 20:20] - core_claim_plus
+- Regenerated `scoring/scores.json` from existing prediction artifacts to include the declared temporary-parameter constraint metrics.
+- `python validate.py --compare` passes after the final packaging audit.
+
 ## Stop Justification
 - Completed at milestone `core_claim_plus`.
