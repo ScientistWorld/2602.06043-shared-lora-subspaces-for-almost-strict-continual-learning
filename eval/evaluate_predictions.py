@@ -73,19 +73,26 @@ def add_experiment(output: dict, experiment_name: str, directories: list[tuple[s
             trainable = require_number(params, "share_parameters", directory)
             lora_stream = require_number(params, "independent_lora_stream_parameters", directory)
             compression = require_number(params, "compression_ratio_vs_lora_stream", directory)
+            temporary = float(params.get("temporary_adaptation_parameters", trainable))
         elif name == "independent_lora":
             trainable = require_number(params, "trainable_parameters", directory)
             lora_stream = max(trainable, 1)
             compression = 1.0
+            temporary = trainable
         else:
             trainable = require_number(params, "trainable_parameters", directory)
-            lora_stream = 1
-            compression = 0.0
+            lora_stream = require_number(params, "independent_lora_stream_parameters", directory) if (
+                "independent_lora_stream_parameters" in params
+            ) else max(trainable, 1)
+            compression = float(params.get("compression_ratio_vs_lora_stream", 0.0))
+            temporary = float(params.get("temporary_adaptation_parameters", trainable))
         results[name] = {
             "final_average_accuracy": accuracy * 100.0,
             "average_forgetting": read_average_forgetting(summary) * 100.0,
             "trainable_parameters": float(trainable),
+            "temporary_adaptation_parameters": float(temporary),
             "parameter_fraction_vs_lora_stream": float(trainable) / float(lora_stream),
+            "temporary_parameter_fraction_vs_lora_stream": float(temporary) / float(lora_stream),
             "compression_ratio_vs_lora_stream": float(compression),
             **{f"{task}_accuracy": value * 100.0 for task, value in per_task.items()},
         }
