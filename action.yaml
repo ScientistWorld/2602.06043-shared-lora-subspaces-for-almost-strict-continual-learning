@@ -1,6 +1,6 @@
 # The system reads this file after the turn ends.
-action: submit
+action: done
 gpus: 0
 test: false
 milestone: core_claim_plus
-notes: "Run full reproduction after restoring scripts/run.sh and adding temporary-parameter metrics to canonical scores.json."
+notes: "Packaged download.sh to regenerate both canonical synthetic datasets and validated committed paths."
