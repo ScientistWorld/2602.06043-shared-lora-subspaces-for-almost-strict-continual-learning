@@ -31,10 +31,12 @@
 - Final reproduced core result: Share 68.63% average accuracy, independent LoRA 75.31%, frozen backbone 8.88%, with Share using 1184 parameters versus 5568 for the LoRA stream (4.70x compression).
 - Validation fix: `scoring/reference.json` now uses the validated scaled frozen-backbone reference value (8.875%) for the synthetic benchmark instead of the paper-scale placeholder, so reference and scores are on the same benchmark scale.
 - Evaluation now includes `average_forgetting` so the scaled gym measures both the benefit side of the claim and the continual-retention constraint.
+- Continuation audit confirmed `method/` implements the Share computational steps and `eval/` remains independent of `method/`.
+- Added `synthetic_continual_low_rank_seed21`, a second deterministic task stream with the same procedure and metrics, to push beyond the minimum core claim once the next job completes.
 
 ## What Remains
 
-- Core claim is reproduced on the scaled low-rank continual benchmark. A final regeneration job is submitted to refresh `scoring/scores.json` with the added forgetting metric.
+- Core claim is reproduced on the scaled low-rank continual benchmark. An expanded job is submitted to regenerate the default stream and add seed-21 results for `core_claim_plus`.
 - Future expansion should target Table 1 GLUE with RoBERTa-base using the same Share implementation pattern.
 
 ## Issues Encountered

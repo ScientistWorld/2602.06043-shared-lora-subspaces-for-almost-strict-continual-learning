@@ -5,4 +5,4 @@ action: submit
 gpus: 0
 test: true
 milestone: core_claim
-notes: "Regenerate the scaled Share reproduction artifacts and scoring/scores.json with final accuracy, parameter-efficiency, and forgetting metrics."
+notes: "Run the expanded reproduction: regenerate the default Share stream and add a seed-21 stream to test the same accuracy, forgetting, and parameter-efficiency metrics. Intended next milestone: core_claim_plus if successful."

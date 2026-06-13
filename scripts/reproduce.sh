@@ -22,4 +22,21 @@ rm -f data/synthetic_share_tasks.npz
 bash scripts/baseline.sh frozen
 bash scripts/baseline.sh lora
 bash scripts/method.sh
+
+rm -f data/synthetic_share_tasks_seed21.npz
+python -m baseline.lora_linear \
+  --kind frozen \
+  --seed 21 \
+  --data data/synthetic_share_tasks_seed21.npz \
+  --output-dir checkpoints/frozen_seed21/predictions
+python -m baseline.lora_linear \
+  --kind lora \
+  --seed 21 \
+  --data data/synthetic_share_tasks_seed21.npz \
+  --output-dir checkpoints/lora_seed21/predictions
+python -m method.share_linear \
+  --seed 21 \
+  --data data/synthetic_share_tasks_seed21.npz \
+  --output-dir checkpoints/share_seed21/predictions
+bash scripts/evaluate.sh
 python validate.py --compare

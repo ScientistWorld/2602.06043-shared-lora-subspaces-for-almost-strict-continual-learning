@@ -50,19 +50,10 @@ def read_average_forgetting(summary: dict) -> float:
     return sum(drops) / len(drops) if drops else 0.0
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--share-dir", default="checkpoints/share/predictions")
-    parser.add_argument("--lora-dir", default="checkpoints/lora/predictions")
-    parser.add_argument("--frozen-dir", default="checkpoints/frozen/predictions")
-    parser.add_argument("--output", default="scoring/scores.json")
-    args = parser.parse_args()
-
-    output = {"experiments": {"synthetic_continual_low_rank": {"results": {}}}}
+def add_experiment(output: dict, experiment_name: str, directories: list[tuple[str, Path]]) -> None:
+    results = {}
     for name, directory in [
-        ("share", Path(args.share_dir)),
-        ("independent_lora", Path(args.lora_dir)),
-        ("frozen_backbone", Path(args.frozen_dir)),
+        *directories,
     ]:
         if not directory.exists():
             continue
@@ -81,7 +72,7 @@ def main() -> None:
             trainable = params.get("trainable_parameters", 0)
             lora_stream = 1
             compression = 0.0
-        output["experiments"]["synthetic_continual_low_rank"]["results"][name] = {
+        results[name] = {
             "final_average_accuracy": accuracy * 100.0,
             "average_forgetting": read_average_forgetting(summary) * 100.0,
             "trainable_parameters": float(trainable),
@@ -89,6 +80,37 @@ def main() -> None:
             "compression_ratio_vs_lora_stream": float(compression),
             **{f"{task}_accuracy": value * 100.0 for task, value in per_task.items()},
         }
+    if results:
+        output["experiments"][experiment_name] = {"results": results}
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--share-dir", default="checkpoints/share/predictions")
+    parser.add_argument("--lora-dir", default="checkpoints/lora/predictions")
+    parser.add_argument("--frozen-dir", default="checkpoints/frozen/predictions")
+    parser.add_argument("--output", default="scoring/scores.json")
+    args = parser.parse_args()
+
+    output = {"experiments": {}}
+    add_experiment(
+        output,
+        "synthetic_continual_low_rank",
+        [
+            ("share", Path(args.share_dir)),
+            ("independent_lora", Path(args.lora_dir)),
+            ("frozen_backbone", Path(args.frozen_dir)),
+        ],
+    )
+    add_experiment(
+        output,
+        "synthetic_continual_low_rank_seed21",
+        [
+            ("share", Path("checkpoints/share_seed21/predictions")),
+            ("independent_lora", Path("checkpoints/lora_seed21/predictions")),
+            ("frozen_backbone", Path("checkpoints/frozen_seed21/predictions")),
+        ],
+    )
 
     out_path = Path(args.output)
     out_path.parent.mkdir(parents=True, exist_ok=True)
