@@ -30,5 +30,5 @@
 action: submit
 gpus: 0
 test: true
-milestone: none
-notes: "CPU smoke job: run scaled Share reproduction, baselines, evaluator, and validation."
+milestone: method_runs
+notes: "CPU test job: rerun enlarged scaled Share benchmark with stricter pseudo-rank compression and validation."

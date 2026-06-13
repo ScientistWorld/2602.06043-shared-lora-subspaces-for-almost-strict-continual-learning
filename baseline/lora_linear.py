@@ -46,8 +46,8 @@ def main() -> None:
     parser.add_argument("--data", default="data/synthetic_share_tasks.npz")
     parser.add_argument("--output-dir", default="checkpoints/lora/predictions")
     parser.add_argument("--seed", type=int, default=13)
-    parser.add_argument("--rank", type=int, default=6)
-    parser.add_argument("--steps", type=int, default=500)
+    parser.add_argument("--rank", type=int, default=12)
+    parser.add_argument("--steps", type=int, default=700)
     parser.add_argument("--lr", type=float, default=0.03)
     args = parser.parse_args()
 
@@ -75,4 +75,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

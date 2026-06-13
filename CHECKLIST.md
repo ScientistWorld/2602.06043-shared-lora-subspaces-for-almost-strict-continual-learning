@@ -6,5 +6,5 @@
 - [x] Implement baselines
 - [x] Implement method-independent evaluator
 - [x] Add scoring reference and target docs
-- [ ] Run compute job
+- [x] Run compute job
 - [ ] Inspect scores and update milestone

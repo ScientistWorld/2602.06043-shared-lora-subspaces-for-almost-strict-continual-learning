@@ -27,11 +27,11 @@ def make_tasks(
     *,
     seed: int = 13,
     num_tasks: int = 4,
-    input_dim: int = 24,
-    num_classes: int = 6,
-    shared_rank: int = 3,
+    input_dim: int = 96,
+    num_classes: int = 20,
+    shared_rank: int = 4,
     train_per_task: int = 900,
-    test_per_task: int = 500,
+    test_per_task: int = 400,
 ) -> tuple[torch.Tensor, list[TaskData], dict[str, int]]:
     """Create related tasks whose optima live mostly in one low-rank subspace."""
 
@@ -115,4 +115,3 @@ def load_npz(path: str | Path) -> tuple[torch.Tensor, list[TaskData], dict[str, 
             )
         )
     return base, tasks, meta
-

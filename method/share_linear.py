@@ -114,8 +114,12 @@ def train_share(args: argparse.Namespace) -> dict:
     torch.manual_seed(args.seed)
     first = LoRAAdapter(base_weight, args.lora_rank)
     train_module(first, tasks[0].x_train, tasks[0].y_train, steps=args.lora_steps, lr=args.lr)
-    adapters = [first.factors()]
-    alpha, beta = principal_factors(adapters, args.k)
+    seed_adapters = [first.factors()]
+    alpha, beta = principal_factors(seed_adapters, args.k)
+
+    initial = ShareTaskAdapter(base_weight, alpha, beta, args.pseudo_rank, train_basis=False)
+    train_module(initial, tasks[0].x_train, tasks[0].y_train, steps=args.share_steps, lr=args.lr)
+    adapters = [initial.factors()]
     coeffs = project_coefficients(adapters, alpha, beta)
 
     history = []
@@ -167,12 +171,12 @@ def main() -> None:
     parser.add_argument("--data", default="data/synthetic_share_tasks.npz")
     parser.add_argument("--output-dir", default="checkpoints/share/predictions")
     parser.add_argument("--seed", type=int, default=13)
-    parser.add_argument("--lora-rank", type=int, default=6)
+    parser.add_argument("--lora-rank", type=int, default=12)
     parser.add_argument("--k", type=int, default=4)
     parser.add_argument("--pseudo-rank", type=int, default=2)
     parser.add_argument("--phi", type=int, default=2)
-    parser.add_argument("--lora-steps", type=int, default=500)
-    parser.add_argument("--share-steps", type=int, default=700)
+    parser.add_argument("--lora-steps", type=int, default=700)
+    parser.add_argument("--share-steps", type=int, default=900)
     parser.add_argument("--lr", type=float, default=0.03)
     args = parser.parse_args()
     train_share(args)
@@ -180,4 +184,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

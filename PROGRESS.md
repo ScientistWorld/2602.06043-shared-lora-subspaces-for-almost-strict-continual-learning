@@ -15,12 +15,14 @@
 
 ## Results Achieved
 
-- No compute job has completed yet. The next job runs frozen and independent LoRA baselines, Share, evaluation, and validation.
+- CPU smoke job `123ece10-17b` completed successfully.
+- Scaled initial run: Share final average accuracy 86.50%, independent LoRA 91.80%, frozen backbone 29.30%.
+- Share used 184 trainable/stored parameters versus 720 for the independent LoRA stream in the initial small configuration.
 
 ## What Remains
 
-- Run the submitted job and inspect whether Share beats the frozen baseline while using a small fraction of independent-LoRA stream parameters.
-- If successful, mark `method_runs`; if the effect is strong enough, update toward `core_claim`.
+- Run the enlarged scaled benchmark with stricter pseudo-rank accounting and stronger parameter compression.
+- If successful, mark `core_claim` for the scaled reproduction.
 - Future expansion should target Table 1 GLUE with RoBERTa-base using the same Share implementation pattern.
 
 ## Issues Encountered

@@ -18,6 +18,7 @@ set -e
 
 cd /home/user
 
+rm -f data/synthetic_share_tasks.npz
 bash scripts/baseline.sh frozen
 bash scripts/baseline.sh lora
 bash scripts/method.sh
