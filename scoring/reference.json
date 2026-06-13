@@ -26,6 +26,7 @@
           "trainable_parameters": 7200000,
           "temporary_adaptation_parameters": 7200000,
           "parameter_fraction_vs_lora_stream": 1.0,
+          "temporary_parameter_fraction_vs_lora_stream": 1.0,
           "compression_ratio_vs_lora_stream": 1.0
         },
         "frozen_backbone": {
@@ -35,6 +36,7 @@
           "trainable_parameters": 0,
           "temporary_adaptation_parameters": 0,
           "parameter_fraction_vs_lora_stream": 0.0,
+          "temporary_parameter_fraction_vs_lora_stream": 0.0,
           "compression_ratio_vs_lora_stream": 0.0
         },
         "share": {
@@ -44,6 +46,7 @@
           "trainable_parameters": 12000,
           "temporary_adaptation_parameters": 450000,
           "parameter_fraction_vs_lora_stream": 0.001667,
+          "temporary_parameter_fraction_vs_lora_stream": 0.0625,
           "compression_ratio_vs_lora_stream": 600.0
         }
       }
@@ -74,6 +77,7 @@
           "trainable_parameters": 7200000,
           "temporary_adaptation_parameters": 7200000,
           "parameter_fraction_vs_lora_stream": 1.0,
+          "temporary_parameter_fraction_vs_lora_stream": 1.0,
           "compression_ratio_vs_lora_stream": 1.0
         },
         "frozen_backbone": {
@@ -83,6 +87,7 @@
           "trainable_parameters": 0,
           "temporary_adaptation_parameters": 0,
           "parameter_fraction_vs_lora_stream": 0.0,
+          "temporary_parameter_fraction_vs_lora_stream": 0.0,
           "compression_ratio_vs_lora_stream": 0.0
         },
         "share": {
@@ -92,6 +97,7 @@
           "trainable_parameters": 12000,
           "temporary_adaptation_parameters": 450000,
           "parameter_fraction_vs_lora_stream": 0.001667,
+          "temporary_parameter_fraction_vs_lora_stream": 0.0625,
           "compression_ratio_vs_lora_stream": 600.0
         }
       }

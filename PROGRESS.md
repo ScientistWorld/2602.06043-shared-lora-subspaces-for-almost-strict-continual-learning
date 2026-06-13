@@ -46,6 +46,8 @@
 - Corrected strict-merge seed-21 stream: Share 67.56% final average accuracy, independent LoRA 75.06%, frozen backbone 7.94%; Share keeps the same 4.70x compression with 2.19 average forgetting points.
 - The corrected run restores `core_claim_plus`: the paper's core computation is implemented without retaining dense past adapters, and the scaled core claim holds across two deterministic continual streams.
 - Final packaging audit regenerated `scoring/scores.json` from existing prediction artifacts so it includes all declared constraint metrics, including temporary adaptation parameter count and temporary parameter fraction, and `python validate.py --compare` passes.
+- Final independent audit found no implementation or separation blockers: `method/share_linear.py` implements LoRA initialization, centered SVD subspace extraction, temporary top-`phi` adaptation, SVD merge, and analytical coefficient reprojection; `eval/` and `data/` do not import from `method/`.
+- `scoring/reference.json` now includes reference values for `temporary_parameter_fraction_vs_lora_stream` for all declared methods, derived from the same parameter counts already recorded in the reference.
 
 ## What Remains
 
