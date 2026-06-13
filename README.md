@@ -149,7 +149,7 @@ For GLUE-style scaled runs, keep the six-task structure when feasible and report
 
 # Reproduction Milestones
 
-**Current: core_claim_plus**
+**Current: core_claim**
 
 ## Stop Justification
-- Completed at milestone `core_claim_plus`.
+- Completed at milestone `core_claim`.
