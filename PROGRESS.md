@@ -27,11 +27,12 @@
 - Pseudo-rank `p=4` result: Share 68.63% average accuracy, independent LoRA 75.31%, frozen backbone 8.88%, with 4.70x compression versus the LoRA stream.
 - CPU test job `02054de3-b85` increased pseudo-rank to `p=6` and passed validation, but performance fell to 65.75% with 4.24x compression.
 - The selected scaled configuration is therefore `k=8`, `p=4`, `1500` Share steps.
+- Final selected-configuration job `86ee5401-88b` regenerated artifacts and `scoring/scores.json` for `k=8`, `p=4`.
+- Final reproduced core result: Share 68.63% average accuracy, independent LoRA 75.31%, frozen backbone 8.88%, with Share using 1184 parameters versus 5568 for the LoRA stream (4.70x compression).
 
 ## What Remains
 
-- Rerun the selected `p=4` configuration once so final artifacts and `scoring/scores.json` match the best validated setting.
-- If the rerun matches the previous `p=4` result, mark `core_claim` for the scaled reproduction.
+- Core claim is reproduced on the scaled low-rank continual benchmark.
 - Future expansion should target Table 1 GLUE with RoBERTa-base using the same Share implementation pattern.
 
 ## Issues Encountered

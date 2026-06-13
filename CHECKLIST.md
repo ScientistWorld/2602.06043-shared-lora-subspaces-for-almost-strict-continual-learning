@@ -7,4 +7,4 @@
 - [x] Implement method-independent evaluator
 - [x] Add scoring reference and target docs
 - [x] Run compute job
-- [ ] Inspect scores and update milestone
+- [x] Inspect scores and update milestone

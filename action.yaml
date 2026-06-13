@@ -27,8 +27,6 @@
 #   milestone: core_claim
 #   notes: "Reproduced the core claim. Environment packaged."
 
-action: submit
-gpus: 0
-test: true
-milestone: method_runs
-notes: "CPU test job: rerun selected enlarged scaled Share benchmark with k=8 and pseudo-rank p=4, then validate."
+action: done
+milestone: core_claim
+notes: "Core claim reproduced on the scaled continual low-rank benchmark: Share reached 68.63% versus 75.31% independent LoRA while using 4.70x fewer parameters, with validation passing."

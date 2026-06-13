@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: method_runs**
+**Current: core_claim**
 
 ## Progress Log
 
@@ -31,3 +31,8 @@
 - CPU test job `02054de3-b85` reran the enlarged benchmark with `p=6` and passed validation.
 - Scores regressed: Share 65.75% average accuracy, independent LoRA 75.31%, frozen backbone 8.88%, with 4.24x compression versus the LoRA stream.
 - Reverted the default to the stronger `p=4` setting and queued a final selected-configuration rerun before milestone promotion.
+
+### [2026-06-13 19:31] - core_claim
+- CPU test job `86ee5401-88b` reran the selected `k=8`, `p=4` configuration and passed validation.
+- Final selected scores: Share 68.63% average accuracy, independent LoRA 75.31%, frozen backbone 8.88%.
+- Share used 1184 parameters versus 5568 for the independent LoRA stream, a 4.70x compression ratio, reproducing the paper's core accuracy/parameter-efficiency tradeoff on the scaled benchmark.
