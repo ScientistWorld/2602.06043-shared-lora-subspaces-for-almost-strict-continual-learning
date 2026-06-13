@@ -1,9 +1,5 @@
-# This iteration writes files only — do NOT submit compute jobs.
-# Once you set action to 'done', STOP immediately.
-# Do NOT sleep, poll, or wait. The system reads this file
-# only after your turn ends.
-action: done
+# The system reads this file after the turn ends.
+action: submit
 gpus: 0
 test: false
-milestone: core_claim_plus
-notes: "Improvements: canonical-label scoring, strict prediction coverage checks, temporary-parameter constraint, metric descriptions, equal stream weights. Notes: see DESIGN_NOTES.md."
+notes: "Run evaluate_{train,test}.sh against saved prediction artifacts; populate split scores."
