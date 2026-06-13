@@ -2,8 +2,8 @@
 # Once you set action to 'done', STOP immediately.
 # Do NOT sleep, poll, or wait. The system reads this file
 # only after your turn ends.
-action: pending
+action: done
 gpus: 0
 test: false
 milestone: core_claim_plus
-notes: ""
+notes: "Improvements: canonical-label scoring, strict prediction coverage checks, temporary-parameter constraint, metric descriptions, equal stream weights. Notes: see DESIGN_NOTES.md."

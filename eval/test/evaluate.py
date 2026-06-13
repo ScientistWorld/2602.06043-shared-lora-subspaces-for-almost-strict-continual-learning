@@ -13,11 +13,19 @@ import json
 import re
 from pathlib import Path
 
+import numpy as np
+
 
 SLICE_NAME = "test"
-EXPERIMENT_BY_SEED = {
-    13: "synthetic_continual_low_rank",
-    21: "synthetic_continual_low_rank_seed21",
+EXPERIMENTS_BY_SEED = {
+    13: {
+        "name": "synthetic_continual_low_rank",
+        "data": Path("data/synthetic_share_tasks.npz"),
+    },
+    21: {
+        "name": "synthetic_continual_low_rank_seed21",
+        "data": Path("data/synthetic_share_tasks_seed21.npz"),
+    },
 }
 KNOWN_RUN_NAMES = {
     "share": "share",
@@ -41,26 +49,67 @@ def read_summary(prediction_dir: Path) -> dict:
     return json.loads(path.read_text())
 
 
-def read_accuracy(prediction_dir: Path) -> tuple[float, dict[str, float]]:
+def read_truth_labels(data_path: Path) -> dict[str, dict[int, int]]:
+    if not data_path.exists():
+        raise FileNotFoundError(f"Missing canonical evaluation labels: {data_path}")
+    data = np.load(data_path)
+    num_tasks = int(data["meta_num_tasks"])
+    return {
+        f"task_{task_id}": {
+            example_id: int(label)
+            for example_id, label in enumerate(data[f"y_test_{task_id}"].tolist())
+        }
+        for task_id in range(num_tasks)
+    }
+
+
+def read_predictions(csv_path: Path) -> dict[int, int]:
+    predictions: dict[int, int] = {}
+    with csv_path.open(newline="") as handle:
+        for row in csv.DictReader(handle):
+            example_id = int(row["example_id"])
+            if example_id in predictions:
+                raise ValueError(f"Duplicate prediction for example_id={example_id} in {csv_path}")
+            predictions[example_id] = int(row["prediction"])
+    return predictions
+
+
+def read_accuracy(prediction_dir: Path, truth_labels: dict[str, dict[int, int]]) -> tuple[float, dict[str, float]]:
     per_task = {}
     total = 0
     correct = 0
-    for csv_path in sorted(prediction_dir.glob("task_*.csv")):
-        task_total = 0
-        task_correct = 0
-        with csv_path.open(newline="") as handle:
-            for row in csv.DictReader(handle):
-                if not row_in_slice(row):
-                    continue
-                task_total += 1
-                task_correct += int(row["prediction"] == row["label"])
+    for task_name, labels in sorted(truth_labels.items()):
+        csv_path = prediction_dir / f"{task_name}.csv"
+        if not csv_path.exists():
+            raise FileNotFoundError(f"Missing predictions for {task_name}: {csv_path}")
+        predictions = read_predictions(csv_path)
+        invalid = sorted(set(predictions) - set(labels))
+        if invalid:
+            raise ValueError(
+                f"{csv_path} contains {len(invalid)} prediction IDs outside canonical labels; "
+                f"first invalid example_id={invalid[0]}"
+            )
+        expected_ids = [
+            example_id
+            for example_id in labels
+            if row_in_slice({"task_id": task_name.removeprefix("task_"), "example_id": str(example_id)})
+        ]
+        missing = sorted(set(expected_ids) - set(predictions))
+        if missing:
+            raise ValueError(
+                f"{csv_path} is missing {len(missing)} required {SLICE_NAME} predictions; "
+                f"first missing example_id={missing[0]}"
+            )
+
+        task_total = len(expected_ids)
+        task_correct = sum(int(predictions[example_id] == labels[example_id]) for example_id in expected_ids)
         if task_total == 0:
             raise ValueError(f"No {SLICE_NAME} rows found in {csv_path}")
-        per_task[csv_path.stem] = task_correct / task_total
+        per_task[task_name] = task_correct / task_total
         total += task_total
         correct += task_correct
     if total == 0:
-        raise FileNotFoundError(f"No task_*.csv files found in {prediction_dir}")
+        raise FileNotFoundError(f"No canonical task labels found for {prediction_dir}")
     return correct / total, per_task
 
 
@@ -96,7 +145,18 @@ def experiment_from_summary(summary: dict, prediction_dir: Path) -> str | None:
     seed = summary.get("meta", {}).get("seed")
     if not isinstance(seed, int):
         raise ValueError(f"{prediction_dir / 'summary.json'} missing integer meta.seed")
-    return EXPERIMENT_BY_SEED.get(seed)
+    experiment = EXPERIMENTS_BY_SEED.get(seed)
+    return experiment["name"] if experiment else None
+
+
+def data_path_from_summary(summary: dict, prediction_dir: Path) -> Path:
+    seed = summary.get("meta", {}).get("seed")
+    if not isinstance(seed, int):
+        raise ValueError(f"{prediction_dir / 'summary.json'} missing integer meta.seed")
+    experiment = EXPERIMENTS_BY_SEED.get(seed)
+    if experiment is None:
+        raise ValueError(f"No canonical train/test labels registered for seed={seed}")
+    return experiment["data"]
 
 
 def discover_prediction_dirs(prediction_root: Path) -> dict[str, dict[str, Path]]:
@@ -141,28 +201,33 @@ def requested_methods(train_scores_path: Path, discovered: dict[str, dict[str, P
 
 
 def score_method(method_name: str, prediction_dir: Path) -> dict[str, float]:
-    accuracy, per_task = read_accuracy(prediction_dir)
     summary = read_summary(prediction_dir)
+    truth_labels = read_truth_labels(data_path_from_summary(summary, prediction_dir))
+    accuracy, per_task = read_accuracy(prediction_dir, truth_labels)
     params = summary.get("parameter_counts", {})
     if "share_parameters" in params:
         trainable = require_number(params, "share_parameters", prediction_dir)
         lora_stream = require_number(params, "independent_lora_stream_parameters", prediction_dir)
         compression = require_number(params, "compression_ratio_vs_lora_stream", prediction_dir)
+        temporary = float(params.get("temporary_adaptation_parameters", trainable))
     elif method_name == "independent_lora":
         trainable = require_number(params, "trainable_parameters", prediction_dir)
         lora_stream = max(trainable, 1.0)
         compression = 1.0
+        temporary = trainable
     else:
         trainable = require_number(params, "trainable_parameters", prediction_dir)
         lora_stream = require_number(params, "independent_lora_stream_parameters", prediction_dir) if (
             "independent_lora_stream_parameters" in params
         ) else max(trainable, 1.0)
         compression = float(params.get("compression_ratio_vs_lora_stream", 0.0))
+        temporary = float(params.get("temporary_adaptation_parameters", trainable))
 
     return {
         "final_average_accuracy": accuracy * 100.0,
         "average_forgetting": read_average_forgetting(summary) * 100.0,
         "trainable_parameters": float(trainable),
+        "temporary_adaptation_parameters": float(temporary),
         "parameter_fraction_vs_lora_stream": float(trainable) / float(lora_stream),
         "compression_ratio_vs_lora_stream": float(compression),
         **{f"{task}_accuracy": value * 100.0 for task, value in per_task.items()},
