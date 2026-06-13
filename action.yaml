@@ -1,5 +1,5 @@
 # The system reads this file after the turn ends.
-action: submit
+action: done
 gpus: 0
 test: false
-notes: "Regenerate split scores after normalizing temporary-parameter constraint metric coefficients."
+notes: "Deterministic even/odd row split over two seeded streams; 66 train metric values, 66 test metric values; primary accuracy gaps: seed13 share -4.5 pts, lora -7.375 pts, frozen +1.25 pts; seed21 share +1.875 pts, lora +1.375 pts, frozen +0.625 pts. Caveat: split is in-distribution, not OOD."
