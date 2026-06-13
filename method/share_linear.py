@@ -173,7 +173,7 @@ def main() -> None:
     parser.add_argument("--seed", type=int, default=13)
     parser.add_argument("--lora-rank", type=int, default=12)
     parser.add_argument("--k", type=int, default=8)
-    parser.add_argument("--pseudo-rank", type=int, default=6)
+    parser.add_argument("--pseudo-rank", type=int, default=4)
     parser.add_argument("--phi", type=int, default=2)
     parser.add_argument("--lora-steps", type=int, default=700)
     parser.add_argument("--share-steps", type=int, default=1500)

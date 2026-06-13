@@ -26,3 +26,8 @@
 - CPU test job `9fc78eed-b55` reran the enlarged benchmark with `p=4` and passed validation.
 - Scores moved close to the target tradeoff: Share 68.63% average accuracy, independent LoRA 75.31%, frozen backbone 8.88%, with 4.70x compression versus the LoRA stream.
 - Kept the milestone at `method_runs` for one more capacity test with `p=6`; `p=4` is close but still leaves a 6.69 point gap to independent LoRA.
+
+### [2026-06-13 19:29] - method_runs
+- CPU test job `02054de3-b85` reran the enlarged benchmark with `p=6` and passed validation.
+- Scores regressed: Share 65.75% average accuracy, independent LoRA 75.31%, frozen backbone 8.88%, with 4.24x compression versus the LoRA stream.
+- Reverted the default to the stronger `p=4` setting and queued a final selected-configuration rerun before milestone promotion.
