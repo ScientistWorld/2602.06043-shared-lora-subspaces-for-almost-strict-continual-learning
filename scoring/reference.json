@@ -2,6 +2,7 @@
   "experiments": {
     "synthetic_continual_low_rank": {
       "description": "Scaled continual low-rank classification benchmark for the Share core claim; paper reference shape is Table 1 GLUE performance/parameter tradeoff.",
+      "notes": "The paper reports the Share and independent-LoRA headline values on six-task Continual GLUE with RoBERTa-base. This gym uses a deterministic scaled synthetic classification stream, so reproduced scores are not expected to match the paper's absolute values. The frozen-backbone reference is the measured value on this scaled stream; parameter counts in the results section retain the paper-scale comparison context.",
       "weight": 0.5,
       "primary_metric": "final_average_accuracy",
       "metrics": {
@@ -49,6 +50,7 @@
     },
     "synthetic_continual_low_rank_seed21": {
       "description": "Second deterministic scaled low-rank continual stream with the same procedure and a different seed.",
+      "notes": "This is an added robustness stream for the scaled gym, not a separate paper table. Paper-scale Share and independent-LoRA values are repeated for context; the frozen-backbone value is the measured scaled-stream baseline.",
       "weight": 0.5,
       "primary_metric": "final_average_accuracy",
       "metrics": {

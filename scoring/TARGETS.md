@@ -6,7 +6,7 @@ Tests the paper's central claim in a scaled setting: a method must learn a strea
 
 - **Primary metric:** `final_average_accuracy` (higher is better)
 - **Benefit metrics:** final average accuracy and per-task final accuracies (`task_0_accuracy` through `task_3_accuracy`)
-- **Constraint metrics:** `average_forgetting`, `trainable_parameters`, and `parameter_fraction_vs_lora_stream` (lower is better), plus `compression_ratio_vs_lora_stream` (higher is better)
+- **Constraint metrics:** `average_forgetting`, `trainable_parameters`, `temporary_adaptation_parameters`, `parameter_fraction_vs_lora_stream`, and `temporary_parameter_fraction_vs_lora_stream` (lower is better), plus `compression_ratio_vs_lora_stream` (higher is better)
 - **How to run:** `bash scripts/reproduce.sh`, or run method/baseline scripts followed by `bash scripts/evaluate.sh`
 
 ## synthetic_continual_low_rank_seed21
@@ -15,5 +15,5 @@ Repeats the same scaled continual-learning protocol on a second deterministic st
 
 - **Primary metric:** `final_average_accuracy` (higher is better)
 - **Benefit metrics:** final average accuracy and per-task final accuracies (`task_0_accuracy` through `task_3_accuracy`)
-- **Constraint metrics:** `average_forgetting`, `trainable_parameters`, and `parameter_fraction_vs_lora_stream` (lower is better), plus `compression_ratio_vs_lora_stream` (higher is better)
+- **Constraint metrics:** `average_forgetting`, `trainable_parameters`, `temporary_adaptation_parameters`, `parameter_fraction_vs_lora_stream`, and `temporary_parameter_fraction_vs_lora_stream` (lower is better), plus `compression_ratio_vs_lora_stream` (higher is better)
 - **How to run:** `bash scripts/reproduce.sh`; it writes prediction artifacts under `checkpoints/*_seed21/predictions`

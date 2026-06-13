@@ -3,4 +3,4 @@ action: done
 gpus: 0
 test: false
 milestone: core_claim_plus
-notes: "Core Share reproduction is packaged and validated on two deterministic continual streams; scores include benefit, forgetting, and parameter-efficiency constraint metrics."
+notes: "Final verification passed: core_claim_plus gym is ready, with scaled synthetic limitation documented."
