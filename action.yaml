@@ -1,8 +1,8 @@
 # IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends. Sleeping blocks the entire pipeline.
-action: submit
+action: done
 gpus: 0
 test: true
-milestone: none
-notes: "Continuation audit found stale pre-fix scores. CPU test rerun of corrected strict Share merge will regenerate both synthetic streams, baselines, scores, and validate."
+milestone: core_claim_plus
+notes: "Corrected strict Share merge rerun completed successfully in job 11ed4ca8-276. Reproduction restores core_claim_plus on two deterministic scaled continual streams with 4.70x compression versus independent LoRA, and validate.py --compare passes."

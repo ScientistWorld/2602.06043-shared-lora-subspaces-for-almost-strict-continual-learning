@@ -8,4 +8,4 @@
 - [x] Add scoring reference and target docs
 - [x] Run compute job
 - [x] Inspect scores and update milestone
-- [ ] Rerun corrected strict-merge implementation
+- [x] Rerun corrected strict-merge implementation

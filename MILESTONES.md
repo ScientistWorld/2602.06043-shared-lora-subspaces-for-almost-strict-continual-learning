@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: none**
+**Current: core_claim_plus**
 
 ## Progress Log
 
@@ -29,5 +29,11 @@
 - Continuation audit confirmed `scoring/scores.json` and prediction summaries still predate the strict-merge patch.
 - Kept the milestone below `method_runs` and prepared another CPU test submission to regenerate scores from the corrected implementation.
 
+### [2026-06-13 19:51] - core_claim_plus
+- CPU job `11ed4ca8-276` reran `scripts/reproduce.sh` from the corrected strict Share merge implementation and exited successfully.
+- `validate.py --compare` passed: reference/scores structure is valid, `eval/` and `data/` remain independent of `method/`, and evaluation reads method artifacts rather than regenerating the method.
+- Corrected default stream: Share reaches 68.25% final average accuracy versus 8.88% frozen and 75.31% independent LoRA, while using 1184 parameters versus 5568 for the LoRA stream (4.70x compression).
+- Corrected seed-21 stream: Share reaches 67.56% final average accuracy versus 7.94% frozen and 75.06% independent LoRA, with the same 4.70x compression.
+
 ## Stop Justification
-- Not stopped. A corrected strict-merge implementation is being submitted for verification.
+- Stopped at `core_claim_plus`: the corrected strict Share implementation supports the scaled core claim on two deterministic continual streams. Higher milestones would require reproducing additional paper settings such as full RoBERTa-base GLUE or the vision/text-to-image extensions, which are outside the compact CPU reproduction completed here.

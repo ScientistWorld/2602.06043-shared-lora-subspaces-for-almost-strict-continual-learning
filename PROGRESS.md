@@ -41,14 +41,18 @@
 - Patched `eval/evaluate_predictions.py` to require parameter metadata rather than silently treating missing metadata as zero cost.
 - Patched `scripts/reproduce.sh` to clear prediction directories before rerunning, avoiding stale-score contamination.
 - Continuation audit found that current `scoring/scores.json` and checkpoint summaries still predate the strict-merge patch, so the corrected implementation remains unverified.
+- CPU job `11ed4ca8-276` reran the corrected strict-merge implementation end-to-end and passed `validate.py --compare`.
+- Corrected strict-merge default stream: Share 68.25% final average accuracy, independent LoRA 75.31%, frozen backbone 8.88%; Share uses 1184 parameters versus 5568 for independent LoRA (4.70x compression) with 1.44 average forgetting points.
+- Corrected strict-merge seed-21 stream: Share 67.56% final average accuracy, independent LoRA 75.06%, frozen backbone 7.94%; Share keeps the same 4.70x compression with 2.19 average forgetting points.
+- The corrected run restores `core_claim_plus`: the paper's core computation is implemented without retaining dense past adapters, and the scaled core claim holds across two deterministic continual streams.
 
 ## What Remains
 
-- Rerun `scripts/reproduce.sh` as a compute job to refresh `scoring/scores.json` for the corrected strict-merge implementation.
-- If the corrected scores still support the claim, restore the milestone to `core_claim` or `core_claim_plus`.
 - Future expansion should target Table 1 GLUE with RoBERTa-base using the same Share implementation pattern.
+- Additional paper settings such as vision classification and text-to-image personalization remain unreproduced.
 
 ## Issues Encountered
 
 - Initial scaffold was template-only.
 - The external stdout/stderr paths reported for job `61982c19-66d` were not visible from this container, but the job-updated workspace artifacts were present and passed validation.
+- The external stdout/stderr paths reported for job `11ed4ca8-276` were also not visible directly, but local copies under `jobs/11ed4ca8-276/` were available and showed a successful run.
