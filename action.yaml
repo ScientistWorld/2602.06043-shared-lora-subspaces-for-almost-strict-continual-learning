@@ -1,8 +1,9 @@
-# IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
-# Do NOT sleep, poll, or wait for jobs. The system reads this file
-# only after your turn ends. Sleeping blocks the entire pipeline.
-action: done
+# This iteration writes files only — do NOT submit compute jobs.
+# Once you set action to 'done', STOP immediately.
+# Do NOT sleep, poll, or wait. The system reads this file
+# only after your turn ends.
+action: pending
 gpus: 0
-test: true
+test: false
 milestone: core_claim_plus
-notes: "Corrected strict Share merge rerun completed successfully in job 11ed4ca8-276. Reproduction restores core_claim_plus on two deterministic scaled continual streams with 4.70x compression versus independent LoRA, and validate.py --compare passes."
+notes: ""
