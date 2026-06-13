@@ -36,4 +36,4 @@
 - Corrected seed-21 stream: Share reaches 67.56% final average accuracy versus 7.94% frozen and 75.06% independent LoRA, with the same 4.70x compression.
 
 ## Stop Justification
-- Stopped at `core_claim_plus`: the corrected strict Share implementation supports the scaled core claim on two deterministic continual streams. Higher milestones would require reproducing additional paper settings such as full RoBERTa-base GLUE or the vision/text-to-image extensions, which are outside the compact CPU reproduction completed here.
+- Completed at milestone `core_claim_plus`.
