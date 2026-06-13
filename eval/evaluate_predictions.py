@@ -31,7 +31,16 @@ def read_accuracy(prediction_dir: Path) -> tuple[float, dict[str, float]]:
 
 def read_summary(prediction_dir: Path) -> dict:
     path = prediction_dir / "summary.json"
-    return json.loads(path.read_text()) if path.exists() else {}
+    if not path.exists():
+        raise FileNotFoundError(f"Missing required parameter metadata: {path}")
+    return json.loads(path.read_text())
+
+
+def require_number(mapping: dict, key: str, source: Path) -> float:
+    value = mapping.get(key)
+    if not isinstance(value, (int, float)):
+        raise ValueError(f"{source / 'summary.json'} missing numeric parameter_counts.{key}")
+    return float(value)
 
 
 def read_average_forgetting(summary: dict) -> float:
@@ -61,15 +70,15 @@ def add_experiment(output: dict, experiment_name: str, directories: list[tuple[s
         summary = read_summary(directory)
         params = summary.get("parameter_counts", {})
         if name == "share":
-            trainable = params.get("share_parameters", 0)
-            lora_stream = params.get("independent_lora_stream_parameters", 1)
-            compression = params.get("compression_ratio_vs_lora_stream", 0.0)
+            trainable = require_number(params, "share_parameters", directory)
+            lora_stream = require_number(params, "independent_lora_stream_parameters", directory)
+            compression = require_number(params, "compression_ratio_vs_lora_stream", directory)
         elif name == "independent_lora":
-            trainable = params.get("trainable_parameters", 0)
+            trainable = require_number(params, "trainable_parameters", directory)
             lora_stream = max(trainable, 1)
             compression = 1.0
         else:
-            trainable = params.get("trainable_parameters", 0)
+            trainable = require_number(params, "trainable_parameters", directory)
             lora_stream = 1
             compression = 0.0
         results[name] = {

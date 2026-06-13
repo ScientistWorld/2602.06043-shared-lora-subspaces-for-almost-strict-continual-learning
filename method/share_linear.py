@@ -92,6 +92,17 @@ def project_coefficients(
     return coeffs
 
 
+def reconstruct_adapters(
+    alpha: torch.Tensor, beta: torch.Tensor, coeffs: list[tuple[torch.Tensor, torch.Tensor]]
+) -> list[tuple[torch.Tensor, torch.Tensor]]:
+    """Reconstruct task adapters from the retained Share state before merging."""
+
+    adapters = []
+    for eps_alpha, eps_beta in coeffs:
+        adapters.append(((alpha @ eps_alpha).T.detach(), (beta @ eps_beta).detach()))
+    return adapters
+
+
 def logits_from_coeffs(
     base_weight: torch.Tensor,
     alpha: torch.Tensor,
@@ -119,8 +130,7 @@ def train_share(args: argparse.Namespace) -> dict:
 
     initial = ShareTaskAdapter(base_weight, alpha, beta, args.pseudo_rank, train_basis=False)
     train_module(initial, tasks[0].x_train, tasks[0].y_train, steps=args.share_steps, lr=args.lr)
-    adapters = [initial.factors()]
-    coeffs = project_coefficients(adapters, alpha, beta)
+    coeffs = project_coefficients([initial.factors()], alpha, beta)
 
     history = []
     for task_index, task in enumerate(tasks):
@@ -129,9 +139,10 @@ def train_share(args: argparse.Namespace) -> dict:
             tmp_beta = beta[:, : args.phi].clone()
             temp = ShareTaskAdapter(base_weight, tmp_alpha, tmp_beta, args.pseudo_rank, train_basis=True)
             train_module(temp, task.x_train, task.y_train, steps=args.share_steps, lr=args.lr)
-            adapters.append(temp.factors())
-            alpha, beta = principal_factors(adapters, args.k)
-            coeffs = project_coefficients(adapters, alpha, beta)
+            merge_adapters = reconstruct_adapters(alpha, beta, coeffs)
+            merge_adapters.append(temp.factors())
+            alpha, beta = principal_factors(merge_adapters, args.k)
+            coeffs = project_coefficients(merge_adapters, alpha, beta)
 
         seen_scores = {}
         for j in range(task_index + 1):
@@ -149,7 +160,8 @@ def train_share(args: argparse.Namespace) -> dict:
             rows.append(f"{j},{i},{int(p)},{int(y)}")
         (predictions_dir / f"{task.name}.csv").write_text("\n".join(rows) + "\n")
 
-    trainable_share = int(alpha.numel() + beta.numel() + len(tasks) * args.k * args.pseudo_rank * 2)
+    deployed_share = int(alpha.numel() + beta.numel() + len(tasks) * args.k * args.pseudo_rank * 2)
+    temporary_adaptation = int(args.phi * (sum(base_weight.shape) + 2 * args.pseudo_rank))
     trainable_lora_stream = int(len(tasks) * args.lora_rank * sum(base_weight.shape))
     summary = {
         "method": "share",
@@ -157,9 +169,10 @@ def train_share(args: argparse.Namespace) -> dict:
         "hyperparameters": vars(args),
         "history": history,
         "parameter_counts": {
-            "share_parameters": trainable_share,
+            "share_parameters": deployed_share,
+            "temporary_adaptation_parameters": temporary_adaptation,
             "independent_lora_stream_parameters": trainable_lora_stream,
-            "compression_ratio_vs_lora_stream": trainable_lora_stream / trainable_share,
+            "compression_ratio_vs_lora_stream": trainable_lora_stream / deployed_share,
         },
     }
     (predictions_dir / "summary.json").write_text(json.dumps(summary, indent=2))

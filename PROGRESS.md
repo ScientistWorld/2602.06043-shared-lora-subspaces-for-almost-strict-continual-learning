@@ -7,6 +7,7 @@
 - Implemented the paper's Share computation in `method/share_linear.py`.
 - Implemented independent LoRA and frozen-backbone baselines in `baseline/lora_linear.py`.
 - Implemented method-agnostic artifact evaluation in `eval/evaluate_predictions.py`.
+- `scripts/reproduce.sh` regenerates both deterministic task streams and calls `scripts/evaluate.sh`.
 
 ## Deviations From Paper
 
@@ -34,9 +35,16 @@
 - Continuation audit confirmed `method/` implements the Share computational steps and `eval/` remains independent of `method/`.
 - Added `synthetic_continual_low_rank_seed21`, a second deterministic task stream with the same procedure and metrics, to push beyond the minimum core claim once the next job completes.
 - Job `61982c19-66d` completed the expanded two-stream reproduction. Seed 21 result: Share 67.31% final average accuracy, independent LoRA 75.06%, frozen backbone 7.94%; Share retained 4.70x parameter compression with 2.31 average forgetting points.
+- Final milestone raised to `core_claim_plus` because the scaled core claim is evaluated on two deterministic task streams.
+- Follow-up audit found the previous implementation retained dense past task adapters in memory for future SVD merges instead of reconstructing them from the current Share state.
+- Patched `method/share_linear.py` to reconstruct old task adapters from `alpha`, `beta`, and coefficient tensors before each merge, matching the paper's strict shared-state procedure more closely.
+- Patched `eval/evaluate_predictions.py` to require parameter metadata rather than silently treating missing metadata as zero cost.
+- Patched `scripts/reproduce.sh` to clear prediction directories before rerunning, avoiding stale-score contamination.
 
 ## What Remains
 
+- Rerun `scripts/reproduce.sh` as a compute job to refresh `scoring/scores.json` for the corrected strict-merge implementation.
+- If the corrected scores still support the claim, restore the milestone to `core_claim` or `core_claim_plus`.
 - Future expansion should target Table 1 GLUE with RoBERTa-base using the same Share implementation pattern.
 
 ## Issues Encountered

@@ -18,6 +18,14 @@ set -e
 
 cd /home/user
 
+rm -rf \
+  checkpoints/frozen/predictions \
+  checkpoints/lora/predictions \
+  checkpoints/share/predictions \
+  checkpoints/frozen_seed21/predictions \
+  checkpoints/lora_seed21/predictions \
+  checkpoints/share_seed21/predictions
+
 rm -f data/synthetic_share_tasks.npz
 bash scripts/baseline.sh frozen
 bash scripts/baseline.sh lora
