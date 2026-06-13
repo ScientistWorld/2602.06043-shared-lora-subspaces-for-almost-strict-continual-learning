@@ -31,4 +31,4 @@ action: submit
 gpus: 0
 test: true
 milestone: method_runs
-notes: "CPU test job: rerun enlarged scaled Share benchmark with k=8 shared subspace and validation."
+notes: "CPU test job: rerun enlarged scaled Share benchmark with k=8 and pseudo-rank p=4, then validate."

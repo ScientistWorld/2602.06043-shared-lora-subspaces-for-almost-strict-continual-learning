@@ -16,3 +16,8 @@
 - CPU test job `1da339f3-80d` reran the enlarged benchmark and passed validation.
 - Enlarged scores: Share 47.75% average accuracy, independent LoRA 75.31%, frozen backbone 8.88%, with 10.55x compression versus the LoRA stream.
 - Kept the milestone at `method_runs` because Share is still too far below independent LoRA on this stricter setting.
+
+### [2026-06-13 19:23] - method_runs
+- CPU test job `d7e7f5b1-9fb` reran the enlarged benchmark with `k=8` and passed validation.
+- Scores improved modestly: Share 50.56% average accuracy, independent LoRA 75.31%, frozen backbone 8.88%, with 5.27x compression versus the LoRA stream.
+- Kept the milestone at `method_runs`; the next run increases pseudo-rank to test whether per-task rank was the bottleneck.

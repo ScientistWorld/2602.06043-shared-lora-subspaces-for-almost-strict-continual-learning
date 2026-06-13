@@ -21,10 +21,12 @@
 - CPU test job `1da339f3-80d` completed successfully on the enlarged benchmark and passed `validate.py --compare`.
 - Enlarged benchmark result: Share 47.75% average accuracy, independent LoRA 75.31%, frozen backbone 8.88%.
 - The enlarged result demonstrates the method runs and improves over a frozen backbone under a 10.55x parameter compression, but it is not yet strong enough to claim the core paper claim of LoRA-like performance under compression.
+- CPU test job `d7e7f5b1-9fb` widened Share's retained subspace to `k=8` and passed validation.
+- Wider-subspace result: Share 50.56% average accuracy, independent LoRA 75.31%, frozen backbone 8.88%, with 5.27x compression versus the LoRA stream.
 
 ## What Remains
 
-- Rerun the enlarged benchmark with a wider retained Share subspace (`k=8`) while preserving a meaningful compression constraint.
+- Rerun the enlarged benchmark with pseudo-rank `p=4`, matching the planted shared task rank while preserving meaningful compression.
 - If Share approaches independent LoRA while remaining substantially smaller, mark `core_claim` for the scaled reproduction.
 - Future expansion should target Table 1 GLUE with RoBERTa-base using the same Share implementation pattern.
 
