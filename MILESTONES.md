@@ -21,3 +21,8 @@
 - CPU test job `d7e7f5b1-9fb` reran the enlarged benchmark with `k=8` and passed validation.
 - Scores improved modestly: Share 50.56% average accuracy, independent LoRA 75.31%, frozen backbone 8.88%, with 5.27x compression versus the LoRA stream.
 - Kept the milestone at `method_runs`; the next run increases pseudo-rank to test whether per-task rank was the bottleneck.
+
+### [2026-06-13 19:26] - method_runs
+- CPU test job `9fc78eed-b55` reran the enlarged benchmark with `p=4` and passed validation.
+- Scores moved close to the target tradeoff: Share 68.63% average accuracy, independent LoRA 75.31%, frozen backbone 8.88%, with 4.70x compression versus the LoRA stream.
+- Kept the milestone at `method_runs` for one more capacity test with `p=6`; `p=4` is close but still leaves a 6.69 point gap to independent LoRA.

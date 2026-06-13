@@ -23,11 +23,13 @@
 - The enlarged result demonstrates the method runs and improves over a frozen backbone under a 10.55x parameter compression, but it is not yet strong enough to claim the core paper claim of LoRA-like performance under compression.
 - CPU test job `d7e7f5b1-9fb` widened Share's retained subspace to `k=8` and passed validation.
 - Wider-subspace result: Share 50.56% average accuracy, independent LoRA 75.31%, frozen backbone 8.88%, with 5.27x compression versus the LoRA stream.
+- CPU test job `9fc78eed-b55` increased pseudo-rank to `p=4` and passed validation.
+- Pseudo-rank `p=4` result: Share 68.63% average accuracy, independent LoRA 75.31%, frozen backbone 8.88%, with 4.70x compression versus the LoRA stream.
 
 ## What Remains
 
-- Rerun the enlarged benchmark with pseudo-rank `p=4`, matching the planted shared task rank while preserving meaningful compression.
-- If Share approaches independent LoRA while remaining substantially smaller, mark `core_claim` for the scaled reproduction.
+- Rerun the enlarged benchmark with pseudo-rank `p=6` to test whether modest extra task capacity closes the remaining accuracy gap while keeping more than 4x compression.
+- If Share remains close to independent LoRA while substantially smaller, mark `core_claim` for the scaled reproduction.
 - Future expansion should target Table 1 GLUE with RoBERTa-base using the same Share implementation pattern.
 
 ## Issues Encountered
