@@ -34,6 +34,22 @@ def read_summary(prediction_dir: Path) -> dict:
     return json.loads(path.read_text()) if path.exists() else {}
 
 
+def read_average_forgetting(summary: dict) -> float:
+    history = summary.get("history", [])
+    if not history:
+        return 0.0
+
+    best: dict[str, float] = {}
+    final: dict[str, float] = {}
+    for step in history:
+        for task_name, accuracy in step.get("seen_task_accuracy", {}).items():
+            best[task_name] = max(best.get(task_name, 0.0), float(accuracy))
+            final[task_name] = float(accuracy)
+
+    drops = [max(0.0, best[name] - final.get(name, best[name])) for name in best]
+    return sum(drops) / len(drops) if drops else 0.0
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--share-dir", default="checkpoints/share/predictions")
@@ -67,6 +83,7 @@ def main() -> None:
             compression = 0.0
         output["experiments"]["synthetic_continual_low_rank"]["results"][name] = {
             "final_average_accuracy": accuracy * 100.0,
+            "average_forgetting": read_average_forgetting(summary) * 100.0,
             "trainable_parameters": float(trainable),
             "parameter_fraction_vs_lora_stream": float(trainable) / float(lora_stream),
             "compression_ratio_vs_lora_stream": float(compression),
