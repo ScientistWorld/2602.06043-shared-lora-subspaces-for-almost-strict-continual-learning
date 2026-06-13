@@ -33,13 +33,13 @@
 - Evaluation now includes `average_forgetting` so the scaled gym measures both the benefit side of the claim and the continual-retention constraint.
 - Continuation audit confirmed `method/` implements the Share computational steps and `eval/` remains independent of `method/`.
 - Added `synthetic_continual_low_rank_seed21`, a second deterministic task stream with the same procedure and metrics, to push beyond the minimum core claim once the next job completes.
+- Job `61982c19-66d` completed the expanded two-stream reproduction. Seed 21 result: Share 67.31% final average accuracy, independent LoRA 75.06%, frozen backbone 7.94%; Share retained 4.70x parameter compression with 2.31 average forgetting points.
 
 ## What Remains
 
-- Core claim is reproduced on the scaled low-rank continual benchmark. An expanded job is submitted to regenerate the default stream and add seed-21 results for `core_claim_plus`.
 - Future expansion should target Table 1 GLUE with RoBERTa-base using the same Share implementation pattern.
 
 ## Issues Encountered
 
 - Initial scaffold was template-only.
-- A sidecar inspection agent set `action.yaml` to `done`; this turn restores it to a job submission before ending.
+- The external stdout/stderr paths reported for job `61982c19-66d` were not visible from this container, but the job-updated workspace artifacts were present and passed validation.

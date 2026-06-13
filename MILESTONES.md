@@ -1,13 +1,13 @@
 # Reproduction Milestones
 
-**Current: core_claim**
+**Current: core_claim_plus**
 
 ## Progress Log
 
 ### [2026-06-13 00:00] - core_claim_plus
 - Audit confirmed the existing implementation is the paper's Share procedure at scaled linear-layer scope, not a surrogate: it trains LoRA factors, extracts SVD bases, adapts temporary basis directions, recomputes the shared basis, and projects coefficients analytically.
 - Added a second deterministic continual stream (`synthetic_continual_low_rank_seed21`) to test the same benefit/constraint metrics beyond the selected seed-13 stream.
-- Submitting an expanded reproduction job; `core_claim_plus` should only be considered reached if that job completes and writes seed-21 scores.
+- Job `61982c19-66d` completed successfully and wrote seed-21 scores: Share 67.31% final average accuracy versus 75.06% independent LoRA and 7.94% frozen backbone, with the same 4.70x compression ratio.
 
 ### [2026-06-13 00:00] - core_claim
 - Implemented Share's LoRA-factor SVD initialization, temporary basis adaptation, SVD merge, and analytical coefficient reprojection on a scaled continual low-rank benchmark.
@@ -15,4 +15,4 @@
 - Evaluation reports both benefit and constraint metrics: final/per-task accuracy, average forgetting, parameter fraction, and compression ratio.
 
 ## Stop Justification
-- Not stopping; submitting an expanded two-stream reproduction job.
+- Completed at `core_claim_plus`: the core Share claim is reproduced on the default scaled stream and repeated on a second deterministic stream with benefit and constraint metrics.
