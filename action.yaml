@@ -2,4 +2,4 @@
 action: submit
 gpus: 0
 test: false
-notes: "Resubmit split scoring after fixing evaluate_{train,test}.sh positional checkpoint argument handling."
+notes: "Regenerate split scores after normalizing temporary-parameter constraint metric coefficients."

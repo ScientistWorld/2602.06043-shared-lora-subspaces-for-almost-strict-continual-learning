@@ -229,6 +229,7 @@ def score_method(method_name: str, prediction_dir: Path) -> dict[str, float]:
         "trainable_parameters": float(trainable),
         "temporary_adaptation_parameters": float(temporary),
         "parameter_fraction_vs_lora_stream": float(trainable) / float(lora_stream),
+        "temporary_parameter_fraction_vs_lora_stream": float(temporary) / float(lora_stream),
         "compression_ratio_vs_lora_stream": float(compression),
         **{f"{task}_accuracy": value * 100.0 for task, value in per_task.items()},
     }
