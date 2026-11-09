@@ -13,7 +13,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from eval.test import streams as S
+import eval.test.streams as S
 
 
 def _digest(array) -> str:

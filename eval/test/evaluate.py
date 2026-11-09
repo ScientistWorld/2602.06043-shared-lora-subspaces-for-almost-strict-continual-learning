@@ -25,7 +25,7 @@ from pathlib import Path
 
 import numpy as np
 
-from eval.test import streams as S
+import eval.test.streams as S
 
 SLICE_NAME = "test"
 

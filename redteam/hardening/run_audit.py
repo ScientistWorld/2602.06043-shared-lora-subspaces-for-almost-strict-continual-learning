@@ -45,10 +45,10 @@ def share_variant(**kwargs):
     return build
 
 
-def method_cli(seed: int):
+def method_cli(seed: int, *extra: str):
     def build(out: Path) -> None:
-        subprocess.run([sys.executable, "-m", "method.share_linear", "--seed", str(seed), "--output-root", str(out)],
-                       check=True)
+        subprocess.run([sys.executable, "-m", "method.share_linear", "--seed", str(seed), "--output-root", str(out),
+                        *extra], check=True)
     return build
 
 
@@ -68,14 +68,21 @@ def backdated(out: Path) -> None:
 
 
 def cases() -> list[tuple[str, object]]:
+    """Every audited case and how to (re)build it from the final code.
+
+    Runs that already have a status file are reused (resumable); the cheap
+    copies and artifact manipulations are always rebuilt from the current
+    reference in checkpoints/.
+    """
+
     ref = CHECKPOINTS / "share"
-    out = [
+    return [
         ("reference_seed0", copy_of(ref)),
         ("baseline_independent_lora", copy_of(CHECKPOINTS / "independent_lora")),
         ("baseline_frozen_backbone", copy_of(CHECKPOINTS / "frozen_backbone")),
         ("baseline_sequential_lora", copy_of(CHECKPOINTS / "sequential_lora")),
         ("baseline_independent_rank1", copy_of(CHECKPOINTS / "independent_rank1")),
-        # shortcuts that need no training first
+        # shortcuts built from the reference's artifacts (no training)
         ("shortcut_forged_claims", copy_of(ref, V.forge_claims)),
         ("shortcut_omit_history", copy_of(ref, V.omit_history)),
         ("shortcut_store_independent_adapters", copy_of(CHECKPOINTS / "independent_lora")),
@@ -86,33 +93,51 @@ def cases() -> list[tuple[str, object]]:
         ("shortcut_tiny_failing_state", lambda d: each_stream(lambda s: V.tiny_failing_state(s, d))),
         ("shortcut_old_prediction_interface", lambda d: V.old_prediction_interface(d, ref)),
         ("shortcut_backdated_snapshots", backdated),
-        # reference reruns with other initialisation seeds (identical code path to the method)
+        # reference reruns with other initialisation seeds (same code path as the method)
         ("reference_seed1", method_cli(1)),
         ("reference_seed2", method_cli(2)),
-        # genuine improvements: paper-described options, no replay
-        ("better_refit_seed0", share_variant(seed=0, refit_steps=700)),
-        ("better_refit_seed1", share_variant(seed=1, refit_steps=700)),
-        ("better_refit_seed2", share_variant(seed=2, refit_steps=700)),
-        ("better_refit_phi4_seed0", share_variant(seed=0, refit_steps=700, phi=4)),
-        ("better_refit_phi4_seed1", share_variant(seed=1, refit_steps=700, phi=4)),
-        ("better_refit_phi4_seed2", share_variant(seed=2, refit_steps=700, phi=4)),
-        # weaker controls
-        ("weaker_quarter_steps_seed0", share_variant(seed=0, lora_steps=175, share_steps=375)),
-        ("weaker_quarter_steps_seed1", share_variant(seed=1, lora_steps=175, share_steps=375)),
-        ("weaker_k4_phi1_seed0", share_variant(seed=0, k=4, phi=1)),
-        ("weaker_k4_phi1_seed1", share_variant(seed=1, k=4, phi=1)),
+        # genuine improvements: the paper's main-text settings, no replay
+        ("better_phi4_seed0", method_cli(0, "--phi", "4")),
+        ("better_phi4_seed1", method_cli(1, "--phi", "4")),
+        ("better_phi4_seed2", method_cli(2, "--phi", "4")),
+        ("better_uncentered_phi4_seed0", share_variant(seed=0, refit_steps=700, phi=4, center_merges=False)),
+        ("better_uncentered_phi4_seed1", share_variant(seed=1, refit_steps=700, phi=4, center_merges=False)),
+        ("better_uncentered_phi4_seed2", share_variant(seed=2, refit_steps=700, phi=4, center_merges=False)),
+        # weaker controls: the earlier reproduction without Step-3 finetuning, and cheaper ablations of it
+        ("weaker_no_finetune_seed0", method_cli(0, "--finetune-steps", "0")),
+        ("weaker_no_finetune_seed1", method_cli(1, "--finetune-steps", "0")),
+        ("weaker_no_finetune_seed2", method_cli(2, "--finetune-steps", "0")),
+        ("weaker_no_finetune_quarter_steps_seed0", share_variant(seed=0, lora_steps=175, share_steps=375)),
+        ("weaker_no_finetune_quarter_steps_seed1", share_variant(seed=1, lora_steps=175, share_steps=375)),
+        ("weaker_no_finetune_k4_phi1_seed0", share_variant(seed=0, k=4, phi=1)),
+        ("weaker_no_finetune_k4_phi1_seed1", share_variant(seed=1, k=4, phi=1)),
         ("weaker_untrained", share_variant(seed=0, lora_steps=0, share_steps=0)),
         # shortcuts that train
         ("shortcut_full_task_models", lambda d: each_stream(lambda s: V.full_task_models_stream(s, d, seed=0))),
         ("shortcut_packed_independent_adapters",
          lambda d: each_stream(lambda s: V.packed_independent_stream(s, d, seed=0))),
         ("shortcut_joint_replay_backdated", lambda d: each_stream(lambda s: V.joint_replay_stream(s, d, seed=0))),
-        # third better family last (most expensive)
-        ("better_uncentered_refit_phi4_seed0", share_variant(seed=0, refit_steps=700, phi=4, center_merges=False)),
-        ("better_uncentered_refit_phi4_seed1", share_variant(seed=1, refit_steps=700, phi=4, center_merges=False)),
-        ("better_uncentered_refit_phi4_seed2", share_variant(seed=2, refit_steps=700, phi=4, center_merges=False)),
     ]
-    return out
+
+
+def crosscheck() -> None:
+    """The audit's variant loop must reproduce the method exactly (same seeds, same settings)."""
+
+    import numpy as np
+
+    mine, other = RUNS / "reference_seed0", RUNS / "_crosscheck_refit_seed0"
+    if not other.exists():
+        return
+    worst, files = 0.0, 0
+    for path in sorted(other.glob("*/after_task_*.npz")):
+        with np.load(path) as a, np.load(mine / path.relative_to(other)) as b:
+            assert sorted(a.files) == sorted(b.files), path
+            for key in a.files:
+                worst = max(worst, float(np.max(np.abs(a[key] - b[key]))))
+        files += 1
+    record = {"compared_snapshots": files, "max_abs_difference": worst}
+    (ROOT / "crosscheck.json").write_text(json.dumps(record, indent=2) + "\n")
+    print(f"[audit] variant-loop crosscheck: {record}", flush=True)
 
 
 def run_cases() -> None:
@@ -157,4 +182,5 @@ def score() -> None:
 
 if __name__ == "__main__":
     run_cases()
+    crosscheck()
     score()

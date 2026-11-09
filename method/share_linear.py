@@ -9,10 +9,14 @@ Implements the paper's algorithmic steps (Sec. 3.2, Algorithm 1):
 2. Continual adaptation: for every new task, initialise phi temporary basis
    vectors from the top-phi principal factors plus fresh coefficients, and
    optimise both on the current task's data only (no replay).
-3. Merging: reconstruct every previous task adapter from the retained shared
-   state (alpha, beta, coefficients), stack them with the new temporary
-   adapter, recompute the principal factors by (centered) SVD and analytically
-   recompute all task coefficients with the pseudoinverse projection.
+3. Merging & finetuning: reconstruct every previous task adapter from the
+   retained shared state (alpha, beta, coefficients), stack them with the new
+   temporary adapter, recompute the principal factors by (centered) SVD and
+   analytically recompute all task coefficients with the pseudoinverse
+   projection; then finetune the *current* task's coefficients on the current
+   task's data (Algorithm 1, lines 40-41). Earlier tasks' coefficients are only
+   ever recalculated analytically -- their data is never revisited (finetuning
+   them with old data would be the relaxed Share-full setting).
 
 After each task the deployed Share state -- shared factors plus per-task
 coefficients for the tasks seen so far -- is saved as a snapshot; the
@@ -130,6 +134,21 @@ def share_state(alpha: torch.Tensor, beta: torch.Tensor, coeffs: list[tuple[torc
     return state
 
 
+def finetune_current(base_weight, alpha, beta, coeffs, t, x, y, args) -> list:
+    """Step 3 finetuning: optimise task t's coefficients in the merged basis on task t's data."""
+
+    if args.finetune_steps <= 0:
+        return coeffs
+    module = ShareTaskAdapter(base_weight, alpha, beta, args.pseudo_rank, train_basis=False)
+    with torch.no_grad():
+        module.eps_alpha.copy_(coeffs[t][0])
+        module.eps_beta.copy_(coeffs[t][1])
+    train_module(module, x, y, steps=args.finetune_steps, lr=args.lr / args.finetune_lr_divisor)
+    coeffs = list(coeffs)
+    coeffs[t] = (module.eps_alpha.detach().clone(), module.eps_beta.detach().clone())
+    return coeffs
+
+
 def stream_seed(seed: int, stream_id: str) -> int:
     return int(hashlib.sha256(f"{seed}:{stream_id}".encode()).hexdigest()[:8], 16)
 
@@ -147,17 +166,20 @@ def train_share_stream(stream, args: argparse.Namespace, output_root: Path) -> N
     initial = ShareTaskAdapter(base_weight, alpha, beta, args.pseudo_rank, train_basis=False)
     train_module(initial, xs[0], ys[0], steps=args.share_steps, lr=args.lr)
     coeffs = project_coefficients([initial.factors()], alpha, beta)
+    coeffs = finetune_current(base_weight, alpha, beta, coeffs, 0, xs[0], ys[0], args)
     save_snapshot(output_root, stream.stream_id, 0, share_state(alpha, beta, coeffs))
 
     for t in range(1, len(stream.tasks)):
         # Step 2: temporary expansion from the top-phi factors, trained on task t only.
         temp = ShareTaskAdapter(base_weight, alpha[:, : args.phi], beta[:, : args.phi], args.pseudo_rank, train_basis=True)
         train_module(temp, xs[t], ys[t], steps=args.share_steps, lr=args.lr)
-        # Step 3: merge previous (reconstructed) adapters with the new one; reproject coefficients.
+        # Step 3: merge previous (reconstructed) adapters with the new one; reproject coefficients;
+        # finetune the current task's coefficients on its own data (no replay).
         merge_adapters = reconstruct_adapters(alpha, beta, coeffs)
         merge_adapters.append(temp.factors())
         alpha, beta = principal_factors(merge_adapters, args.k)
         coeffs = project_coefficients(merge_adapters, alpha, beta)
+        coeffs = finetune_current(base_weight, alpha, beta, coeffs, t, xs[t], ys[t], args)
         save_snapshot(output_root, stream.stream_id, t, share_state(alpha, beta, coeffs))
 
 
@@ -173,6 +195,8 @@ def main() -> None:
     parser.add_argument("--lora-steps", type=int, default=700)
     parser.add_argument("--share-steps", type=int, default=1500)
     parser.add_argument("--lr", type=float, default=0.03)
+    parser.add_argument("--finetune-steps", type=int, default=700, help="Step 3 current-task coefficient finetuning")
+    parser.add_argument("--finetune-lr-divisor", type=float, default=3.0)
     args = parser.parse_args()
 
     torch.set_num_threads(1)
