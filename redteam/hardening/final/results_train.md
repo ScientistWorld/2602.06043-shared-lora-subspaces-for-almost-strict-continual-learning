@@ -13,7 +13,7 @@
 | reference_seed0 | 71.42 / 8.00 / 0.113 | 69.97 / 8.60 / 0.157 | +0.000 | +0.000 | ok |
 | reference_seed1 | 69.72 / 9.69 / 0.113 | 72.32 / 5.16 / 0.157 | +0.014 | -0.000 | ok |
 | reference_seed2 | 69.96 / 8.38 / 0.113 | 73.67 / 5.50 / 0.157 | +0.040 | -0.000 | ok |
-| shortcut_backdated_snapshots | 71.64 / 0.00 / 0.113 | 72.52 / 0.00 / 0.157 | +0.079 | +2.400 | ok |
+| shortcut_backdated_snapshots | 71.42 / 0.00 / 0.113 | 69.97 / 0.00 / 0.157 | +0.037 | +0.400 | ok |
 | shortcut_csv_label_forgery | 0.00 / 100.00 / 1.000 | 0.00 / 100.00 / 1.000 | -3.303 | -3.200 | continual_10task_stream: invalid submission: missing stream directory checkpoints/shortcut_csv_label_forgery/d10_00; continual_6task_stream: invalid submission: missing stream directory checkpoints/shortcut_csv_label_forgery/d06_00 |
 | shortcut_forged_claims | 71.42 / 8.00 / 0.113 | 69.97 / 8.60 / 0.157 | +0.000 | +0.000 | ok |
 | shortcut_full_task_models | 0.00 / 100.00 / 1.000 | 0.00 / 100.00 / 1.000 | -3.303 | -3.200 | continual_10task_stream: parameter budget violated (55x), e.g. d10_00 after task 0: task 0 state 2320 > 139 parameters; continual_6task_stream: parameter budget violated (42x), e.g. d06_00 after task 0: task 0 state 2320 > 139 parameters |
@@ -57,7 +57,7 @@ Paired per-stream accuracy gains vs reference_seed0 (mean ± s.e., streams won):
 - reference_seed0: continual_10task_stream: +0.00 ± unavailable (0/1); continual_6task_stream: +0.00 ± 0.0 (0/2)
 - reference_seed1: continual_10task_stream: -1.70 ± unavailable (0/1); continual_6task_stream: +2.35 ± 0.28333333333333854 (2/2)
 - reference_seed2: continual_10task_stream: -1.46 ± unavailable (0/1); continual_6task_stream: +3.70 ± 1.9333333333333442 (2/2)
-- shortcut_backdated_snapshots: continual_10task_stream: +0.22 ± unavailable (1/1); continual_6task_stream: +2.55 ± 0.7499999999999929 (2/2)
+- shortcut_backdated_snapshots: continual_10task_stream: +0.00 ± unavailable (0/1); continual_6task_stream: +0.00 ± 0.0 (0/2)
 - shortcut_forged_claims: continual_10task_stream: +0.00 ± unavailable (0/1); continual_6task_stream: +0.00 ± 0.0 (0/2)
 - shortcut_full_task_models: continual_10task_stream: -10.16 ± unavailable (0/1); continual_6task_stream: -7.83 ± 1.1666666666666679 (0/2)
 - shortcut_joint_replay_backdated: continual_10task_stream: +17.30 ± unavailable (1/1); continual_6task_stream: +16.80 ± 1.0333333333333385 (2/2)

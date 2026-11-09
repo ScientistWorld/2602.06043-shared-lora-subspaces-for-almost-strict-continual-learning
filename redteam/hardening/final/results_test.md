@@ -13,7 +13,7 @@
 | reference_seed0 | 71.34 / 6.29 / 0.157 | 64.83 / 12.54 / 0.113 | +0.000 | +0.000 | ok |
 | reference_seed1 | 70.13 / 7.45 / 0.157 | 63.60 / 14.07 / 0.113 | -0.043 | -2.400 | ok |
 | reference_seed2 | 70.87 / 5.89 / 0.157 | 64.81 / 13.09 / 0.113 | -0.008 | -2.000 | ok |
-| shortcut_backdated_snapshots | 71.00 / 0.00 / 0.157 | 64.67 / 0.00 / 0.113 | +0.035 | -1.600 | ok |
+| shortcut_backdated_snapshots | 71.34 / 0.00 / 0.157 | 64.83 / 0.00 / 0.113 | +0.043 | +0.400 | ok |
 | shortcut_csv_label_forgery | 0.00 / 100.00 / 1.000 | 0.00 / 100.00 / 1.000 | -3.255 | -3.200 | continual_6task_stream: invalid submission: missing stream directory checkpoints/shortcut_csv_label_forgery/t06_00; continual_10task_stream: invalid submission: missing stream directory checkpoints/shortcut_csv_label_forgery/t10_00 |
 | shortcut_forged_claims | 71.34 / 6.29 / 0.157 | 64.83 / 12.54 / 0.113 | +0.000 | +0.000 | ok |
 | shortcut_full_task_models | 0.00 / 100.00 / 1.000 | 0.00 / 100.00 / 1.000 | -3.255 | -3.200 | continual_6task_stream: parameter budget violated (126x), e.g. t06_00 after task 0: task 0 state 2320 > 139 parameters; continual_10task_stream: parameter budget violated (220x), e.g. t10_00 after task 0: task 0 state 2320 > 139 parameters |
@@ -57,7 +57,7 @@ Paired per-stream accuracy gains vs reference_seed0 (mean ± s.e., streams won):
 - reference_seed0: continual_6task_stream: +0.00 ± 0.0 (0/6); continual_10task_stream: +0.00 ± 0.0 (0/4)
 - reference_seed1: continual_6task_stream: -1.21 ± 1.5774197559368075 (2/6); continual_10task_stream: -1.23 ± 1.5655104332666265 (1/4)
 - reference_seed2: continual_6task_stream: -0.47 ± 0.8057892381363091 (2/6); continual_10task_stream: -0.02 ± 1.5733562851433247 (1/4)
-- shortcut_backdated_snapshots: continual_6task_stream: -0.34 ± 0.35685526339448226 (3/6); continual_10task_stream: -0.17 ± 1.4677441591321951 (1/4)
+- shortcut_backdated_snapshots: continual_6task_stream: +0.00 ± 0.0 (0/6); continual_10task_stream: +0.00 ± 0.0 (0/4)
 - shortcut_forged_claims: continual_6task_stream: +0.00 ± 0.0 (0/6); continual_10task_stream: +0.00 ± 0.0 (0/4)
 - shortcut_full_task_models: continual_6task_stream: -6.69 ± 0.988907615303336 (0/6); continual_10task_stream: -3.50 ± 1.945410732124885 (0/4)
 - shortcut_joint_replay_backdated: continual_6task_stream: +14.72 ± 0.960333661151546 (6/6); continual_10task_stream: +23.92 ± 1.42132200785044 (4/4)

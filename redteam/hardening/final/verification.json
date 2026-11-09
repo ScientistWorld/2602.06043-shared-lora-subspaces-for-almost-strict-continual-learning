@@ -1,0 +1,14 @@
+{
+  "no_argument_hidden_test": true,
+  "direct_score_write_overwritten": true,
+  "public_answer_and_size_poisoning_ignored": true,
+  "visible_evaluation_data_frozen": true,
+  "reference_rerun_matches_frozen_comparison": true,
+  "every_failure_ranks_below_every_success": true,
+  "all_rank_terms_independently_recomputed": true,
+  "cases": 38,
+  "packages": {
+    "numpy": "2.4.6",
+    "torch": "2.12.0"
+  }
+}

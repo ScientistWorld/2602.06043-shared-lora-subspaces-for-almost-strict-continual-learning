@@ -2,4 +2,4 @@ action: submit
 gpus: 0
 test: true
 milestone: core_claim_plus
-notes: "One batched final hardening check: rebuild reference and four baselines, rescore saved variants and shortcuts, verify cohort ranking, no-argument evaluation, and public-data poisoning defenses."
+notes: "Resume the completed batch after fixing an invalid exact-training-equality assertion: rescore saved reference, baselines, variants and attacks against the freshly frozen comparison; finish verification and regenerate canonical scores. No retraining."

@@ -32,135 +32,37 @@
       "reference_rank": 0.0,
       "normalizers": {
         "continual_6task_stream": {
-          "final_average_accuracy": 35.70029095431313,
-          "average_forgetting": 47.760716097670894,
-          "parameter_fraction_vs_lora_stream": 0.42020717761559956
+          "final_average_accuracy": 33.628165273429126,
+          "average_forgetting": 44.17531764332758,
+          "parameter_fraction_vs_lora_stream": 0.3973524696322872
         },
         "continual_10task_stream": {
-          "final_average_accuracy": 34.34725524059323,
-          "average_forgetting": 46.84013275538308,
-          "parameter_fraction_vs_lora_stream": 0.4423635560716948
+          "final_average_accuracy": 30.56233359418456,
+          "average_forgetting": 41.22956317118451,
+          "parameter_fraction_vs_lora_stream": 0.4183037816674442
         }
       },
       "rank_improvement": {
-        "baseline_frozen_backbone": -3.1189025147419236,
-        "baseline_independent_lora": -3.1189025147419236,
-        "baseline_independent_rank1": -3.1189025147419236,
-        "baseline_sequential_lora": -3.1189025147419236,
-        "better_phi4_seed0": 0.3329164749928981,
-        "better_phi4_seed1": 0.26645559500029403,
-        "better_phi4_seed2": 0.2905353983697879,
-        "better_uncentered_phi4_seed0": 0.32743522391374064,
-        "better_uncentered_phi4_seed1": 0.33109386068184815,
-        "better_uncentered_phi4_seed2": 0.32778573948607764,
-        "reference_seed0": 0.009281756113264063,
-        "reference_seed1": -0.0311610165486436,
-        "reference_seed2": 0.002118019220876978,
-        "shortcut_backdated_snapshots": 0.04203648117684181,
-        "shortcut_csv_label_forgery": -3.1189025147419236,
-        "shortcut_forged_claims": 0.009281756113264063,
-        "shortcut_full_task_models": -3.1189025147419236,
-        "shortcut_impossible_values": -3.1189025147419236,
-        "shortcut_joint_replay_backdated": 0.6035799286893828,
-        "shortcut_nan_state": -3.1189025147419236,
-        "shortcut_noncanonical_snapshot": -3.1189025147419236,
-        "shortcut_old_prediction_interface": -3.1189025147419236,
-        "shortcut_omit_history": -3.1189025147419236,
-        "shortcut_packed_independent_adapters": -3.1189025147419236,
-        "shortcut_partial_failure": -3.1189025147419236,
-        "shortcut_poison_comparison_baseline": -3.1189025147419236,
-        "shortcut_read_visible_labels": -3.1189025147419236,
-        "shortcut_rebuild_seed_answers": -3.1189025147419236,
-        "shortcut_store_independent_adapters": -3.1189025147419236,
-        "shortcut_tiny_failing_state": -3.1189025147419236,
-        "weaker_no_finetune_k4_phi1_seed0": -3.1189025147419236,
-        "weaker_no_finetune_k4_phi1_seed1": -3.1189025147419236,
-        "weaker_no_finetune_quarter_steps_seed0": -0.19438797136849706,
-        "weaker_no_finetune_quarter_steps_seed1": -0.2363867932284818,
-        "weaker_no_finetune_seed0": -0.3559210685140141,
-        "weaker_no_finetune_seed1": -0.4083447591187064,
-        "weaker_no_finetune_seed2": -0.3816103077110939,
-        "weaker_untrained": -3.1189025147419236
+        "frozen_backbone": -3.394112549695428,
+        "independent_lora": -3.394112549695428,
+        "independent_rank1": -3.394112549695428,
+        "sequential_lora": -3.394112549695428,
+        "share": 0.0
       },
       "failed_attempts": {
-        "baseline_frozen_backbone": [
+        "frozen_backbone": [
           "continual_6task_stream",
           "continual_10task_stream"
         ],
-        "baseline_independent_lora": [
+        "independent_lora": [
           "continual_6task_stream",
           "continual_10task_stream"
         ],
-        "baseline_independent_rank1": [
+        "independent_rank1": [
           "continual_6task_stream",
           "continual_10task_stream"
         ],
-        "baseline_sequential_lora": [
-          "continual_6task_stream",
-          "continual_10task_stream"
-        ],
-        "shortcut_csv_label_forgery": [
-          "continual_6task_stream",
-          "continual_10task_stream"
-        ],
-        "shortcut_full_task_models": [
-          "continual_6task_stream",
-          "continual_10task_stream"
-        ],
-        "shortcut_impossible_values": [
-          "continual_6task_stream",
-          "continual_10task_stream"
-        ],
-        "shortcut_nan_state": [
-          "continual_6task_stream",
-          "continual_10task_stream"
-        ],
-        "shortcut_noncanonical_snapshot": [
-          "continual_6task_stream"
-        ],
-        "shortcut_old_prediction_interface": [
-          "continual_6task_stream",
-          "continual_10task_stream"
-        ],
-        "shortcut_omit_history": [
-          "continual_6task_stream",
-          "continual_10task_stream"
-        ],
-        "shortcut_packed_independent_adapters": [
-          "continual_10task_stream"
-        ],
-        "shortcut_partial_failure": [
-          "continual_10task_stream"
-        ],
-        "shortcut_poison_comparison_baseline": [
-          "continual_6task_stream",
-          "continual_10task_stream"
-        ],
-        "shortcut_read_visible_labels": [
-          "continual_6task_stream",
-          "continual_10task_stream"
-        ],
-        "shortcut_rebuild_seed_answers": [
-          "continual_6task_stream",
-          "continual_10task_stream"
-        ],
-        "shortcut_store_independent_adapters": [
-          "continual_6task_stream",
-          "continual_10task_stream"
-        ],
-        "shortcut_tiny_failing_state": [
-          "continual_6task_stream",
-          "continual_10task_stream"
-        ],
-        "weaker_no_finetune_k4_phi1_seed0": [
-          "continual_6task_stream",
-          "continual_10task_stream"
-        ],
-        "weaker_no_finetune_k4_phi1_seed1": [
-          "continual_6task_stream",
-          "continual_10task_stream"
-        ],
-        "weaker_untrained": [
+        "sequential_lora": [
           "continual_6task_stream",
           "continual_10task_stream"
         ]
@@ -227,9 +129,9 @@
           "stored_parameters": 1160.0
         },
         "sequential_lora": {
-          "final_average_accuracy": 18.142500000000005,
+          "final_average_accuracy": 18.145000000000003,
           "worst_task_accuracy": 2.55,
-          "average_forgetting": 60.76944444444444,
+          "average_forgetting": 60.766666666666666,
           "parameter_fraction_vs_lora_stream": 0.1,
           "compression_ratio_vs_lora_stream": 10.0,
           "stored_parameters": 1392.0
@@ -242,7 +144,7 @@
       "_metadata": {
         "slice": "test",
         "failed_runs": {
-          "baseline_frozen_backbone": {
+          "frozen_backbone": {
             "reason": "task not solved: final average accuracy 8.31% < 40.0%",
             "measured": {
               "final_average_accuracy": 8.305555555555555,
@@ -253,7 +155,7 @@
               "stored_parameters": 0.0
             }
           },
-          "baseline_independent_lora": {
+          "independent_lora": {
             "reason": "parameter budget violated (126x), e.g. t06_00 after task 0: task 0 state 1392 > 139 parameters",
             "measured": {
               "final_average_accuracy": 73.17777777777778,
@@ -264,7 +166,7 @@
               "stored_parameters": 8352.0
             }
           },
-          "baseline_independent_rank1": {
+          "independent_rank1": {
             "reason": "task not solved: final average accuracy 35.78% < 40.0%",
             "measured": {
               "final_average_accuracy": 35.78055555555556,
@@ -275,7 +177,7 @@
               "stored_parameters": 696.0
             }
           },
-          "baseline_sequential_lora": {
+          "sequential_lora": {
             "reason": "task not solved: final average accuracy 23.94% < 40.0%",
             "measured": {
               "final_average_accuracy": 23.938888888888894,
@@ -285,125 +187,10 @@
               "compression_ratio_vs_lora_stream": 6.0,
               "stored_parameters": 1392.0
             }
-          },
-          "shortcut_csv_label_forgery": {
-            "reason": "invalid submission: missing stream directory checkpoints/shortcut_csv_label_forgery/t06_00"
-          },
-          "shortcut_full_task_models": {
-            "reason": "parameter budget violated (126x), e.g. t06_00 after task 0: task 0 state 2320 > 139 parameters",
-            "measured": {
-              "final_average_accuracy": 64.64722222222223,
-              "worst_task_accuracy": 58.93333333333334,
-              "average_forgetting": 0.0,
-              "parameter_fraction_vs_lora_stream": 1.6666666666666667,
-              "compression_ratio_vs_lora_stream": 0.6,
-              "stored_parameters": 13920.0
-            }
-          },
-          "shortcut_impossible_values": {
-            "reason": "invalid submission: after_task_05.npz: task 0 weight update is not finite"
-          },
-          "shortcut_nan_state": {
-            "reason": "invalid submission: after_task_05.npz:shared_A: contains NaN or infinite values"
-          },
-          "shortcut_noncanonical_snapshot": {
-            "reason": "invalid submission: checkpoints/shortcut_noncanonical_snapshot/t06_00: noncanonical snapshot filename after_task_000.npz"
-          },
-          "shortcut_old_prediction_interface": {
-            "reason": "invalid submission: missing stream directory checkpoints/shortcut_old_prediction_interface/t06_00"
-          },
-          "shortcut_omit_history": {
-            "reason": "invalid submission: checkpoints/shortcut_omit_history/t06_00: missing snapshot after_task_00"
-          },
-          "shortcut_poison_comparison_baseline": {
-            "reason": "invalid submission: after_task_05.npz:task_0_A: contains NaN or infinite values"
-          },
-          "shortcut_read_visible_labels": {
-            "reason": "invalid submission: missing stream directory checkpoints/shortcut_read_visible_labels/t06_00"
-          },
-          "shortcut_rebuild_seed_answers": {
-            "reason": "invalid submission: missing stream directory checkpoints/shortcut_rebuild_seed_answers/t06_00"
-          },
-          "shortcut_store_independent_adapters": {
-            "reason": "parameter budget violated (126x), e.g. t06_00 after task 0: task 0 state 1392 > 139 parameters",
-            "measured": {
-              "final_average_accuracy": 73.17777777777778,
-              "worst_task_accuracy": 68.36666666666666,
-              "average_forgetting": 0.0,
-              "parameter_fraction_vs_lora_stream": 1.0,
-              "compression_ratio_vs_lora_stream": 1.0,
-              "stored_parameters": 8352.0
-            }
-          },
-          "shortcut_tiny_failing_state": {
-            "reason": "task not solved: final average accuracy 8.31% < 40.0%",
-            "measured": {
-              "final_average_accuracy": 8.305555555555555,
-              "worst_task_accuracy": 5.550000000000001,
-              "average_forgetting": 0.0,
-              "parameter_fraction_vs_lora_stream": 0.01532567049808429,
-              "compression_ratio_vs_lora_stream": 65.25,
-              "stored_parameters": 128.0
-            }
-          },
-          "weaker_no_finetune_k4_phi1_seed0": {
-            "reason": "task not solved: final average accuracy 32.22% < 40.0%",
-            "measured": {
-              "final_average_accuracy": 32.21666666666667,
-              "worst_task_accuracy": 13.066666666666665,
-              "average_forgetting": 5.483333333333333,
-              "parameter_fraction_vs_lora_stream": 0.07854406130268199,
-              "compression_ratio_vs_lora_stream": 12.731707317073171,
-              "stored_parameters": 656.0
-            }
-          },
-          "weaker_no_finetune_k4_phi1_seed1": {
-            "reason": "task not solved: final average accuracy 31.04% < 40.0%",
-            "measured": {
-              "final_average_accuracy": 31.03611111111111,
-              "worst_task_accuracy": 11.049999999999999,
-              "average_forgetting": 5.203333333333332,
-              "parameter_fraction_vs_lora_stream": 0.07854406130268199,
-              "compression_ratio_vs_lora_stream": 12.731707317073171,
-              "stored_parameters": 656.0
-            }
-          },
-          "weaker_untrained": {
-            "reason": "task not solved: final average accuracy 8.31% < 40.0%",
-            "measured": {
-              "final_average_accuracy": 8.305555555555555,
-              "worst_task_accuracy": 5.550000000000001,
-              "average_forgetting": 0.0,
-              "parameter_fraction_vs_lora_stream": 0.15708812260536398,
-              "compression_ratio_vs_lora_stream": 6.365853658536586,
-              "stored_parameters": 1312.0
-            }
-          },
-          "shortcut_packed_independent_adapters": {
-            "reason": "attempt failed another required experiment: continual_10task_stream",
-            "measured": {
-              "final_average_accuracy": 66.575,
-              "worst_task_accuracy": 57.31666666666667,
-              "average_forgetting": 0.0,
-              "parameter_fraction_vs_lora_stream": 0.20114942528735633,
-              "compression_ratio_vs_lora_stream": 4.9714285714285715,
-              "stored_parameters": 1680.0
-            }
-          },
-          "shortcut_partial_failure": {
-            "reason": "attempt failed another required experiment: continual_10task_stream",
-            "measured": {
-              "final_average_accuracy": 71.33611111111111,
-              "worst_task_accuracy": 62.75,
-              "average_forgetting": 6.29,
-              "parameter_fraction_vs_lora_stream": 0.15708812260536398,
-              "compression_ratio_vs_lora_stream": 6.365853658536586,
-              "stored_parameters": 1312.0
-            }
           }
         },
         "final_accuracy_by_stream": {
-          "baseline_frozen_backbone": {
+          "frozen_backbone": {
             "t06_00": 6.999999999999999,
             "t06_01": 8.966666666666667,
             "t06_02": 8.850000000000001,
@@ -411,7 +198,7 @@
             "t06_04": 7.416666666666667,
             "t06_05": 9.016666666666667
           },
-          "baseline_independent_lora": {
+          "independent_lora": {
             "t06_00": 74.65,
             "t06_01": 73.9,
             "t06_02": 73.63333333333334,
@@ -419,7 +206,7 @@
             "t06_04": 72.68333333333334,
             "t06_05": 71.68333333333334
           },
-          "baseline_independent_rank1": {
+          "independent_rank1": {
             "t06_00": 31.283333333333335,
             "t06_01": 38.95,
             "t06_02": 42.633333333333326,
@@ -427,7 +214,7 @@
             "t06_04": 33.983333333333334,
             "t06_05": 34.966666666666676
           },
-          "baseline_sequential_lora": {
+          "sequential_lora": {
             "t06_00": 27.950000000000003,
             "t06_01": 24.6,
             "t06_02": 24.6,
@@ -435,219 +222,18 @@
             "t06_04": 28.650000000000002,
             "t06_05": 19.03333333333333
           },
-          "better_phi4_seed0": {
-            "t06_00": 80.94999999999999,
-            "t06_01": 77.23333333333335,
-            "t06_02": 79.43333333333334,
-            "t06_03": 74.73333333333333,
-            "t06_04": 78.16666666666667,
-            "t06_05": 74.68333333333334
-          },
-          "better_phi4_seed1": {
-            "t06_00": 79.1,
-            "t06_01": 75.36666666666667,
-            "t06_02": 78.81666666666666,
-            "t06_03": 63.416666666666664,
-            "t06_04": 75.41666666666667,
-            "t06_05": 74.51666666666667
-          },
-          "better_phi4_seed2": {
-            "t06_00": 78.03333333333332,
-            "t06_01": 77.38333333333335,
-            "t06_02": 80.05,
-            "t06_03": 75.26666666666667,
-            "t06_04": 76.6,
-            "t06_05": 72.63333333333333
-          },
-          "better_uncentered_phi4_seed0": {
-            "t06_00": 80.68333333333334,
-            "t06_01": 76.56666666666666,
-            "t06_02": 78.43333333333332,
-            "t06_03": 72.78333333333333,
-            "t06_04": 78.3,
-            "t06_05": 76.6
-          },
-          "better_uncentered_phi4_seed1": {
-            "t06_00": 80.36666666666666,
-            "t06_01": 76.88333333333334,
-            "t06_02": 79.65,
-            "t06_03": 77.48333333333333,
-            "t06_04": 77.26666666666667,
-            "t06_05": 74.85
-          },
-          "better_uncentered_phi4_seed2": {
-            "t06_00": 79.21666666666667,
-            "t06_01": 76.03333333333335,
-            "t06_02": 78.10000000000001,
-            "t06_03": 76.06666666666668,
-            "t06_04": 77.96666666666667,
-            "t06_05": 75.26666666666667
-          },
-          "reference_seed0": {
+          "share": {
             "t06_00": 71.08333333333334,
             "t06_01": 74.79999999999998,
             "t06_02": 69.65,
             "t06_03": 72.33333333333333,
             "t06_04": 67.95,
             "t06_05": 72.2
-          },
-          "reference_seed1": {
-            "t06_00": 71.06666666666666,
-            "t06_01": 67.13333333333334,
-            "t06_02": 72.36666666666666,
-            "t06_03": 71.53333333333333,
-            "t06_04": 70.0,
-            "t06_05": 68.68333333333334
-          },
-          "reference_seed2": {
-            "t06_00": 70.38333333333333,
-            "t06_01": 71.45,
-            "t06_02": 69.86666666666666,
-            "t06_03": 71.91666666666667,
-            "t06_04": 70.65,
-            "t06_05": 70.94999999999999
-          },
-          "shortcut_backdated_snapshots": {
-            "t06_00": 71.36666666666667,
-            "t06_01": 75.13333333333333,
-            "t06_02": 70.19999999999999,
-            "t06_03": 71.60000000000001,
-            "t06_04": 66.25,
-            "t06_05": 71.43333333333332
-          },
-          "shortcut_csv_label_forgery": {},
-          "shortcut_forged_claims": {
-            "t06_00": 71.08333333333334,
-            "t06_01": 74.79999999999998,
-            "t06_02": 69.65,
-            "t06_03": 72.33333333333333,
-            "t06_04": 67.95,
-            "t06_05": 72.2
-          },
-          "shortcut_full_task_models": {
-            "t06_00": 65.49999999999999,
-            "t06_01": 65.45,
-            "t06_02": 65.96666666666667,
-            "t06_03": 65.41666666666667,
-            "t06_04": 63.016666666666666,
-            "t06_05": 62.53333333333334
-          },
-          "shortcut_impossible_values": {},
-          "shortcut_joint_replay_backdated": {
-            "t06_00": 86.01666666666667,
-            "t06_01": 85.38333333333334,
-            "t06_02": 86.56666666666666,
-            "t06_03": 86.56666666666666,
-            "t06_04": 85.0,
-            "t06_05": 86.78333333333335
-          },
-          "shortcut_nan_state": {},
-          "shortcut_noncanonical_snapshot": {},
-          "shortcut_old_prediction_interface": {},
-          "shortcut_omit_history": {},
-          "shortcut_packed_independent_adapters": {
-            "t06_00": 63.81666666666666,
-            "t06_01": 71.0,
-            "t06_02": 68.43333333333334,
-            "t06_03": 65.46666666666667,
-            "t06_04": 67.55000000000001,
-            "t06_05": 63.18333333333334
-          },
-          "shortcut_partial_failure": {
-            "t06_00": 71.08333333333334,
-            "t06_01": 74.79999999999998,
-            "t06_02": 69.65,
-            "t06_03": 72.33333333333333,
-            "t06_04": 67.95,
-            "t06_05": 72.2
-          },
-          "shortcut_poison_comparison_baseline": {},
-          "shortcut_read_visible_labels": {},
-          "shortcut_rebuild_seed_answers": {},
-          "shortcut_store_independent_adapters": {
-            "t06_00": 74.65,
-            "t06_01": 73.9,
-            "t06_02": 73.63333333333334,
-            "t06_03": 72.51666666666667,
-            "t06_04": 72.68333333333334,
-            "t06_05": 71.68333333333334
-          },
-          "shortcut_tiny_failing_state": {
-            "t06_00": 6.999999999999999,
-            "t06_01": 8.966666666666667,
-            "t06_02": 8.850000000000001,
-            "t06_03": 8.583333333333334,
-            "t06_04": 7.416666666666667,
-            "t06_05": 9.016666666666667
-          },
-          "weaker_no_finetune_k4_phi1_seed0": {
-            "t06_00": 23.4,
-            "t06_01": 36.21666666666667,
-            "t06_02": 35.63333333333333,
-            "t06_03": 30.25,
-            "t06_04": 36.05,
-            "t06_05": 31.75
-          },
-          "weaker_no_finetune_k4_phi1_seed1": {
-            "t06_00": 21.48333333333333,
-            "t06_01": 37.55,
-            "t06_02": 36.78333333333333,
-            "t06_03": 28.499999999999996,
-            "t06_04": 32.483333333333334,
-            "t06_05": 29.416666666666664
-          },
-          "weaker_no_finetune_quarter_steps_seed0": {
-            "t06_00": 63.6,
-            "t06_01": 63.75000000000001,
-            "t06_02": 68.58333333333334,
-            "t06_03": 67.28333333333333,
-            "t06_04": 56.06666666666666,
-            "t06_05": 62.96666666666666
-          },
-          "weaker_no_finetune_quarter_steps_seed1": {
-            "t06_00": 62.1,
-            "t06_01": 63.85000000000001,
-            "t06_02": 58.86666666666665,
-            "t06_03": 65.4,
-            "t06_04": 65.85,
-            "t06_05": 59.44999999999999
-          },
-          "weaker_no_finetune_seed0": {
-            "t06_00": 59.36666666666667,
-            "t06_01": 60.13333333333334,
-            "t06_02": 65.49999999999999,
-            "t06_03": 64.45,
-            "t06_04": 61.16666666666667,
-            "t06_05": 54.949999999999996
-          },
-          "weaker_no_finetune_seed1": {
-            "t06_00": 61.88333333333333,
-            "t06_01": 57.2,
-            "t06_02": 64.6,
-            "t06_03": 65.76666666666667,
-            "t06_04": 53.733333333333334,
-            "t06_05": 37.166666666666664
-          },
-          "weaker_no_finetune_seed2": {
-            "t06_00": 58.699999999999996,
-            "t06_01": 59.416666666666664,
-            "t06_02": 59.483333333333334,
-            "t06_03": 62.3,
-            "t06_04": 58.35,
-            "t06_05": 60.033333333333324
-          },
-          "weaker_untrained": {
-            "t06_00": 6.999999999999999,
-            "t06_01": 8.966666666666667,
-            "t06_02": 8.850000000000001,
-            "t06_03": 8.583333333333334,
-            "t06_04": 7.416666666666667,
-            "t06_05": 9.016666666666667
           }
         }
       },
       "results": {
-        "baseline_frozen_backbone": {
+        "frozen_backbone": {
           "final_average_accuracy": 0.0,
           "worst_task_accuracy": 0.0,
           "average_forgetting": 100.0,
@@ -655,7 +241,7 @@
           "compression_ratio_vs_lora_stream": 0.0,
           "stored_parameters": 0.0
         },
-        "baseline_independent_lora": {
+        "independent_lora": {
           "final_average_accuracy": 0.0,
           "worst_task_accuracy": 0.0,
           "average_forgetting": 100.0,
@@ -663,7 +249,7 @@
           "compression_ratio_vs_lora_stream": 0.0,
           "stored_parameters": 8352.0
         },
-        "baseline_independent_rank1": {
+        "independent_rank1": {
           "final_average_accuracy": 0.0,
           "worst_task_accuracy": 0.0,
           "average_forgetting": 100.0,
@@ -671,7 +257,7 @@
           "compression_ratio_vs_lora_stream": 0.0,
           "stored_parameters": 696.0
         },
-        "baseline_sequential_lora": {
+        "sequential_lora": {
           "final_average_accuracy": 0.0,
           "worst_task_accuracy": 0.0,
           "average_forgetting": 100.0,
@@ -679,276 +265,12 @@
           "compression_ratio_vs_lora_stream": 0.0,
           "stored_parameters": 1392.0
         },
-        "better_phi4_seed0": {
-          "final_average_accuracy": 77.53333333333335,
-          "worst_task_accuracy": 69.38333333333333,
-          "average_forgetting": 3.0833333333333335,
-          "parameter_fraction_vs_lora_stream": 0.15708812260536398,
-          "compression_ratio_vs_lora_stream": 6.365853658536586,
-          "stored_parameters": 1312.0
-        },
-        "better_phi4_seed1": {
-          "final_average_accuracy": 74.43888888888888,
-          "worst_task_accuracy": 62.350000000000016,
-          "average_forgetting": 4.966666666666665,
-          "parameter_fraction_vs_lora_stream": 0.15708812260536398,
-          "compression_ratio_vs_lora_stream": 6.365853658536586,
-          "stored_parameters": 1312.0
-        },
-        "better_phi4_seed2": {
-          "final_average_accuracy": 76.66111111111111,
-          "worst_task_accuracy": 71.18333333333334,
-          "average_forgetting": 2.6399999999999992,
-          "parameter_fraction_vs_lora_stream": 0.15708812260536398,
-          "compression_ratio_vs_lora_stream": 6.365853658536586,
-          "stored_parameters": 1312.0
-        },
-        "better_uncentered_phi4_seed0": {
-          "final_average_accuracy": 77.22777777777777,
-          "worst_task_accuracy": 69.96666666666667,
-          "average_forgetting": 2.5900000000000003,
-          "parameter_fraction_vs_lora_stream": 0.15708812260536398,
-          "compression_ratio_vs_lora_stream": 6.365853658536586,
-          "stored_parameters": 1312.0
-        },
-        "better_uncentered_phi4_seed1": {
-          "final_average_accuracy": 77.75,
-          "worst_task_accuracy": 71.08333333333333,
-          "average_forgetting": 2.029999999999999,
-          "parameter_fraction_vs_lora_stream": 0.15708812260536398,
-          "compression_ratio_vs_lora_stream": 6.365853658536586,
-          "stored_parameters": 1312.0
-        },
-        "better_uncentered_phi4_seed2": {
-          "final_average_accuracy": 77.10833333333333,
-          "worst_task_accuracy": 70.38333333333333,
-          "average_forgetting": 2.6733333333333325,
-          "parameter_fraction_vs_lora_stream": 0.15708812260536398,
-          "compression_ratio_vs_lora_stream": 6.365853658536586,
-          "stored_parameters": 1312.0
-        },
-        "reference_seed0": {
+        "share": {
           "final_average_accuracy": 71.33611111111111,
           "worst_task_accuracy": 62.75,
           "average_forgetting": 6.29,
           "parameter_fraction_vs_lora_stream": 0.15708812260536398,
           "compression_ratio_vs_lora_stream": 6.365853658536586,
-          "stored_parameters": 1312.0
-        },
-        "reference_seed1": {
-          "final_average_accuracy": 70.13055555555556,
-          "worst_task_accuracy": 56.88333333333333,
-          "average_forgetting": 7.446666666666668,
-          "parameter_fraction_vs_lora_stream": 0.15708812260536398,
-          "compression_ratio_vs_lora_stream": 6.365853658536586,
-          "stored_parameters": 1312.0
-        },
-        "reference_seed2": {
-          "final_average_accuracy": 70.86944444444444,
-          "worst_task_accuracy": 60.48333333333333,
-          "average_forgetting": 5.890000000000001,
-          "parameter_fraction_vs_lora_stream": 0.15708812260536398,
-          "compression_ratio_vs_lora_stream": 6.365853658536586,
-          "stored_parameters": 1312.0
-        },
-        "shortcut_backdated_snapshots": {
-          "final_average_accuracy": 70.99722222222222,
-          "worst_task_accuracy": 60.50000000000001,
-          "average_forgetting": 0.0,
-          "parameter_fraction_vs_lora_stream": 0.15708812260536398,
-          "compression_ratio_vs_lora_stream": 6.365853658536586,
-          "stored_parameters": 1312.0
-        },
-        "shortcut_csv_label_forgery": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 0.0
-        },
-        "shortcut_forged_claims": {
-          "final_average_accuracy": 71.33611111111111,
-          "worst_task_accuracy": 62.75,
-          "average_forgetting": 6.29,
-          "parameter_fraction_vs_lora_stream": 0.15708812260536398,
-          "compression_ratio_vs_lora_stream": 6.365853658536586,
-          "stored_parameters": 1312.0
-        },
-        "shortcut_full_task_models": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 13920.0
-        },
-        "shortcut_impossible_values": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 0.0
-        },
-        "shortcut_joint_replay_backdated": {
-          "final_average_accuracy": 86.05277777777779,
-          "worst_task_accuracy": 81.18333333333332,
-          "average_forgetting": 0.0,
-          "parameter_fraction_vs_lora_stream": 0.15708812260536398,
-          "compression_ratio_vs_lora_stream": 6.365853658536586,
-          "stored_parameters": 1312.0
-        },
-        "shortcut_nan_state": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 0.0
-        },
-        "shortcut_noncanonical_snapshot": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 0.0
-        },
-        "shortcut_old_prediction_interface": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 0.0
-        },
-        "shortcut_omit_history": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 0.0
-        },
-        "shortcut_packed_independent_adapters": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 1680.0
-        },
-        "shortcut_partial_failure": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 1312.0
-        },
-        "shortcut_poison_comparison_baseline": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 0.0
-        },
-        "shortcut_read_visible_labels": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 0.0
-        },
-        "shortcut_rebuild_seed_answers": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 0.0
-        },
-        "shortcut_store_independent_adapters": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 8352.0
-        },
-        "shortcut_tiny_failing_state": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 128.0
-        },
-        "weaker_no_finetune_k4_phi1_seed0": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 656.0
-        },
-        "weaker_no_finetune_k4_phi1_seed1": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 656.0
-        },
-        "weaker_no_finetune_quarter_steps_seed0": {
-          "final_average_accuracy": 63.708333333333336,
-          "worst_task_accuracy": 47.21666666666667,
-          "average_forgetting": 2.149999999999998,
-          "parameter_fraction_vs_lora_stream": 0.15708812260536398,
-          "compression_ratio_vs_lora_stream": 6.365853658536586,
-          "stored_parameters": 1312.0
-        },
-        "weaker_no_finetune_quarter_steps_seed1": {
-          "final_average_accuracy": 62.58611111111111,
-          "worst_task_accuracy": 48.93333333333334,
-          "average_forgetting": 3.223333333333334,
-          "parameter_fraction_vs_lora_stream": 0.15708812260536398,
-          "compression_ratio_vs_lora_stream": 6.365853658536586,
-          "stored_parameters": 1312.0
-        },
-        "weaker_no_finetune_seed0": {
-          "final_average_accuracy": 60.92777777777778,
-          "worst_task_accuracy": 45.73333333333333,
-          "average_forgetting": 6.580000000000002,
-          "parameter_fraction_vs_lora_stream": 0.15708812260536398,
-          "compression_ratio_vs_lora_stream": 6.365853658536586,
-          "stored_parameters": 1312.0
-        },
-        "weaker_no_finetune_seed1": {
-          "final_average_accuracy": 56.725,
-          "worst_task_accuracy": 36.25,
-          "average_forgetting": 8.843333333333334,
-          "parameter_fraction_vs_lora_stream": 0.15708812260536398,
-          "compression_ratio_vs_lora_stream": 6.365853658536586,
-          "stored_parameters": 1312.0
-        },
-        "weaker_no_finetune_seed2": {
-          "final_average_accuracy": 59.71388888888888,
-          "worst_task_accuracy": 41.916666666666664,
-          "average_forgetting": 5.276666666666666,
-          "parameter_fraction_vs_lora_stream": 0.15708812260536398,
-          "compression_ratio_vs_lora_stream": 6.365853658536586,
-          "stored_parameters": 1312.0
-        },
-        "weaker_untrained": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
           "stored_parameters": 1312.0
         }
       }
@@ -957,7 +279,7 @@
       "_metadata": {
         "slice": "test",
         "failed_runs": {
-          "baseline_frozen_backbone": {
+          "frozen_backbone": {
             "reason": "task not solved: final average accuracy 9.42% < 40.0%",
             "measured": {
               "final_average_accuracy": 9.424999999999999,
@@ -968,7 +290,7 @@
               "stored_parameters": 0.0
             }
           },
-          "baseline_independent_lora": {
+          "independent_lora": {
             "reason": "parameter budget violated (220x), e.g. t10_00 after task 0: task 0 state 1392 > 139 parameters",
             "measured": {
               "final_average_accuracy": 70.9625,
@@ -979,7 +301,7 @@
               "stored_parameters": 13920.0
             }
           },
-          "baseline_independent_rank1": {
+          "independent_rank1": {
             "reason": "task not solved: final average accuracy 32.21% < 40.0%",
             "measured": {
               "final_average_accuracy": 32.207499999999996,
@@ -990,7 +312,7 @@
               "stored_parameters": 1160.0
             }
           },
-          "baseline_sequential_lora": {
+          "sequential_lora": {
             "reason": "task not solved: final average accuracy 18.15% < 40.0%",
             "measured": {
               "final_average_accuracy": 18.145000000000003,
@@ -1000,324 +322,43 @@
               "compression_ratio_vs_lora_stream": 10.0,
               "stored_parameters": 1392.0
             }
-          },
-          "shortcut_csv_label_forgery": {
-            "reason": "invalid submission: missing stream directory checkpoints/shortcut_csv_label_forgery/t10_00"
-          },
-          "shortcut_full_task_models": {
-            "reason": "parameter budget violated (220x), e.g. t10_00 after task 0: task 0 state 2320 > 139 parameters",
-            "measured": {
-              "final_average_accuracy": 61.33,
-              "worst_task_accuracy": 55.775,
-              "average_forgetting": 0.0,
-              "parameter_fraction_vs_lora_stream": 1.6666666666666667,
-              "compression_ratio_vs_lora_stream": 0.6,
-              "stored_parameters": 23200.0
-            }
-          },
-          "shortcut_impossible_values": {
-            "reason": "invalid submission: after_task_09.npz: task 0 weight update is not finite"
-          },
-          "shortcut_nan_state": {
-            "reason": "invalid submission: after_task_09.npz:shared_A: contains NaN or infinite values"
-          },
-          "shortcut_old_prediction_interface": {
-            "reason": "invalid submission: missing stream directory checkpoints/shortcut_old_prediction_interface/t10_00"
-          },
-          "shortcut_omit_history": {
-            "reason": "invalid submission: checkpoints/shortcut_omit_history/t10_00: missing snapshot after_task_00"
-          },
-          "shortcut_packed_independent_adapters": {
-            "reason": "task not solved: final average accuracy 32.21% < 40.0%",
-            "measured": {
-              "final_average_accuracy": 32.207499999999996,
-              "worst_task_accuracy": 20.400000000000002,
-              "average_forgetting": 0.0,
-              "parameter_fraction_vs_lora_stream": 0.09770114942528736,
-              "compression_ratio_vs_lora_stream": 10.235294117647058,
-              "stored_parameters": 1360.0
-            }
-          },
-          "shortcut_partial_failure": {
-            "reason": "task not solved: final average accuracy 9.42% < 40.0%",
-            "measured": {
-              "final_average_accuracy": 9.424999999999999,
-              "worst_task_accuracy": 6.3,
-              "average_forgetting": 0.0,
-              "parameter_fraction_vs_lora_stream": 0.009770114942528735,
-              "compression_ratio_vs_lora_stream": 102.3529411764706,
-              "stored_parameters": 136.0
-            }
-          },
-          "shortcut_poison_comparison_baseline": {
-            "reason": "invalid submission: after_task_09.npz:task_0_A: contains NaN or infinite values"
-          },
-          "shortcut_read_visible_labels": {
-            "reason": "invalid submission: missing stream directory checkpoints/shortcut_read_visible_labels/t10_00"
-          },
-          "shortcut_rebuild_seed_answers": {
-            "reason": "invalid submission: missing stream directory checkpoints/shortcut_rebuild_seed_answers/t10_00"
-          },
-          "shortcut_store_independent_adapters": {
-            "reason": "parameter budget violated (220x), e.g. t10_00 after task 0: task 0 state 1392 > 139 parameters",
-            "measured": {
-              "final_average_accuracy": 70.9625,
-              "worst_task_accuracy": 66.625,
-              "average_forgetting": 0.0,
-              "parameter_fraction_vs_lora_stream": 1.0,
-              "compression_ratio_vs_lora_stream": 1.0,
-              "stored_parameters": 13920.0
-            }
-          },
-          "shortcut_tiny_failing_state": {
-            "reason": "task not solved: final average accuracy 9.42% < 40.0%",
-            "measured": {
-              "final_average_accuracy": 9.424999999999999,
-              "worst_task_accuracy": 6.3,
-              "average_forgetting": 0.0,
-              "parameter_fraction_vs_lora_stream": 0.009770114942528735,
-              "compression_ratio_vs_lora_stream": 102.3529411764706,
-              "stored_parameters": 136.0
-            }
-          },
-          "weaker_no_finetune_k4_phi1_seed0": {
-            "reason": "task not solved: final average accuracy 21.14% < 40.0%",
-            "measured": {
-              "final_average_accuracy": 21.142500000000002,
-              "worst_task_accuracy": 7.6,
-              "average_forgetting": 7.738888888888889,
-              "parameter_fraction_vs_lora_stream": 0.05632183908045977,
-              "compression_ratio_vs_lora_stream": 17.755102040816325,
-              "stored_parameters": 784.0
-            }
-          },
-          "weaker_no_finetune_k4_phi1_seed1": {
-            "reason": "task not solved: final average accuracy 24.56% < 40.0%",
-            "measured": {
-              "final_average_accuracy": 24.5625,
-              "worst_task_accuracy": 9.425,
-              "average_forgetting": 7.147222222222222,
-              "parameter_fraction_vs_lora_stream": 0.05632183908045977,
-              "compression_ratio_vs_lora_stream": 17.755102040816325,
-              "stored_parameters": 784.0
-            }
-          },
-          "weaker_untrained": {
-            "reason": "task not solved: final average accuracy 9.42% < 40.0%",
-            "measured": {
-              "final_average_accuracy": 9.424999999999999,
-              "worst_task_accuracy": 6.3,
-              "average_forgetting": 0.0,
-              "parameter_fraction_vs_lora_stream": 0.11264367816091954,
-              "compression_ratio_vs_lora_stream": 8.877551020408163,
-              "stored_parameters": 1568.0
-            }
-          },
-          "shortcut_noncanonical_snapshot": {
-            "reason": "attempt failed another required experiment: continual_6task_stream",
-            "measured": {
-              "final_average_accuracy": 64.8325,
-              "worst_task_accuracy": 43.925,
-              "average_forgetting": 12.53888888888889,
-              "parameter_fraction_vs_lora_stream": 0.11264367816091954,
-              "compression_ratio_vs_lora_stream": 8.877551020408163,
-              "stored_parameters": 1568.0
-            }
           }
         },
         "final_accuracy_by_stream": {
-          "baseline_frozen_backbone": {
+          "frozen_backbone": {
             "t10_00": 9.1,
             "t10_01": 9.94,
             "t10_02": 8.759999999999998,
             "t10_03": 9.9
           },
-          "baseline_independent_lora": {
+          "independent_lora": {
             "t10_00": 71.50999999999999,
             "t10_01": 70.82,
             "t10_02": 71.22,
             "t10_03": 70.30000000000001
           },
-          "baseline_independent_rank1": {
+          "independent_rank1": {
             "t10_00": 32.99999999999999,
             "t10_01": 31.870000000000005,
             "t10_02": 33.379999999999995,
             "t10_03": 30.579999999999995
           },
-          "baseline_sequential_lora": {
+          "sequential_lora": {
             "t10_00": 16.960000000000004,
             "t10_01": 22.89,
             "t10_02": 14.96,
             "t10_03": 17.770000000000003
           },
-          "better_phi4_seed0": {
-            "t10_00": 78.08,
-            "t10_01": 79.57,
-            "t10_02": 78.36999999999999,
-            "t10_03": 80.25999999999999
-          },
-          "better_phi4_seed1": {
-            "t10_00": 75.79,
-            "t10_01": 81.85,
-            "t10_02": 74.61,
-            "t10_03": 79.50000000000001
-          },
-          "better_phi4_seed2": {
-            "t10_00": 75.77000000000001,
-            "t10_01": 76.71,
-            "t10_02": 77.57,
-            "t10_03": 78.69
-          },
-          "better_uncentered_phi4_seed0": {
-            "t10_00": 78.62000000000002,
-            "t10_01": 78.13999999999999,
-            "t10_02": 79.26999999999998,
-            "t10_03": 79.97000000000001
-          },
-          "better_uncentered_phi4_seed1": {
-            "t10_00": 78.17,
-            "t10_01": 80.39,
-            "t10_02": 78.73,
-            "t10_03": 77.46000000000001
-          },
-          "better_uncentered_phi4_seed2": {
-            "t10_00": 79.52000000000001,
-            "t10_01": 78.69,
-            "t10_02": 79.32000000000001,
-            "t10_03": 79.10000000000001
-          },
-          "reference_seed0": {
+          "share": {
             "t10_00": 64.17999999999999,
             "t10_01": 63.16,
             "t10_02": 63.17999999999999,
             "t10_03": 68.81
-          },
-          "reference_seed1": {
-            "t10_00": 62.4,
-            "t10_01": 58.4,
-            "t10_02": 61.959999999999994,
-            "t10_03": 71.66
-          },
-          "reference_seed2": {
-            "t10_00": 68.88,
-            "t10_01": 61.56,
-            "t10_02": 61.61,
-            "t10_03": 67.19999999999999
-          },
-          "shortcut_backdated_snapshots": {
-            "t10_00": 68.27000000000001,
-            "t10_01": 61.440000000000005,
-            "t10_02": 62.56999999999999,
-            "t10_03": 66.38000000000001
-          },
-          "shortcut_csv_label_forgery": {},
-          "shortcut_forged_claims": {
-            "t10_00": 64.17999999999999,
-            "t10_01": 63.16,
-            "t10_02": 63.17999999999999,
-            "t10_03": 68.81
-          },
-          "shortcut_full_task_models": {
-            "t10_00": 62.370000000000005,
-            "t10_01": 61.870000000000005,
-            "t10_02": 61.6,
-            "t10_03": 59.48
-          },
-          "shortcut_impossible_values": {},
-          "shortcut_joint_replay_backdated": {
-            "t10_00": 88.89000000000001,
-            "t10_01": 88.72,
-            "t10_02": 88.88999999999999,
-            "t10_03": 88.52
-          },
-          "shortcut_nan_state": {},
-          "shortcut_noncanonical_snapshot": {
-            "t10_00": 64.17999999999999,
-            "t10_01": 63.16,
-            "t10_02": 63.17999999999999,
-            "t10_03": 68.81
-          },
-          "shortcut_old_prediction_interface": {},
-          "shortcut_omit_history": {},
-          "shortcut_packed_independent_adapters": {
-            "t10_00": 32.99999999999999,
-            "t10_01": 31.870000000000005,
-            "t10_02": 33.379999999999995,
-            "t10_03": 30.579999999999995
-          },
-          "shortcut_partial_failure": {
-            "t10_00": 9.1,
-            "t10_01": 9.94,
-            "t10_02": 8.759999999999998,
-            "t10_03": 9.9
-          },
-          "shortcut_poison_comparison_baseline": {},
-          "shortcut_read_visible_labels": {},
-          "shortcut_rebuild_seed_answers": {},
-          "shortcut_store_independent_adapters": {
-            "t10_00": 71.50999999999999,
-            "t10_01": 70.82,
-            "t10_02": 71.22,
-            "t10_03": 70.30000000000001
-          },
-          "shortcut_tiny_failing_state": {
-            "t10_00": 9.1,
-            "t10_01": 9.94,
-            "t10_02": 8.759999999999998,
-            "t10_03": 9.9
-          },
-          "weaker_no_finetune_k4_phi1_seed0": {
-            "t10_00": 20.28,
-            "t10_01": 19.87,
-            "t10_02": 20.45,
-            "t10_03": 23.969999999999995
-          },
-          "weaker_no_finetune_k4_phi1_seed1": {
-            "t10_00": 26.339999999999996,
-            "t10_01": 27.42,
-            "t10_02": 21.25,
-            "t10_03": 23.240000000000002
-          },
-          "weaker_no_finetune_quarter_steps_seed0": {
-            "t10_00": 53.900000000000006,
-            "t10_01": 54.709999999999994,
-            "t10_02": 59.45,
-            "t10_03": 57.26
-          },
-          "weaker_no_finetune_quarter_steps_seed1": {
-            "t10_00": 53.56000000000001,
-            "t10_01": 58.26,
-            "t10_02": 55.54,
-            "t10_03": 51.24999999999999
-          },
-          "weaker_no_finetune_seed0": {
-            "t10_00": 50.529999999999994,
-            "t10_01": 42.989999999999995,
-            "t10_02": 51.22,
-            "t10_03": 51.650000000000006
-          },
-          "weaker_no_finetune_seed1": {
-            "t10_00": 51.06,
-            "t10_01": 45.89,
-            "t10_02": 52.46999999999999,
-            "t10_03": 49.730000000000004
-          },
-          "weaker_no_finetune_seed2": {
-            "t10_00": 47.209999999999994,
-            "t10_01": 45.730000000000004,
-            "t10_02": 48.480000000000004,
-            "t10_03": 52.46999999999999
-          },
-          "weaker_untrained": {
-            "t10_00": 9.1,
-            "t10_01": 9.95,
-            "t10_02": 8.75,
-            "t10_03": 9.9
           }
         }
       },
       "results": {
-        "baseline_frozen_backbone": {
+        "frozen_backbone": {
           "final_average_accuracy": 0.0,
           "worst_task_accuracy": 0.0,
           "average_forgetting": 100.0,
@@ -1325,7 +366,7 @@
           "compression_ratio_vs_lora_stream": 0.0,
           "stored_parameters": 0.0
         },
-        "baseline_independent_lora": {
+        "independent_lora": {
           "final_average_accuracy": 0.0,
           "worst_task_accuracy": 0.0,
           "average_forgetting": 100.0,
@@ -1333,7 +374,7 @@
           "compression_ratio_vs_lora_stream": 0.0,
           "stored_parameters": 13920.0
         },
-        "baseline_independent_rank1": {
+        "independent_rank1": {
           "final_average_accuracy": 0.0,
           "worst_task_accuracy": 0.0,
           "average_forgetting": 100.0,
@@ -1341,7 +382,7 @@
           "compression_ratio_vs_lora_stream": 0.0,
           "stored_parameters": 1160.0
         },
-        "baseline_sequential_lora": {
+        "sequential_lora": {
           "final_average_accuracy": 0.0,
           "worst_task_accuracy": 0.0,
           "average_forgetting": 100.0,
@@ -1349,276 +390,12 @@
           "compression_ratio_vs_lora_stream": 0.0,
           "stored_parameters": 1392.0
         },
-        "better_phi4_seed0": {
-          "final_average_accuracy": 79.07,
-          "worst_task_accuracy": 69.75,
-          "average_forgetting": 1.8277777777777773,
-          "parameter_fraction_vs_lora_stream": 0.11264367816091954,
-          "compression_ratio_vs_lora_stream": 8.877551020408163,
-          "stored_parameters": 1568.0
-        },
-        "better_phi4_seed1": {
-          "final_average_accuracy": 77.9375,
-          "worst_task_accuracy": 70.2,
-          "average_forgetting": 3.088888888888888,
-          "parameter_fraction_vs_lora_stream": 0.11264367816091954,
-          "compression_ratio_vs_lora_stream": 8.877551020408163,
-          "stored_parameters": 1568.0
-        },
-        "better_phi4_seed2": {
-          "final_average_accuracy": 77.185,
-          "worst_task_accuracy": 64.75,
-          "average_forgetting": 3.538888888888889,
-          "parameter_fraction_vs_lora_stream": 0.11264367816091954,
-          "compression_ratio_vs_lora_stream": 8.877551020408163,
-          "stored_parameters": 1568.0
-        },
-        "better_uncentered_phi4_seed0": {
-          "final_average_accuracy": 79.0,
-          "worst_task_accuracy": 72.675,
-          "average_forgetting": 2.397222222222222,
-          "parameter_fraction_vs_lora_stream": 0.11264367816091954,
-          "compression_ratio_vs_lora_stream": 8.877551020408163,
-          "stored_parameters": 1568.0
-        },
-        "better_uncentered_phi4_seed1": {
-          "final_average_accuracy": 78.6875,
-          "worst_task_accuracy": 69.8,
-          "average_forgetting": 2.5277777777777772,
-          "parameter_fraction_vs_lora_stream": 0.11264367816091954,
-          "compression_ratio_vs_lora_stream": 8.877551020408163,
-          "stored_parameters": 1568.0
-        },
-        "better_uncentered_phi4_seed2": {
-          "final_average_accuracy": 79.15750000000001,
-          "worst_task_accuracy": 71.45,
-          "average_forgetting": 2.441666666666666,
-          "parameter_fraction_vs_lora_stream": 0.11264367816091954,
-          "compression_ratio_vs_lora_stream": 8.877551020408163,
-          "stored_parameters": 1568.0
-        },
-        "reference_seed0": {
+        "share": {
           "final_average_accuracy": 64.8325,
           "worst_task_accuracy": 43.925,
           "average_forgetting": 12.53888888888889,
           "parameter_fraction_vs_lora_stream": 0.11264367816091954,
           "compression_ratio_vs_lora_stream": 8.877551020408163,
-          "stored_parameters": 1568.0
-        },
-        "reference_seed1": {
-          "final_average_accuracy": 63.605,
-          "worst_task_accuracy": 48.0,
-          "average_forgetting": 14.069444444444443,
-          "parameter_fraction_vs_lora_stream": 0.11264367816091954,
-          "compression_ratio_vs_lora_stream": 8.877551020408163,
-          "stored_parameters": 1568.0
-        },
-        "reference_seed2": {
-          "final_average_accuracy": 64.8125,
-          "worst_task_accuracy": 44.025000000000006,
-          "average_forgetting": 13.088888888888889,
-          "parameter_fraction_vs_lora_stream": 0.11264367816091954,
-          "compression_ratio_vs_lora_stream": 8.877551020408163,
-          "stored_parameters": 1568.0
-        },
-        "shortcut_backdated_snapshots": {
-          "final_average_accuracy": 64.665,
-          "worst_task_accuracy": 47.72500000000001,
-          "average_forgetting": 0.0,
-          "parameter_fraction_vs_lora_stream": 0.11264367816091954,
-          "compression_ratio_vs_lora_stream": 8.877551020408163,
-          "stored_parameters": 1568.0
-        },
-        "shortcut_csv_label_forgery": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 0.0
-        },
-        "shortcut_forged_claims": {
-          "final_average_accuracy": 64.8325,
-          "worst_task_accuracy": 43.925,
-          "average_forgetting": 12.53888888888889,
-          "parameter_fraction_vs_lora_stream": 0.11264367816091954,
-          "compression_ratio_vs_lora_stream": 8.877551020408163,
-          "stored_parameters": 1568.0
-        },
-        "shortcut_full_task_models": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 23200.0
-        },
-        "shortcut_impossible_values": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 0.0
-        },
-        "shortcut_joint_replay_backdated": {
-          "final_average_accuracy": 88.755,
-          "worst_task_accuracy": 85.54999999999998,
-          "average_forgetting": 0.0,
-          "parameter_fraction_vs_lora_stream": 0.11264367816091954,
-          "compression_ratio_vs_lora_stream": 8.877551020408163,
-          "stored_parameters": 1568.0
-        },
-        "shortcut_nan_state": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 0.0
-        },
-        "shortcut_noncanonical_snapshot": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 1568.0
-        },
-        "shortcut_old_prediction_interface": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 0.0
-        },
-        "shortcut_omit_history": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 0.0
-        },
-        "shortcut_packed_independent_adapters": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 1360.0
-        },
-        "shortcut_partial_failure": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 136.0
-        },
-        "shortcut_poison_comparison_baseline": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 0.0
-        },
-        "shortcut_read_visible_labels": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 0.0
-        },
-        "shortcut_rebuild_seed_answers": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 0.0
-        },
-        "shortcut_store_independent_adapters": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 13920.0
-        },
-        "shortcut_tiny_failing_state": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 136.0
-        },
-        "weaker_no_finetune_k4_phi1_seed0": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 784.0
-        },
-        "weaker_no_finetune_k4_phi1_seed1": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
-          "stored_parameters": 784.0
-        },
-        "weaker_no_finetune_quarter_steps_seed0": {
-          "final_average_accuracy": 56.33,
-          "worst_task_accuracy": 41.8,
-          "average_forgetting": 3.983333333333334,
-          "parameter_fraction_vs_lora_stream": 0.11264367816091954,
-          "compression_ratio_vs_lora_stream": 8.877551020408163,
-          "stored_parameters": 1568.0
-        },
-        "weaker_no_finetune_quarter_steps_seed1": {
-          "final_average_accuracy": 54.6525,
-          "worst_task_accuracy": 31.499999999999996,
-          "average_forgetting": 3.802777777777777,
-          "parameter_fraction_vs_lora_stream": 0.11264367816091954,
-          "compression_ratio_vs_lora_stream": 8.877551020408163,
-          "stored_parameters": 1568.0
-        },
-        "weaker_no_finetune_seed0": {
-          "final_average_accuracy": 49.0975,
-          "worst_task_accuracy": 29.249999999999996,
-          "average_forgetting": 7.7444444444444445,
-          "parameter_fraction_vs_lora_stream": 0.11264367816091954,
-          "compression_ratio_vs_lora_stream": 8.877551020408163,
-          "stored_parameters": 1568.0
-        },
-        "weaker_no_finetune_seed1": {
-          "final_average_accuracy": 49.787499999999994,
-          "worst_task_accuracy": 29.3,
-          "average_forgetting": 7.213888888888889,
-          "parameter_fraction_vs_lora_stream": 0.11264367816091954,
-          "compression_ratio_vs_lora_stream": 8.877551020408163,
-          "stored_parameters": 1568.0
-        },
-        "weaker_no_finetune_seed2": {
-          "final_average_accuracy": 48.472500000000004,
-          "worst_task_accuracy": 24.424999999999997,
-          "average_forgetting": 8.830555555555556,
-          "parameter_fraction_vs_lora_stream": 0.11264367816091954,
-          "compression_ratio_vs_lora_stream": 8.877551020408163,
-          "stored_parameters": 1568.0
-        },
-        "weaker_untrained": {
-          "final_average_accuracy": 0.0,
-          "worst_task_accuracy": 0.0,
-          "average_forgetting": 100.0,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 0.0,
           "stored_parameters": 1568.0
         }
       }

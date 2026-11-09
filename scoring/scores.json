@@ -25,22 +25,22 @@
       "reference_rank": 0.0,
       "normalizers": {
         "continual_6task_stream": {
-          "final_average_accuracy": 33.59171030988464,
-          "average_forgetting": 43.97144591158626,
+          "final_average_accuracy": 32.98260297134585,
+          "average_forgetting": 43.086373200300294,
           "parameter_fraction_vs_lora_stream": 0.3973524696322872
         },
         "continual_10task_stream": {
-          "final_average_accuracy": 33.71962517914786,
-          "average_forgetting": 43.7381690842478,
+          "final_average_accuracy": 33.667710874895484,
+          "average_forgetting": 43.36921591277491,
           "parameter_fraction_vs_lora_stream": 0.4183037816674442
         }
       },
       "rank_improvement": {
-        "frozen_backbone": -3.4203767217194634,
-        "independent_lora": -3.4203767217194634,
-        "independent_rank1": -3.4203767217194634,
-        "sequential_lora": -3.4203767217194634,
-        "share": -0.053189057026981436
+        "frozen_backbone": -3.394112549695428,
+        "independent_lora": -3.394112549695428,
+        "independent_rank1": -3.394112549695428,
+        "sequential_lora": -3.394112549695428,
+        "share": 0.0
       },
       "failed_attempts": {
         "frozen_backbone": [
