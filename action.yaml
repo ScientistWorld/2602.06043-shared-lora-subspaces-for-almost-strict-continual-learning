@@ -1,8 +1,8 @@
 # Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends.
-action: submit
+action: pending
 gpus: 0
 test: false
 milestone: core_claim_plus
-notes: "Final check: reproduce reference (Share with restored Step-3 finetuning) + baselines from final code, hidden test, rerun reference seeds and rebuilt shortcuts through the hidden test, rescore saved variant runs"
+notes: ""
