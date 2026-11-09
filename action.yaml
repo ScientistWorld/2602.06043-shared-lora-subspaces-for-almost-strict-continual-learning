@@ -1,2 +1,8 @@
-action: done
-notes: "Completed 31-case audit: genuine gains below seed spread; answer leakage and paying shortcuts confirmed; gym code and artifacts restored."
+# Once you set action to 'submit' or 'done', STOP immediately.
+# Do NOT sleep, poll, or wait for jobs. The system reads this file
+# only after your turn ends.
+action: pending
+gpus: 0
+test: false
+milestone: core_claim_plus
+notes: ""
