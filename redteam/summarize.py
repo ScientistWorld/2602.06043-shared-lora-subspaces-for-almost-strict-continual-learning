@@ -22,7 +22,8 @@ for name in names:
 
 reference = rows['reference_existing']['metrics']
 finite_names = [name for name in names if rows[name]['evaluation'] == 'accepted']
-quality_names = [name for name in finite_names if not name.startswith('shortcut_')]
+quality_names = [name for name in finite_names if not name.startswith('shortcut_')
+                 or name == 'shortcut_bruteforce_full_task_models']
 
 def scales(cohort):
     return {exp: {metric: pstdev([rows[name]['metrics'][exp][metric] for name in cohort])
@@ -51,6 +52,10 @@ for name in finite_names:
     row['mean_test_accuracy'] = mean([metrics['final_average_accuracy'] for metrics in row['metrics'].values()])
     row['ranks'] = {}
     for cohort_name, scale in normalizers.items():
+        # A cohort's rank applies only to its members. In particular, do not
+        # extrapolate quality-only standard deviations to extreme shortcuts.
+        if cohort_name == 'quality_checks' and name not in quality_names:
+            continue
         delta, terms = rank_delta(row['metrics'], scale)
         row['ranks'][cohort_name] = {'delta_vs_reference': delta, 'terms': terms}
     pair_scale = {exp: {metric: abs(row['metrics'][exp][metric] - reference[exp][metric]) / 2
@@ -96,7 +101,8 @@ for name, row in rows.items():
         continue
     acc = ' / '.join(f'{v["final_average_accuracy"]:.3f}' for v in row['metrics'].values())
     rank_all = row['ranks']['all_audit_attempts']['delta_vs_reference']
-    rank_quality = row['ranks']['quality_checks']['delta_vs_reference']
-    lines.append(f'| {name} | {acc} | {rank_all:+.4f} | {rank_quality:+.4f} | {row["pairwise_rank_delta"]:+.4f} | accepted |')
+    rank_quality = (f'{row["ranks"]["quality_checks"]["delta_vs_reference"]:+.4f}'
+                    if name in quality_names else '—')
+    lines.append(f'| {name} | {acc} | {rank_all:+.5g} | {rank_quality} | {row["pairwise_rank_delta"]:+.4f} | accepted |')
 (AUDIT / 'RESULTS.md').write_text('\n'.join(lines)+'\n')
 print('\n'.join(lines), flush=True)

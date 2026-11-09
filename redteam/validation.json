@@ -1,0 +1,353 @@
+{
+  "starting_commit": "2c6d07cca00e17096cb66a40594593d0e7e40ee7",
+  "cases": 31,
+  "finite_ranked_cases": 28,
+  "python_sources_parse": true,
+  "report_links_exist": true,
+  "no_argument_hidden_test_for_every_case": true,
+  "reference_rerun_matches_original_scores_exactly": true,
+  "source_diff_outside_allowed_and_framework_paths": [],
+  "restored_files": [
+    {
+      "path": "checkpoints/.gitkeep",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "checkpoints/frozen/predictions/summary.json",
+      "sha256": "408340b3696a945c1e4f5a9c59636ed2f23759f9fcffa10bbfc33fee37c8d9ce"
+    },
+    {
+      "path": "checkpoints/frozen/predictions/task_0.csv",
+      "sha256": "db75ac040670c3cb55ae9e16244f39457f7052825e4432c60d6ee1b9fc1c900a"
+    },
+    {
+      "path": "checkpoints/frozen/predictions/task_1.csv",
+      "sha256": "a9431dec8353269adfca5aceaa73d84d1123dbad72ba986a7416c21a3946dfd3"
+    },
+    {
+      "path": "checkpoints/frozen/predictions/task_2.csv",
+      "sha256": "d6cfc66dc59a7c7612c5ece013eb50802ec8aaaf04af0eb6261d402adced9860"
+    },
+    {
+      "path": "checkpoints/frozen/predictions/task_3.csv",
+      "sha256": "0f45fd3a716dd34eae193b7e6b6f95c2d7ee009bf193db8346ecb112b1d51a3e"
+    },
+    {
+      "path": "checkpoints/frozen_seed21/predictions/summary.json",
+      "sha256": "f6e042cd469d15c7efd29dd629d6528109554a5b556aa3556a079835f0b7cb63"
+    },
+    {
+      "path": "checkpoints/frozen_seed21/predictions/task_0.csv",
+      "sha256": "aeadf658082076a4ded1b51346820c6985759e26b821cf1620ef0cedc172f674"
+    },
+    {
+      "path": "checkpoints/frozen_seed21/predictions/task_1.csv",
+      "sha256": "f59c677b97515e58db78e9d4002a0b4ce12f930b5fd44d40ebfd25fb78e8b248"
+    },
+    {
+      "path": "checkpoints/frozen_seed21/predictions/task_2.csv",
+      "sha256": "daababc2c55179105a65dae09ed6296e7c38afddd3c8b16346243961ed092950"
+    },
+    {
+      "path": "checkpoints/frozen_seed21/predictions/task_3.csv",
+      "sha256": "b64bf17605110f7479dcc7b7d5d681926ca2acfc800d4e656303dab27dbe4775"
+    },
+    {
+      "path": "checkpoints/lora/predictions/summary.json",
+      "sha256": "325f0191352d8ea540eb59b595946a76849dd2dd7a1291c1cb12ee5c4623e3e8"
+    },
+    {
+      "path": "checkpoints/lora/predictions/task_0.csv",
+      "sha256": "7c0694e5ffced3442787c6ebfbfe83eaf41892a6900237569c3951bb072efe91"
+    },
+    {
+      "path": "checkpoints/lora/predictions/task_1.csv",
+      "sha256": "6f33eaea6abd9baba18e3f6ef5bb74419d9f04a7765041f511c61ea9a61b5c27"
+    },
+    {
+      "path": "checkpoints/lora/predictions/task_2.csv",
+      "sha256": "ced28d0ee70dd74b74dc02148feffe36984fe2f42ae3178d83a962cd3f2f7457"
+    },
+    {
+      "path": "checkpoints/lora/predictions/task_3.csv",
+      "sha256": "3fea9cd659e559b8bd3a00825e6077046872d7a32ca8cd310cbaa1fc5f89d0df"
+    },
+    {
+      "path": "checkpoints/lora_seed21/predictions/summary.json",
+      "sha256": "0db01ccd569d9484c887def6f6aad4a260d1ca7d2064e54b319af39d47db026b"
+    },
+    {
+      "path": "checkpoints/lora_seed21/predictions/task_0.csv",
+      "sha256": "95364ffbd7c7006c9f7c49f7bf21e9fe451310c6afed881ab82987e989ee594b"
+    },
+    {
+      "path": "checkpoints/lora_seed21/predictions/task_1.csv",
+      "sha256": "53d743cda0cc6b1fcf6be6a56cad90618f89b93e9173a8f0fb91caa8aa01cb3f"
+    },
+    {
+      "path": "checkpoints/lora_seed21/predictions/task_2.csv",
+      "sha256": "43a6607980476d44d510b9c2ee1d109e150890862e5c376622d2689db7e3e058"
+    },
+    {
+      "path": "checkpoints/lora_seed21/predictions/task_3.csv",
+      "sha256": "b4d902a1367643cf19dca429779de137cd22e9ee426e24a35b54eccbff6123f4"
+    },
+    {
+      "path": "checkpoints/share/predictions/summary.json",
+      "sha256": "4c3345d41a8fda73d91a9a1620c8ab133fa18e3d11e24bc28980c760bcdfe501"
+    },
+    {
+      "path": "checkpoints/share/predictions/task_0.csv",
+      "sha256": "c1e043b078e03d2638f65b2f8c1eea72a1085630d885ad988ab507d1e6581ea4"
+    },
+    {
+      "path": "checkpoints/share/predictions/task_1.csv",
+      "sha256": "92c3034cc795c3f706b7e854dc3691e402e9810d8c9084aee1c3cfc51a4c848f"
+    },
+    {
+      "path": "checkpoints/share/predictions/task_2.csv",
+      "sha256": "75640ddf32423f5305d79c6637d4803f969f9efe848be0b2bef298042eec21db"
+    },
+    {
+      "path": "checkpoints/share/predictions/task_3.csv",
+      "sha256": "6a50c326dcbd166e80d1b74cdff78a0688e69f6a52f614ca2c8564e8030c4c7a"
+    },
+    {
+      "path": "checkpoints/share_seed21/predictions/summary.json",
+      "sha256": "bf7b11ddbf80a9383d7d8f8bbf529777c4bf766250f8de55119cf115d6530238"
+    },
+    {
+      "path": "checkpoints/share_seed21/predictions/task_0.csv",
+      "sha256": "9ad550f71403df783ea6c89694ec2f88e3ada4232d451ea7d7569428e2c3182c"
+    },
+    {
+      "path": "checkpoints/share_seed21/predictions/task_1.csv",
+      "sha256": "413ac36be52696604bd8c64e8e655189fcbfa2454371c5c6a67935f79cf8fef6"
+    },
+    {
+      "path": "checkpoints/share_seed21/predictions/task_2.csv",
+      "sha256": "59f66255e3635f0179bb6f29db3c37abd4d707511e6a26a5ae1d4bced7658cfe"
+    },
+    {
+      "path": "checkpoints/share_seed21/predictions/task_3.csv",
+      "sha256": "c14e459b1584e509c25f66fa2bd81a675b680e69c61e915f977e9ba9f1e62444"
+    },
+    {
+      "path": "data/synthetic_share_tasks.npz",
+      "sha256": "8aeafb599bafbe94c38b896a651312e96648f8c7da859d938ecd13f15bb2c55b"
+    },
+    {
+      "path": "data/synthetic_share_tasks_seed21.npz",
+      "sha256": "65caf3e5855d4c8997916775ec03de3d53d554fdd29bf67944038655a68cd942"
+    },
+    {
+      "path": "scoring/scores.json",
+      "sha256": "99a45a83896c0d65bc73d5fdee29dfcc27b704947fa8f30cb70082db303c6028"
+    },
+    {
+      "path": "scoring/scores_test.json",
+      "sha256": "3134fa99a4fa24980fde582b35c89bb2628bc504938c17e54e6276cb7f01510e"
+    },
+    {
+      "path": "scoring/scores_train.json",
+      "sha256": "51caf4ae02fc988af05091d3b6c22fc029bb687832e2317d9f0335cb00b3d846"
+    }
+  ],
+  "case_statuses": {
+    "reference_existing": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "reference_existing"
+    },
+    "reference_seed0": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "reference_seed0"
+    },
+    "reference_seed1": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "reference_seed1"
+    },
+    "reference_seed2": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "reference_seed2"
+    },
+    "better_more_training": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "better_more_training"
+    },
+    "better_phi4": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "better_phi4"
+    },
+    "better_refit": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "better_refit"
+    },
+    "better_refit_seed1": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "better_refit_seed1"
+    },
+    "better_refit_seed2": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "better_refit_seed2"
+    },
+    "better_stable_seed0": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "better_stable_seed0"
+    },
+    "better_stable_seed1": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "better_stable_seed1"
+    },
+    "better_stable_seed2": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "better_stable_seed2"
+    },
+    "weaker_untrained": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "weaker_untrained"
+    },
+    "baseline_frozen": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "baseline_frozen"
+    },
+    "shortcut_bruteforce_full_task_models": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "bruteforce_full_task_models"
+    },
+    "shortcut_store_independent_adapters": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "shortcut_store_independent_adapters"
+    },
+    "shortcut_read_visible_labels": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "shortcut_read_visible_labels"
+    },
+    "shortcut_rebuild_seed_answers": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "shortcut_rebuild_seed_answers"
+    },
+    "shortcut_omit_history": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "shortcut_omit_history"
+    },
+    "shortcut_forge_parameter_cost": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "shortcut_forge_parameter_cost"
+    },
+    "shortcut_inflate_baseline_denominator": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "shortcut_inflate_baseline_denominator"
+    },
+    "shortcut_replace_canonical_labels": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "shortcut_replace_canonical_labels"
+    },
+    "shortcut_shrink_test_to_one": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "shortcut_shrink_test_to_one"
+    },
+    "shortcut_poison_comparison_baseline": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "shortcut_poison_comparison_baseline"
+    },
+    "shortcut_constant_zero": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "shortcut_constant_zero"
+    },
+    "shortcut_failing_method_impossible_cost": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "shortcut_failing_method_impossible_cost"
+    },
+    "shortcut_empty_predictions": {
+      "train_exit": 1,
+      "test_exit": 1,
+      "original_executed_name": "shortcut_empty_predictions"
+    },
+    "shortcut_csv_label_forgery": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "shortcut_csv_label_forgery"
+    },
+    "shortcut_null_cost": {
+      "train_exit": 1,
+      "test_exit": 1,
+      "original_executed_name": "shortcut_null_cost"
+    },
+    "shortcut_nan_cost": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "shortcut_nan_cost"
+    },
+    "shortcut_direct_score_write": {
+      "train_exit": 0,
+      "test_exit": 0,
+      "original_executed_name": "shortcut_direct_score_write"
+    }
+  },
+  "jobs": {
+    "b3083973-9e2": {
+      "run_id": "b3083973-9e2",
+      "project_id": "swarm-2602.06043",
+      "command": "bash /home/user/scripts/run.sh",
+      "status": "completed",
+      "returncode": 0,
+      "duration": 180.23756098747253,
+      "submitted_at": 1794243231.3026788,
+      "started_at": 1794243286.9909143,
+      "completed_at": 1794243467.2284753,
+      "stdout": "[hive] This stdout log is managed by Hive.\n[hive] job_id: ba71b2e9\n[hive] host: node\n[hive] node_id: 408388a4b9c5f3c534cc608905ce3598eead440eeb06feb67c0e4676\n[hive] user: nexus/user (remote)\n[hive] resource: gpu-cpu-test\n[hive] gpus: 0\n[hive] cpus: 1\n[hive] workdir: /home/user\n[hive] timeout_sec: 21600\n[hive] started_at: 2026-11-09 11:54:01 EST\n[hive] command: apptainer exec --containall --cleanenv --env HF_HOME=/home/user/shared/hf_cache --env TRANSFORMERS_CACHE=/home/user/shared/hf_cache --env HF_DATASETS_CACHE=/home/user/shared/hf_cache/datasets --env TORCH_HOME=/home/user/shared/hf_cache/torch --bind /home/user/scratch/AgentWorkspaces/workspaces/2602.06043:/home/user --overlay /home/user/scratch/AgentWorkspaces/workspaces/2602.06043/environment/overlay.img:ro --bind /home/user/scratch/AgentWorkspaces/shared/datasets:/home/user/shared/datasets:ro --bind /home/user/scratch/AgentWorkspaces/shared/models:/home/user/shared/models:ro --bind /home/user/scratch/AgentWorkspaces/shared/hf_cache:/home/user/shared/hf_cache /home/user/scratch/AgentWorkspaces/workspaces/2602.06043/environment/container.sif bash -c 'cd /home/user && bash /home/user/scripts/run.sh'\nStarting reference_existing\nFinished reference_existing: exit=0, seconds=2.5\nStarting reference_seed0\nFinished reference_seed0: exit=0, seconds=42.4\nStarting reference_seed1\nFinished reference_seed1: exit=0, seconds=18.8\nStarting reference_seed2\nFinished reference_seed2: exit=0, seconds=17.5\nStarting better_more_training\nFinished better_more_training: exit=0, seconds=30.7\nStarting better_phi4\nFinished better_phi4: exit=0, seconds=18.2\nStarting better_refit\nFinished better_refit: exit=0, seconds=20.3\nStarting weaker_untrained\nFinished weaker_untrained: exit=0, seconds=11.8\nStarting baseline_frozen\nFinished baseline_frozen: exit=0, seconds=1.4\nStarting bruteforce_full_task_models\nFinished bruteforce_full_task_models: exit=0, seconds=15.9\nStarting shortcut_store_independent_adapters\nFinished shortcut_store_independent_adapters: exit=0, seconds=1.4\nStarting shortcut_read_visible_labels\nFinished shortcut_read_visible_labels: exit=0, seconds=1.8\nStarting shortcut_rebuild_seed_answers\nFinished shortcut_rebuild_seed_answers: exit=0, seconds=6.3\nStarting shortcut_omit_history\nFinished shortcut_omit_history: exit=0, seconds=1.4\nStarting shortcut_forge_parameter_cost\nFinished shortcut_forge_parameter_cost: exit=0, seconds=1.5\nStarting shortcut_inflate_baseline_denominator\nFinished shortcut_inflate_baseline_denominator: exit=0, seconds=1.4\nStarting shortcut_replace_canonical_labels\nFinished shortcut_replace_canonical_labels: exit=0, seconds=1.8\nStarting shortcut_shrink_test_to_one\nFinished shortcut_shrink_test_to_one: exit=0, seconds=1.7\nStarting shortcut_poison_comparison_baseline\nFinished shortcut_poison_comparison_baseline: exit=0, seconds=1.4\nStarting shortcut_constant_zero\nFinished shortcut_constant_zero: exit=0, seconds=1.8\nStarting shortcut_failing_method_impossible_cost\nFinished shortcut_failing_method_impossible_cost: exit=0, seconds=1.8\nStarting shortcut_empty_predictions\nFinished shortcut_empty_predictions: exit=0, seconds=1.8\nStarting shortcut_csv_label_forgery\nFinished shortcut_csv_label_forgery: exit=0, seconds=1.7\nStarting shortcut_null_cost\nFinished shortcut_null_cost: exit=0, seconds=1.3\nStarting shortcut_nan_cost\nFinished shortcut_nan_cost: exit=0, seconds=1.4\nStarting shortcut_direct_score_write\nFinished shortcut_direct_score_write: exit=0, seconds=1.4\n| Case | Accuracy stream 13 / 21 (%) | Rank delta, all | Rank delta, quality | Pairwise delta | Status |\n|---|---:|---:|---:|---:|---|\n| reference_existing | 66.000 / 68.500 | +0.0000 | +0.0000 | +0.0000 | accepted |\n| reference_seed0 | 66.250 / 68.875 | +0.1867 | +0.1471 | +2.2000 | accepted |\n| reference_seed1 | 68.125 / 55.375 | -0.5651 | -0.5717 | -1.2000 | accepted |\n| reference_seed2 | 63.125 / 57.375 | -1.7582 | -1.5358 | -3.6000 | accepted |\n| better_more_training | 63.875 / 63.375 | -0.3962 | -0.4059 | -4.0000 | accepted |\n| better_phi4 | 75.750 / 66.500 | -0.0940 | -0.0430 | +0.4000 | accepted |\n| better_refit | 73.250 / 77.125 | +0.3118 | +0.3862 | +2.2000 | accepted |\n| weaker_untrained | 9.500 / 8.250 | -3.0396 | -4.0817 | -2.8000 | accepted |\n| baseline_frozen | 9.500 / 8.250 | -3.0396 | -4.7703 | -2.2000 | accepted |\n| bruteforce_full_task_models | 65.000 / 68.125 | +0.3695 | -2.9231 | -4.2000 | accepted |\n| shortcut_store_independent_adapters | 71.625 / 75.750 | +0.7939 | -1.5926 | +2.2000 | accepted |\n| shortcut_read_visible_labels | 100.000 / 100.000 | +2.1125 | +2.6037 | +3.6000 | accepted |\n| shortcut_rebuild_seed_answers | 100.000 / 100.000 | +2.1125 | +2.6037 | +3.6000 | accepted |\n| shortcut_omit_history | 66.250 / 68.875 | +0.4307 | +0.3274 | +3.0000 | accepted |\n| shortcut_forge_parameter_cost | 66.250 / 68.875 | +0.1867 | +1276.7907 | +4.4000 | accepted |\n| shortcut_inflate_baseline_denominator | 66.250 / 68.875 | +0.1867 | +1078.2861 | +4.4000 | accepted |\n| shortcut_replace_canonical_labels | 100.000 / 100.000 | +2.1125 | +2.6037 | +3.6000 | accepted |\n| shortcut_shrink_test_to_one | \u2014 | \u2014 | \u2014 | \u2014 | rejected_or_not_run |\n| shortcut_poison_comparison_baseline | 66.250 / 68.875 | +0.1867 | +0.1471 | +2.2000 | accepted |\n| shortcut_constant_zero | 8.250 / 6.875 | -3.3528 | -4.3639 | -3.6000 | accepted |\n| shortcut_failing_method_impossible_cost | 0.000 / 0.000 | +1.4700 | +2300449445911461396687000085593151080746648239702306041719909470512381119362195101708146578286444544.0000 | -1.4000 | accepted |\n| shortcut_empty_predictions | \u2014 | \u2014 | \u2014 | \u2014 | rejected_or_not_run |\n| shortcut_csv_label_forgery | 8.250 / 6.875 | -3.3528 | -4.3639 | -3.6000 | accepted |\n| shortcut_null_cost | \u2014 | \u2014 | \u2014 | \u2014 | rejected_or_not_run |\n| shortcut_nan_cost | \u2014 | \u2014 | \u2014 | \u2014 | accepted_nonfinite |\n| shortcut_direct_score_write | 66.250 / 68.875 | +0.1867 | +0.1471 | +2.2000 | accepted |\n",
+      "stderr": "[hive] This stderr log is managed by Hive.\n[hive] job_id: ba71b2e9\n[hive] host: node\n[hive] node_id: 408388a4b9c5f3c534cc608905ce3598eead440eeb06feb67c0e4676\n[hive] user: nexus/user (remote)\n[hive] resource: gpu-cpu-test\n[hive] gpus: 0\n[hive] cpus: 1\n[hive] workdir: /home/user\n[hive] timeout_sec: 21600\n[hive] started_at: 2026-11-09 11:54:01 EST\n[hive] command: apptainer exec --containall --cleanenv --env HF_HOME=/home/user/shared/hf_cache --env TRANSFORMERS_CACHE=/home/user/shared/hf_cache --env HF_DATASETS_CACHE=/home/user/shared/hf_cache/datasets --env TORCH_HOME=/home/user/shared/hf_cache/torch --bind /home/user/scratch/AgentWorkspaces/workspaces/2602.06043:/home/user --overlay /home/user/scratch/AgentWorkspaces/workspaces/2602.06043/environment/overlay.img:ro --bind /home/user/scratch/AgentWorkspaces/shared/datasets:/home/user/shared/datasets:ro --bind /home/user/scratch/AgentWorkspaces/shared/models:/home/user/shared/models:ro --bind /home/user/scratch/AgentWorkspaces/shared/hf_cache:/home/user/shared/hf_cache /home/user/scratch/AgentWorkspaces/workspaces/2602.06043/environment/container.sif bash -c 'cd /home/user && bash /home/user/scripts/run.sh'\n"
+    },
+    "f32be766-e23": {
+      "run_id": "f32be766-e23",
+      "project_id": "swarm-2602.06043",
+      "command": "bash /home/user/scripts/run.sh",
+      "status": "completed",
+      "returncode": 0,
+      "duration": 180.1212341785431,
+      "submitted_at": 1794243630.9990804,
+      "started_at": 1794243647.939483,
+      "completed_at": 1794243828.060717,
+      "stdout": "[hive] This stdout log is managed by Hive.\n[hive] job_id: 7f2034c1\n[hive] host: node\n[hive] node_id: a030f812431732da43bed7afd71c2cb82a1819d12e666ae1543de609\n[hive] user: nexus/user (remote)\n[hive] resource: gpu-cpu-test\n[hive] gpus: 0\n[hive] cpus: 1\n[hive] workdir: /home/user\n[hive] timeout_sec: 21600\n[hive] started_at: 2026-11-09 12:00:35 EST\n[hive] command: apptainer exec --containall --cleanenv --env HF_HOME=/home/user/shared/hf_cache --env TRANSFORMERS_CACHE=/home/user/shared/hf_cache --env HF_DATASETS_CACHE=/home/user/shared/hf_cache/datasets --env TORCH_HOME=/home/user/shared/hf_cache/torch --bind /home/user/scratch/AgentWorkspaces/workspaces/2602.06043:/home/user --overlay /home/user/scratch/AgentWorkspaces/workspaces/2602.06043/environment/overlay.img:ro --bind /home/user/scratch/AgentWorkspaces/shared/datasets:/home/user/shared/datasets:ro --bind /home/user/scratch/AgentWorkspaces/shared/models:/home/user/shared/models:ro --bind /home/user/scratch/AgentWorkspaces/shared/hf_cache:/home/user/shared/hf_cache /home/user/scratch/AgentWorkspaces/workspaces/2602.06043/environment/container.sif bash -c 'cd /home/user && bash /home/user/scripts/run.sh'\nAlready completed: reference_existing\nAlready completed: reference_seed0\nAlready completed: reference_seed1\nAlready completed: reference_seed2\nAlready completed: better_more_training\nAlready completed: better_phi4\nAlready completed: better_refit\nStarting better_refit_seed1\nFinished better_refit_seed1: exit=0, seconds=39.5\nStarting better_refit_seed2\nFinished better_refit_seed2: exit=0, seconds=20.1\nStarting better_stable_seed0\nFinished better_stable_seed0: exit=0, seconds=20.0\nStarting better_stable_seed1\nFinished better_stable_seed1: exit=0, seconds=19.7\nStarting better_stable_seed2\nFinished better_stable_seed2: exit=0, seconds=19.4\nAlready completed: weaker_untrained\nAlready completed: baseline_frozen\nAlready completed: bruteforce_full_task_models\nStarting shortcut_store_independent_adapters\nFinished shortcut_store_independent_adapters: exit=0, seconds=1.4\nStarting shortcut_read_visible_labels\nFinished shortcut_read_visible_labels: exit=0, seconds=1.7\nStarting shortcut_rebuild_seed_answers\nFinished shortcut_rebuild_seed_answers: exit=0, seconds=6.5\nStarting shortcut_omit_history\nFinished shortcut_omit_history: exit=0, seconds=1.4\nStarting shortcut_forge_parameter_cost\nFinished shortcut_forge_parameter_cost: exit=0, seconds=1.3\nStarting shortcut_inflate_baseline_denominator\nFinished shortcut_inflate_baseline_denominator: exit=0, seconds=1.3\nStarting shortcut_replace_canonical_labels\nFinished shortcut_replace_canonical_labels: exit=0, seconds=2.0\nStarting shortcut_shrink_test_to_one\nFinished shortcut_shrink_test_to_one: exit=0, seconds=1.7\nStarting shortcut_poison_comparison_baseline\nFinished shortcut_poison_comparison_baseline: exit=0, seconds=1.3\nStarting shortcut_constant_zero\nFinished shortcut_constant_zero: exit=0, seconds=1.6\nStarting shortcut_failing_method_impossible_cost\nFinished shortcut_failing_method_impossible_cost: exit=0, seconds=1.6\nStarting shortcut_empty_predictions\nFinished shortcut_empty_predictions: exit=0, seconds=1.7\nStarting shortcut_csv_label_forgery\nFinished shortcut_csv_label_forgery: exit=0, seconds=1.6\nStarting shortcut_null_cost\nFinished shortcut_null_cost: exit=0, seconds=1.3\nStarting shortcut_nan_cost\nFinished shortcut_nan_cost: exit=0, seconds=1.3\nStarting shortcut_direct_score_write\nFinished shortcut_direct_score_write: exit=0, seconds=1.3\n| Case | Accuracy stream 13 / 21 (%) | Rank delta, all | Rank delta, quality | Pairwise delta | Status |\n|---|---:|---:|---:|---:|---|\n| reference_existing | 66.000 / 68.500 | +0.0000 | +0.0000 | +0.0000 | accepted |\n| reference_seed0 | 66.250 / 68.875 | +0.2124 | +0.1735 | +2.2000 | accepted |\n| reference_seed1 | 68.125 / 55.375 | -0.6158 | -0.6394 | -1.2000 | accepted |\n| reference_seed2 | 63.125 / 57.375 | -1.9576 | -1.7700 | -3.6000 | accepted |\n| better_more_training | 63.875 / 63.375 | -0.4307 | -0.4571 | -4.0000 | accepted |\n| better_phi4 | 75.750 / 66.500 | -0.1122 | -0.0889 | +0.4000 | accepted |\n| better_refit | 73.250 / 77.125 | +0.3200 | +0.3915 | +2.2000 | accepted |\n| better_refit_seed1 | 76.375 / 73.875 | +0.5801 | +0.5916 | +3.2000 | accepted |\n| better_refit_seed2 | 79.500 / 76.500 | +0.8159 | +0.8719 | +3.2000 | accepted |\n| better_stable_seed0 | 74.750 / 76.750 | +0.6354 | +0.6562 | +4.0000 | accepted |\n| better_stable_seed1 | 76.000 / 76.000 | +0.6615 | +0.6862 | +3.8000 | accepted |\n| better_stable_seed2 | 78.125 / 74.500 | +0.6354 | +0.6737 | +2.8000 | accepted |\n| weaker_untrained | 9.500 / 8.250 | -3.1954 | -4.4145 | -2.8000 | accepted |\n| baseline_frozen | 9.500 / 8.250 | -3.1954 | -5.2108 | -2.2000 | accepted |\n| bruteforce_full_task_models | 65.000 / 68.125 | +0.4229 | -3.5143 | -4.2000 | accepted |\n| shortcut_store_independent_adapters | 71.625 / 75.750 | +0.8719 | -1.9679 | +2.2000 | accepted |\n| shortcut_read_visible_labels | 100.000 / 100.000 | +2.0616 | +2.6968 | +3.6000 | accepted |\n| shortcut_rebuild_seed_answers | 100.000 / 100.000 | +2.0616 | +2.6968 | +3.6000 | accepted |\n| shortcut_omit_history | 66.000 / 68.500 | +0.4672 | +0.3662 | +0.8000 | accepted |\n| shortcut_forge_parameter_cost | 66.000 / 68.500 | +0.0000 | +1502.7364 | +2.2000 | accepted |\n| shortcut_inflate_baseline_denominator | 66.000 / 68.500 | +0.0000 | +1269.0791 | +2.2000 | accepted |\n| shortcut_replace_canonical_labels | 100.000 / 100.000 | +2.0616 | +2.6968 | +3.6000 | accepted |\n| shortcut_shrink_test_to_one | 50.000 / 100.000 | +0.4634 | +0.6107 | +0.8000 | accepted |\n| shortcut_poison_comparison_baseline | 66.000 / 68.500 | +0.0000 | +0.0000 | +0.0000 | accepted |\n| shortcut_constant_zero | 8.250 / 6.875 | -3.7384 | -4.8853 | -3.6000 | accepted |\n| shortcut_failing_method_impossible_cost | 0.000 / 0.000 | +1.7054 | +2708092538065503589102057386995225547416312939590184618270968502670098544937851908052268169069330432.0000 | -1.4000 | accepted |\n| shortcut_empty_predictions | \u2014 | \u2014 | \u2014 | \u2014 | rejected_or_not_run |\n| shortcut_csv_label_forgery | 8.250 / 6.875 | -3.7384 | -4.8853 | -3.6000 | accepted |\n| shortcut_null_cost | \u2014 | \u2014 | \u2014 | \u2014 | rejected_or_not_run |\n| shortcut_nan_cost | \u2014 | \u2014 | \u2014 | \u2014 | accepted_nonfinite |\n| shortcut_direct_score_write | 66.000 / 68.500 | +0.0000 | +0.0000 | +0.0000 | accepted |\n",
+      "stderr": "[hive] This stderr log is managed by Hive.\n[hive] job_id: 7f2034c1\n[hive] host: node\n[hive] node_id: a030f812431732da43bed7afd71c2cb82a1819d12e666ae1543de609\n[hive] user: nexus/user (remote)\n[hive] resource: gpu-cpu-test\n[hive] gpus: 0\n[hive] cpus: 1\n[hive] workdir: /home/user\n[hive] timeout_sec: 21600\n[hive] started_at: 2026-11-09 12:00:35 EST\n[hive] command: apptainer exec --containall --cleanenv --env HF_HOME=/home/user/shared/hf_cache --env TRANSFORMERS_CACHE=/home/user/shared/hf_cache --env HF_DATASETS_CACHE=/home/user/shared/hf_cache/datasets --env TORCH_HOME=/home/user/shared/hf_cache/torch --bind /home/user/scratch/AgentWorkspaces/workspaces/2602.06043:/home/user --overlay /home/user/scratch/AgentWorkspaces/workspaces/2602.06043/environment/overlay.img:ro --bind /home/user/scratch/AgentWorkspaces/shared/datasets:/home/user/shared/datasets:ro --bind /home/user/scratch/AgentWorkspaces/shared/models:/home/user/shared/models:ro --bind /home/user/scratch/AgentWorkspaces/shared/hf_cache:/home/user/shared/hf_cache /home/user/scratch/AgentWorkspaces/workspaces/2602.06043/environment/container.sif bash -c 'cd /home/user && bash /home/user/scripts/run.sh'\n"
+    }
+  },
+  "scope_exceptions": [
+    "Required final action.yaml control",
+    "Preexisting special-device README.md and manifest.json; deleted trajectory files",
+    "Framework-generated trajectory/session.json was removed from the audit commit to match the starting tree"
+  ],
+  "jobs_exit_codes": {
+    "b3083973-9e2": 0,
+    "f32be766-e23": 0
+  },
+  "paying_shortcuts_in_declared_cohort": 12,
+  "shortcut_cases": 17,
+  "exact_tie_shortcuts": 2
+}

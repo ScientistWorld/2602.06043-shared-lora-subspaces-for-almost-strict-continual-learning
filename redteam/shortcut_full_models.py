@@ -1,4 +1,4 @@
-"""Brute-force cost check: fit/store a full linear adapter for each task."""
+"""Brute-force shortcut: fit/store a full linear adapter for each task."""
 import csv
 import json
 from pathlib import Path
@@ -7,7 +7,7 @@ import torch.nn.functional as F
 from data.synthetic_tasks import load_npz
 
 
-def train_full_models(data_path, out, seed):
+def train_shortcut_full_models(data_path, out, seed):
     torch.set_num_threads(1)
     torch.manual_seed(seed)
     base, tasks, meta = load_npz(data_path)

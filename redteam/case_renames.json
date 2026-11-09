@@ -1,0 +1,7 @@
+{
+  "shortcut_bruteforce_full_task_models": {
+    "original_executed_name": "bruteforce_full_task_models",
+    "reason": "Label the out-of-scope independent-full-model candidate a shortcut, including its directory and helper source.",
+    "results": "Original executed artifacts, scores, and status are retained byte-for-byte; only source names and paths changed."
+  }
+}

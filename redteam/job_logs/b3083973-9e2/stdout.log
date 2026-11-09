@@ -1,0 +1,92 @@
+[hive] This stdout log is managed by Hive.
+[hive] job_id: ba71b2e9
+[hive] host: node
+[hive] node_id: 408388a4b9c5f3c534cc608905ce3598eead440eeb06feb67c0e4676
+[hive] user: nexus/user (remote)
+[hive] resource: gpu-cpu-test
+[hive] gpus: 0
+[hive] cpus: 1
+[hive] workdir: /home/user
+[hive] timeout_sec: 21600
+[hive] started_at: 2026-11-09 11:54:01 EST
+[hive] command: apptainer exec --containall --cleanenv --env HF_HOME=/home/user/shared/hf_cache --env TRANSFORMERS_CACHE=/home/user/shared/hf_cache --env HF_DATASETS_CACHE=/home/user/shared/hf_cache/datasets --env TORCH_HOME=/home/user/shared/hf_cache/torch --bind /home/user/scratch/AgentWorkspaces/workspaces/2602.06043:/home/user --overlay /home/user/scratch/AgentWorkspaces/workspaces/2602.06043/environment/overlay.img:ro --bind /home/user/scratch/AgentWorkspaces/shared/datasets:/home/user/shared/datasets:ro --bind /home/user/scratch/AgentWorkspaces/shared/models:/home/user/shared/models:ro --bind /home/user/scratch/AgentWorkspaces/shared/hf_cache:/home/user/shared/hf_cache /home/user/scratch/AgentWorkspaces/workspaces/2602.06043/environment/container.sif bash -c 'cd /home/user && bash /home/user/scripts/run.sh'
+Starting reference_existing
+Finished reference_existing: exit=0, seconds=2.5
+Starting reference_seed0
+Finished reference_seed0: exit=0, seconds=42.4
+Starting reference_seed1
+Finished reference_seed1: exit=0, seconds=18.8
+Starting reference_seed2
+Finished reference_seed2: exit=0, seconds=17.5
+Starting better_more_training
+Finished better_more_training: exit=0, seconds=30.7
+Starting better_phi4
+Finished better_phi4: exit=0, seconds=18.2
+Starting better_refit
+Finished better_refit: exit=0, seconds=20.3
+Starting weaker_untrained
+Finished weaker_untrained: exit=0, seconds=11.8
+Starting baseline_frozen
+Finished baseline_frozen: exit=0, seconds=1.4
+Starting bruteforce_full_task_models
+Finished bruteforce_full_task_models: exit=0, seconds=15.9
+Starting shortcut_store_independent_adapters
+Finished shortcut_store_independent_adapters: exit=0, seconds=1.4
+Starting shortcut_read_visible_labels
+Finished shortcut_read_visible_labels: exit=0, seconds=1.8
+Starting shortcut_rebuild_seed_answers
+Finished shortcut_rebuild_seed_answers: exit=0, seconds=6.3
+Starting shortcut_omit_history
+Finished shortcut_omit_history: exit=0, seconds=1.4
+Starting shortcut_forge_parameter_cost
+Finished shortcut_forge_parameter_cost: exit=0, seconds=1.5
+Starting shortcut_inflate_baseline_denominator
+Finished shortcut_inflate_baseline_denominator: exit=0, seconds=1.4
+Starting shortcut_replace_canonical_labels
+Finished shortcut_replace_canonical_labels: exit=0, seconds=1.8
+Starting shortcut_shrink_test_to_one
+Finished shortcut_shrink_test_to_one: exit=0, seconds=1.7
+Starting shortcut_poison_comparison_baseline
+Finished shortcut_poison_comparison_baseline: exit=0, seconds=1.4
+Starting shortcut_constant_zero
+Finished shortcut_constant_zero: exit=0, seconds=1.8
+Starting shortcut_failing_method_impossible_cost
+Finished shortcut_failing_method_impossible_cost: exit=0, seconds=1.8
+Starting shortcut_empty_predictions
+Finished shortcut_empty_predictions: exit=0, seconds=1.8
+Starting shortcut_csv_label_forgery
+Finished shortcut_csv_label_forgery: exit=0, seconds=1.7
+Starting shortcut_null_cost
+Finished shortcut_null_cost: exit=0, seconds=1.3
+Starting shortcut_nan_cost
+Finished shortcut_nan_cost: exit=0, seconds=1.4
+Starting shortcut_direct_score_write
+Finished shortcut_direct_score_write: exit=0, seconds=1.4
+| Case | Accuracy stream 13 / 21 (%) | Rank delta, all | Rank delta, quality | Pairwise delta | Status |
+|---|---:|---:|---:|---:|---|
+| reference_existing | 66.000 / 68.500 | +0.0000 | +0.0000 | +0.0000 | accepted |
+| reference_seed0 | 66.250 / 68.875 | +0.1867 | +0.1471 | +2.2000 | accepted |
+| reference_seed1 | 68.125 / 55.375 | -0.5651 | -0.5717 | -1.2000 | accepted |
+| reference_seed2 | 63.125 / 57.375 | -1.7582 | -1.5358 | -3.6000 | accepted |
+| better_more_training | 63.875 / 63.375 | -0.3962 | -0.4059 | -4.0000 | accepted |
+| better_phi4 | 75.750 / 66.500 | -0.0940 | -0.0430 | +0.4000 | accepted |
+| better_refit | 73.250 / 77.125 | +0.3118 | +0.3862 | +2.2000 | accepted |
+| weaker_untrained | 9.500 / 8.250 | -3.0396 | -4.0817 | -2.8000 | accepted |
+| baseline_frozen | 9.500 / 8.250 | -3.0396 | -4.7703 | -2.2000 | accepted |
+| bruteforce_full_task_models | 65.000 / 68.125 | +0.3695 | -2.9231 | -4.2000 | accepted |
+| shortcut_store_independent_adapters | 71.625 / 75.750 | +0.7939 | -1.5926 | +2.2000 | accepted |
+| shortcut_read_visible_labels | 100.000 / 100.000 | +2.1125 | +2.6037 | +3.6000 | accepted |
+| shortcut_rebuild_seed_answers | 100.000 / 100.000 | +2.1125 | +2.6037 | +3.6000 | accepted |
+| shortcut_omit_history | 66.250 / 68.875 | +0.4307 | +0.3274 | +3.0000 | accepted |
+| shortcut_forge_parameter_cost | 66.250 / 68.875 | +0.1867 | +1276.7907 | +4.4000 | accepted |
+| shortcut_inflate_baseline_denominator | 66.250 / 68.875 | +0.1867 | +1078.2861 | +4.4000 | accepted |
+| shortcut_replace_canonical_labels | 100.000 / 100.000 | +2.1125 | +2.6037 | +3.6000 | accepted |
+| shortcut_shrink_test_to_one | — | — | — | — | rejected_or_not_run |
+| shortcut_poison_comparison_baseline | 66.250 / 68.875 | +0.1867 | +0.1471 | +2.2000 | accepted |
+| shortcut_constant_zero | 8.250 / 6.875 | -3.3528 | -4.3639 | -3.6000 | accepted |
+| shortcut_failing_method_impossible_cost | 0.000 / 0.000 | +1.4700 | +2300449445911461396687000085593151080746648239702306041719909470512381119362195101708146578286444544.0000 | -1.4000 | accepted |
+| shortcut_empty_predictions | — | — | — | — | rejected_or_not_run |
+| shortcut_csv_label_forgery | 8.250 / 6.875 | -3.3528 | -4.3639 | -3.6000 | accepted |
+| shortcut_null_cost | — | — | — | — | rejected_or_not_run |
+| shortcut_nan_cost | — | — | — | — | accepted_nonfinite |
+| shortcut_direct_score_write | 66.250 / 68.875 | +0.1867 | +0.1471 | +2.2000 | accepted |

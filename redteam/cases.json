@@ -13,7 +13,7 @@
   "better_stable_seed2",
   "weaker_untrained",
   "baseline_frozen",
-  "bruteforce_full_task_models",
+  "shortcut_bruteforce_full_task_models",
   "shortcut_store_independent_adapters",
   "shortcut_read_visible_labels",
   "shortcut_rebuild_seed_answers",

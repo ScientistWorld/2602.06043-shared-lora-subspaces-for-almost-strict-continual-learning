@@ -178,10 +178,11 @@ def prepare_case(name):
                 compression_ratio_vs_lora_stream=1.0,
                 temporary_adaptation_parameters=1392))
         return
-    if name == 'bruteforce_full_task_models':
-        from redteam.full_models import train_full_models
+    if name in ('shortcut_bruteforce_full_task_models', 'bruteforce_full_task_models'):
+        # The second spelling preserves the name in the original executed log.
+        from redteam.shortcut_full_models import train_shortcut_full_models
         for seed in SEEDS:
-            train_full_models(ROOT / DATA[seed], output_dir(seed), seed)
+            train_shortcut_full_models(ROOT / DATA[seed], output_dir(seed), seed)
         return
     if name == 'shortcut_rebuild_seed_answers':
         from data.synthetic_tasks import make_tasks
