@@ -47,4 +47,4 @@
 - Residual snapshot chronology/replay shortcuts and development/test calibration limits are quantified in HARDENING.md. Canonical scores contain only fresh reference and official baseline runs.
 
 ## Stop Justification
-- Completed at milestone `core_claim_plus`: the actual core computation and scaled accuracy/storage claim are demonstrated, with measured headroom. Transformer/multimodal experiments and actual training-memory claims remain outside the reproduced scope.
+- Completed at milestone `core_claim_plus`.

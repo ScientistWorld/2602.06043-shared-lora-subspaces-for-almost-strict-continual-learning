@@ -1,5 +1,3 @@
-action: submit
-gpus: 0
-test: true
+action: done
 milestone: core_claim_plus
-notes: "Resume the completed batch after fixing an invalid exact-training-equality assertion: rescore saved reference, baselines, variants and attacks against the freshly frozen comparison; finish verification and regenerate canonical scores. No retraining."
+notes: "Committed final hardening: 38-case audit and validation pass; paired improvements exceed seed variation, raw-state scoring and failure gates are enforced, canonical scores and end-to-end reproduction are restored; residual chronology/replay shortcuts are documented."
