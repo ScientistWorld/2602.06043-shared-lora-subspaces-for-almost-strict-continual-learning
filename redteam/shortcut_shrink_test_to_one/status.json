@@ -1,0 +1,20 @@
+{
+  "case": "shortcut_shrink_test_to_one",
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5161307819653302
+  },
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4580168251413852
+  },
+  "total_seconds": 1.3625076250173151
+}

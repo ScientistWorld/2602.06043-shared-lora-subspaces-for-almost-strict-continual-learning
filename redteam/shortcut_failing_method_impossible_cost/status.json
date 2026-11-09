@@ -1,0 +1,20 @@
+{
+  "case": "shortcut_failing_method_impossible_cost",
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4537350300233811
+  },
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.45486803399398923
+  },
+  "total_seconds": 1.277663647197187
+}

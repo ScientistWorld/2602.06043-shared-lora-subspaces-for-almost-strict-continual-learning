@@ -1,0 +1,20 @@
+{
+  "case": "shortcut_read_visible_labels",
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5170230760704726
+  },
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4607844490092248
+  },
+  "total_seconds": 1.3359197268728167
+}

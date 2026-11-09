@@ -1,0 +1,63 @@
+{
+  "method": "share",
+  "meta": {
+    "num_tasks": 4,
+    "input_dim": 96,
+    "num_classes": 20,
+    "shared_rank": 4,
+    "train_per_task": 900,
+    "test_per_task": 400,
+    "seed": 21
+  },
+  "hyperparameters": {
+    "data": "data/synthetic_share_tasks_seed21.npz",
+    "output_dir": "/home/user/checkpoints/share_seed21/predictions",
+    "seed": 21,
+    "lora_rank": 12,
+    "k": 8,
+    "pseudo_rank": 4,
+    "phi": 4,
+    "lora_steps": 700,
+    "share_steps": 1500,
+    "lr": 0.03,
+    "refit_steps": 700
+  },
+  "history": [
+    {
+      "after_task": "task_0",
+      "seen_task_accuracy": {
+        "task_0": 0.7699999809265137
+      }
+    },
+    {
+      "after_task": "task_1",
+      "seen_task_accuracy": {
+        "task_0": 0.7699999809265137,
+        "task_1": 0.7749999761581421
+      }
+    },
+    {
+      "after_task": "task_2",
+      "seen_task_accuracy": {
+        "task_0": 0.7524999976158142,
+        "task_1": 0.7749999761581421,
+        "task_2": 0.737500011920929
+      }
+    },
+    {
+      "after_task": "task_3",
+      "seen_task_accuracy": {
+        "task_0": 0.7149999737739563,
+        "task_1": 0.7950000166893005,
+        "task_2": 0.7200000286102295,
+        "task_3": 0.8174999952316284
+      }
+    }
+  ],
+  "parameter_counts": {
+    "share_parameters": 1184,
+    "temporary_adaptation_parameters": 496,
+    "independent_lora_stream_parameters": 5568,
+    "compression_ratio_vs_lora_stream": 4.702702702702703
+  }
+}

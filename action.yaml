@@ -1,4 +1,4 @@
 action: submit
 gpus: 0
 test: false
-notes: "Bundled audit: 3 reference seeds, stronger/weaker methods, brute-force baselines, and 15 artifact shortcuts; save all per-case hidden-test scores under redteam and restore original inputs."
+notes: "Focused audit follow-up: repeat genuine refinements across seeds, test mean-preserving SVD merge, rerun shortcuts against exact original artifacts, and correct canonical test-size trial."

@@ -11,7 +11,7 @@
   },
   "hyperparameters": {
     "data": "data/synthetic_share_tasks.npz",
-    "output_dir": "/home/user/checkpoints/share/predictions",
+    "output_dir": "checkpoints/share/predictions",
     "seed": 13,
     "lora_rank": 12,
     "k": 8,
@@ -32,24 +32,24 @@
       "after_task": "task_1",
       "seen_task_accuracy": {
         "task_0": 0.7074999809265137,
-        "task_1": 0.6575000286102295
+        "task_1": 0.6549999713897705
       }
     },
     {
       "after_task": "task_2",
       "seen_task_accuracy": {
         "task_0": 0.7074999809265137,
-        "task_1": 0.6575000286102295,
-        "task_2": 0.6549999713897705
+        "task_1": 0.6549999713897705,
+        "task_2": 0.6575000286102295
       }
     },
     {
       "after_task": "task_3",
       "seen_task_accuracy": {
-        "task_0": 0.7074999809265137,
-        "task_1": 0.6424999833106995,
-        "task_2": 0.6700000166893005,
-        "task_3": 0.7074999809265137
+        "task_0": 0.6974999904632568,
+        "task_1": 0.637499988079071,
+        "task_2": 0.6274999976158142,
+        "task_3": 0.7674999833106995
       }
     }
   ],

@@ -1,0 +1,20 @@
+{
+  "case": "shortcut_store_independent_adapters",
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5001608568709344
+  },
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.48165972298011184
+  },
+  "total_seconds": 1.0561771891079843
+}

@@ -37,7 +37,7 @@
         },
         "share": {
           "final_average_accuracy": 0.0,
-          "average_forgetting": 0.37500113248825073,
+          "average_forgetting": 1.4375001192092896,
           "trainable_parameters": -1e+100,
           "temporary_adaptation_parameters": -1e+100,
           "parameter_fraction_vs_lora_stream": -1.795977011494253e+96,
@@ -83,7 +83,7 @@
         },
         "share": {
           "final_average_accuracy": 0.0,
-          "average_forgetting": 2.312500774860382,
+          "average_forgetting": 2.1874994039535522,
           "trainable_parameters": -1e+100,
           "temporary_adaptation_parameters": -1e+100,
           "parameter_fraction_vs_lora_stream": -1.795977011494253e+96,

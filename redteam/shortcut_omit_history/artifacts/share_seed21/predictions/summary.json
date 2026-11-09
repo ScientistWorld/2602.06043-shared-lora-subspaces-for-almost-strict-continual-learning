@@ -11,7 +11,7 @@
   },
   "hyperparameters": {
     "data": "data/synthetic_share_tasks_seed21.npz",
-    "output_dir": "/home/user/checkpoints/share_seed21/predictions",
+    "output_dir": "checkpoints/share_seed21/predictions",
     "seed": 21,
     "lora_rank": 12,
     "k": 8,
