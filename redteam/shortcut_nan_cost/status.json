@@ -1,0 +1,20 @@
+{
+  "case": "shortcut_nan_cost",
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5200777279678732
+  },
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5190937658771873
+  },
+  "total_seconds": 1.0592674580402672
+}

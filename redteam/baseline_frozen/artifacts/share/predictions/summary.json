@@ -1,0 +1,15 @@
+{
+  "method": "frozen",
+  "meta": {
+    "num_tasks": 4,
+    "input_dim": 96,
+    "num_classes": 20,
+    "shared_rank": 4,
+    "train_per_task": 900,
+    "test_per_task": 400,
+    "seed": 13
+  },
+  "parameter_counts": {
+    "trainable_parameters": 0
+  }
+}

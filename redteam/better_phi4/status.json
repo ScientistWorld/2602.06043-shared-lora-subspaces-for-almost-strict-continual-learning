@@ -1,0 +1,20 @@
+{
+  "case": "better_phi4",
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5514009681064636
+  },
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5157439289614558
+  },
+  "total_seconds": 17.196800471981987
+}

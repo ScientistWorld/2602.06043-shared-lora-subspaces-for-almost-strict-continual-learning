@@ -1,0 +1,20 @@
+{
+  "case": "better_refit",
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5071086508687586
+  },
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5059275780804455
+  },
+  "total_seconds": 19.251691980054602
+}

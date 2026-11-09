@@ -1,0 +1,20 @@
+{
+  "case": "better_more_training",
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5173380228225142
+  },
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4825197961181402
+  },
+  "total_seconds": 29.699447369901463
+}

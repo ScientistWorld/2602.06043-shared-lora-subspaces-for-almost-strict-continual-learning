@@ -1,0 +1,20 @@
+{
+  "case": "shortcut_forge_parameter_cost",
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5585636331234127
+  },
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5410174049902707
+  },
+  "total_seconds": 1.1214335979893804
+}

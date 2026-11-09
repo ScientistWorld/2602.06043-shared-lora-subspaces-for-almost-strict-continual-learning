@@ -1,0 +1,20 @@
+{
+  "case": "shortcut_replace_canonical_labels",
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5213346309028566
+  },
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5129371089860797
+  },
+  "total_seconds": 1.4219196380581707
+}

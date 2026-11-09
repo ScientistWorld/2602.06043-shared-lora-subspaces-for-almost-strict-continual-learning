@@ -1,0 +1,20 @@
+{
+  "case": "reference_seed2",
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4857425258960575
+  },
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4756789749953896
+  },
+  "total_seconds": 16.411884596105665
+}

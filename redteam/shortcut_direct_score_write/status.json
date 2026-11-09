@@ -1,0 +1,20 @@
+{
+  "case": "shortcut_direct_score_write",
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5311000891961157
+  },
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.48671373701654375
+  },
+  "total_seconds": 1.0368458768352866
+}

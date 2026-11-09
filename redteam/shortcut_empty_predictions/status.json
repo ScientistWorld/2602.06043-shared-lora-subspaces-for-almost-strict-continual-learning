@@ -1,0 +1,20 @@
+{
+  "case": "shortcut_empty_predictions",
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.5254853330552578
+  },
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "exit_code": 1,
+    "elapsed_seconds": 0.5183441529516131
+  },
+  "total_seconds": 1.4370851691346616
+}

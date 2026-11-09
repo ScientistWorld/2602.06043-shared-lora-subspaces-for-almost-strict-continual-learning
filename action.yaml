@@ -1,8 +1,4 @@
-# Once you set action to 'submit' or 'done', STOP immediately.
-# Do NOT sleep, poll, or wait for jobs. The system reads this file
-# only after your turn ends.
-action: pending
+action: submit
 gpus: 0
 test: false
-milestone: core_claim_plus
-notes: ""
+notes: "Bundled audit: 3 reference seeds, stronger/weaker methods, brute-force baselines, and 15 artifact shortcuts; save all per-case hidden-test scores under redteam and restore original inputs."

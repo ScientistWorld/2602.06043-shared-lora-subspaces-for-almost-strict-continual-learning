@@ -1,0 +1,20 @@
+{
+  "case": "weaker_untrained",
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5033246430102736
+  },
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.48098475206643343
+  },
+  "total_seconds": 10.535274983849376
+}

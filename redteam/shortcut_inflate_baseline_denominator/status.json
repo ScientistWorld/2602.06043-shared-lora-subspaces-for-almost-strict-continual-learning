@@ -1,0 +1,20 @@
+{
+  "case": "shortcut_inflate_baseline_denominator",
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5183522440493107
+  },
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5121329959947616
+  },
+  "total_seconds": 1.0500786940101534
+}

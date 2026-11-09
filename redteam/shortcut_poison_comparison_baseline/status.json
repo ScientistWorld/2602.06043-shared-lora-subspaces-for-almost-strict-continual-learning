@@ -1,0 +1,20 @@
+{
+  "case": "shortcut_poison_comparison_baseline",
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.512633427977562
+  },
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5153465250041336
+  },
+  "total_seconds": 1.0563615409191698
+}

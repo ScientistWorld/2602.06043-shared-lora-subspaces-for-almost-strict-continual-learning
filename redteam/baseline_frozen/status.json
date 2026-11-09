@@ -1,0 +1,20 @@
+{
+  "case": "baseline_frozen",
+  "train": {
+    "command": [
+      "bash",
+      "scripts/evaluate_train.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.5018015878740698
+  },
+  "test": {
+    "command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "exit_code": 0,
+    "elapsed_seconds": 0.4944761178921908
+  },
+  "total_seconds": 1.0228468789719045
+}

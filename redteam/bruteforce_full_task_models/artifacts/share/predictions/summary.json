@@ -1,0 +1,18 @@
+{
+  "method": "full_independent",
+  "meta": {
+    "num_tasks": 4,
+    "input_dim": 96,
+    "num_classes": 20,
+    "shared_rank": 4,
+    "train_per_task": 900,
+    "test_per_task": 400,
+    "seed": 13
+  },
+  "parameter_counts": {
+    "trainable_parameters": 7680,
+    "temporary_adaptation_parameters": 1920,
+    "independent_lora_stream_parameters": 5568,
+    "compression_ratio_vs_lora_stream": 0.725
+  }
+}
