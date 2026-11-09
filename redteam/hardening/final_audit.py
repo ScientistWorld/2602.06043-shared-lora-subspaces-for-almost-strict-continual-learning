@@ -59,10 +59,18 @@ def rebuild_copies() -> None:
     V.copy_run(Path('checkpoints/independent_lora'), RUNS/'shortcut_store_independent_adapters')
     V.copy_run(Path('checkpoints/independent_lora'), RUNS/'shortcut_poison_comparison_baseline')
     V.corrupt_final(RUNS/'shortcut_poison_comparison_baseline', 'nan')
+    # Artifact-only attacks follow the fresh reference, not an older training run.
+    backdated = RUNS/'shortcut_backdated_snapshots'
+    if backdated.exists():
+        shutil.rmtree(backdated)
+    manifest = load_manifest()
+    for sid in stream_ids(manifest=manifest):
+        count = int(manifest['streams'][sid]['num_tasks'])
+        state = V.load_final_state(Path('checkpoints/share'), sid, count)
+        V.write_backdated(backdated, sid, count, state)
     # A solution to one experiment that fails the other must fail the attempt.
     mixed = RUNS/'shortcut_partial_failure'
     V.copy_run(Path('checkpoints/share'), mixed)
-    manifest = load_manifest()
     for sid in stream_ids(manifest=manifest):
         if manifest['streams'][sid]['experiment'] == 'continual_10task_stream':
             V.tiny_failing_state(load_stream(sid), mixed)
@@ -111,7 +119,7 @@ def verify_math(scores: dict) -> None:
         assert 'shortcut_omit_history' in b['_metadata']['failed_runs']
         assert 'shortcut_store_independent_adapters' in b['_metadata']['failed_runs']
         assert 'shortcut_full_task_models' in b['_metadata']['failed_runs']
-        assert b['results']['reference_seed0'] == spec[e]['reference'], 'reference changed on final rerun'
+        assert b['results']['reference_seed0'] == spec[e]['reference'], 'raw reference rescoring disagrees with frozen comparison'
     # Reapplying the scorer's gate and rank must be idempotent.
     again = finalize(copy.deepcopy(scores), FAILED_METRICS)
     assert again['_metadata']['ranking']['rank_improvement'] == actual['rank_improvement']

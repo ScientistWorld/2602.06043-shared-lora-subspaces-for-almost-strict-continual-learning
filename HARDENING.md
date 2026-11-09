@@ -1,6 +1,6 @@
 # Hardening record
 
-Final validation is prepared as one batched CPU job. Numerical tables will be finalized from `redteam/hardening/final/` after that job completes. This record supersedes the old prediction/summary-based descriptions in the historical progress log.
+Job `dd9f0659-4e3` completed the reference, baselines and all audit rescoring, including the public-data poisoning checks, then stopped on an invalid assertion that a fresh training run must exactly equal the archived one. With identical configured seeds and checksummed inputs, test accuracy changed by +0.339/+0.168 percentage points and development accuracy by -2.550/-0.220 points. The cause was not isolated. The comparison is now frozen to the freshly measured reference; a continuation only rescores these saved states and finishes the checks. Full numerical tables will be finalized from `redteam/hardening/final/`. This record supersedes the old prediction/summary-based descriptions in the historical progress log.
 
 ## Scope and scientific fidelity
 
