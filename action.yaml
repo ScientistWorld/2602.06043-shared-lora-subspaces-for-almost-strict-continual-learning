@@ -1,8 +1,5 @@
-# Once you set action to 'submit' or 'done', STOP immediately.
-# Do NOT sleep, poll, or wait for jobs. The system reads this file
-# only after your turn ends.
-action: pending
+action: submit
 gpus: 0
-test: false
+test: true
 milestone: core_claim_plus
-notes: ""
+notes: "One batched final hardening check: rebuild reference and four baselines, rescore saved variants and shortcuts, verify cohort ranking, no-argument evaluation, and public-data poisoning defenses."
