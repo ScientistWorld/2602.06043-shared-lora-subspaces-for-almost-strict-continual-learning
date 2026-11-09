@@ -1,50 +1,20 @@
 #!/bin/bash
-# Reproduce the paper's results end-to-end.
+# Reproduce the reference end to end: every baseline and the paper's method on
+# every stream in data/streams/manifest.json, then the visible evaluation.
 #
-# This script runs inside the compute container and should call
-# scripts/baseline.sh and scripts/method.sh to run baselines and
-# the paper's method, each of which calls scripts/evaluate.sh.
-#
-# Assumes:
-#   - Container is built (environment/container.sif)
-#   - Data and models are downloaded (via scripts/download.sh)
-#   - Working directory is /home/user
-#
-# This is the "gold standard" reproduction — 
-# You do not need to run this, but keep this in good shape
-# so other agents can easily run a full loop of reproduction and get the paper's numbers.
+# Assumes the container is built and data/streams/manifest.json is present
+# (tracked in git; verified by scripts/download.sh). Working directory /home/user.
 
 set -e
 
 cd /home/user
 
-rm -rf \
-  checkpoints/frozen/predictions \
-  checkpoints/lora/predictions \
-  checkpoints/share/predictions \
-  checkpoints/frozen_seed21/predictions \
-  checkpoints/lora_seed21/predictions \
-  checkpoints/share_seed21/predictions
+export OMP_NUM_THREADS=1 MKL_NUM_THREADS=1
 
-rm -f data/synthetic_share_tasks.npz
-bash scripts/baseline.sh frozen
-bash scripts/baseline.sh lora
+bash scripts/download.sh
+bash scripts/baseline.sh frozen_backbone
+bash scripts/baseline.sh independent_lora
+bash scripts/baseline.sh sequential_lora
+bash scripts/baseline.sh independent_rank1
 bash scripts/method.sh
-
-rm -f data/synthetic_share_tasks_seed21.npz
-python -m baseline.lora_linear \
-  --kind frozen \
-  --seed 21 \
-  --data data/synthetic_share_tasks_seed21.npz \
-  --output-dir checkpoints/frozen_seed21/predictions
-python -m baseline.lora_linear \
-  --kind lora \
-  --seed 21 \
-  --data data/synthetic_share_tasks_seed21.npz \
-  --output-dir checkpoints/lora_seed21/predictions
-python -m method.share_linear \
-  --seed 21 \
-  --data data/synthetic_share_tasks_seed21.npz \
-  --output-dir checkpoints/share_seed21/predictions
-bash scripts/evaluate.sh
-python validate.py --compare
+bash scripts/evaluate_train.sh

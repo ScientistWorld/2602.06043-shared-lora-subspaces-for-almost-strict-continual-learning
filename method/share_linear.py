@@ -1,24 +1,35 @@
-"""Share for frozen linear layers with low-rank adapters.
+"""Share for a frozen linear layer adapted continually with low-rank updates.
 
-This implements the paper's algorithmic steps: LoRA initialization, SVD-derived
-principal A/B factor subspaces, temporary basis adaptation, SVD merging, and
-analytical coefficient reprojection.
+Implements the paper's algorithmic steps (Sec. 3.2, Algorithm 1):
+
+1. Initialization: train a LoRA adapter on the first task, stack its rank
+   vectors, center them and take the top-k right singular vectors as the
+   principal factors (alpha for A, beta for B); learn task coefficients
+   eps_alpha, eps_beta (k x p) in that frozen basis.
+2. Continual adaptation: for every new task, initialise phi temporary basis
+   vectors from the top-phi principal factors plus fresh coefficients, and
+   optimise both on the current task's data only (no replay).
+3. Merging: reconstruct every previous task adapter from the retained shared
+   state (alpha, beta, coefficients), stack them with the new temporary
+   adapter, recompute the principal factors by (centered) SVD and analytically
+   recompute all task coefficients with the pseudoinverse projection.
+
+After each task the deployed Share state -- shared factors plus per-task
+coefficients for the tasks seen so far -- is saved as a snapshot; the
+evaluator reconstructs every task's weight update from it.
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
 import torch
 import torch.nn.functional as F
 
-from data.synthetic_tasks import load_npz, write_npz
-
-
-def _accuracy(logits: torch.Tensor, y: torch.Tensor) -> float:
-    return float((logits.argmax(dim=1) == y).float().mean().item())
+from data.streams import load_manifest, load_stream, save_snapshot, stream_ids
 
 
 class LoRAAdapter(torch.nn.Module):
@@ -63,7 +74,10 @@ class ShareTaskAdapter(torch.nn.Module):
 
 
 def train_module(module: torch.nn.Module, x: torch.Tensor, y: torch.Tensor, *, steps: int, lr: float) -> None:
-    opt = torch.optim.AdamW([p for p in module.parameters() if p.requires_grad], lr=lr, weight_decay=1e-3)
+    params = [p for p in module.parameters() if p.requires_grad]
+    if steps <= 0 or not params:
+        return
+    opt = torch.optim.AdamW(params, lr=lr, weight_decay=1e-3)
     for _ in range(steps):
         opt.zero_grad(set_to_none=True)
         loss = F.cross_entropy(module(x), y)
@@ -71,13 +85,16 @@ def train_module(module: torch.nn.Module, x: torch.Tensor, y: torch.Tensor, *, s
         opt.step()
 
 
-def principal_factors(adapters: list[tuple[torch.Tensor, torch.Tensor]], k: int) -> tuple[torch.Tensor, torch.Tensor]:
+def principal_factors(
+    adapters: list[tuple[torch.Tensor, torch.Tensor]], k: int, center: bool = True
+) -> tuple[torch.Tensor, torch.Tensor]:
     a_rows = torch.cat([a for a, _ in adapters], dim=0)
     b_cols = torch.cat([b.T for _, b in adapters], dim=0)
-    a_centered = a_rows - a_rows.mean(dim=0, keepdim=True)
-    b_centered = b_cols - b_cols.mean(dim=0, keepdim=True)
-    _, _, va = torch.linalg.svd(a_centered, full_matrices=False)
-    _, _, vb = torch.linalg.svd(b_centered, full_matrices=False)
+    if center:
+        a_rows = a_rows - a_rows.mean(dim=0, keepdim=True)
+        b_cols = b_cols - b_cols.mean(dim=0, keepdim=True)
+    _, _, va = torch.linalg.svd(a_rows, full_matrices=False)
+    _, _, vb = torch.linalg.svd(b_cols, full_matrices=False)
     return va[:k].T.contiguous(), vb[:k].T.contiguous()
 
 
@@ -103,87 +120,52 @@ def reconstruct_adapters(
     return adapters
 
 
-def logits_from_coeffs(
-    base_weight: torch.Tensor,
-    alpha: torch.Tensor,
-    beta: torch.Tensor,
-    coeff: tuple[torch.Tensor, torch.Tensor],
-    x: torch.Tensor,
-) -> torch.Tensor:
-    eps_alpha, eps_beta = coeff
-    a_hat = (alpha @ eps_alpha).T
-    b_hat = beta @ eps_beta
-    return x @ (base_weight + b_hat @ a_hat).T
+def share_state(alpha: torch.Tensor, beta: torch.Tensor, coeffs: list[tuple[torch.Tensor, torch.Tensor]]) -> dict:
+    """Deployed state: shared factors plus each seen task's coefficients."""
+
+    state = {"shared_A": alpha.detach().numpy(), "shared_B": beta.detach().numpy()}
+    for j, (eps_alpha, eps_beta) in enumerate(coeffs):
+        state[f"task_{j}_A"] = eps_alpha.detach().numpy()
+        state[f"task_{j}_B"] = eps_beta.detach().numpy()
+    return state
 
 
-def train_share(args: argparse.Namespace) -> dict:
-    data_path = Path(args.data)
-    if not data_path.exists():
-        write_npz(data_path, seed=args.seed)
-    base_weight, tasks, meta = load_npz(data_path)
+def stream_seed(seed: int, stream_id: str) -> int:
+    return int(hashlib.sha256(f"{seed}:{stream_id}".encode()).hexdigest()[:8], 16)
 
-    torch.manual_seed(args.seed)
+
+def train_share_stream(stream, args: argparse.Namespace, output_root: Path) -> None:
+    torch.manual_seed(stream_seed(args.seed, stream.stream_id))
+    base_weight = torch.tensor(stream.base)
+    xs = [torch.tensor(task.x_train) for task in stream.tasks]
+    ys = [torch.tensor(task.y_train) for task in stream.tasks]
+
+    # Step 1: initialise the principal subspace from a LoRA trained on the first task.
     first = LoRAAdapter(base_weight, args.lora_rank)
-    train_module(first, tasks[0].x_train, tasks[0].y_train, steps=args.lora_steps, lr=args.lr)
-    seed_adapters = [first.factors()]
-    alpha, beta = principal_factors(seed_adapters, args.k)
-
+    train_module(first, xs[0], ys[0], steps=args.lora_steps, lr=args.lr)
+    alpha, beta = principal_factors([first.factors()], args.k)
     initial = ShareTaskAdapter(base_weight, alpha, beta, args.pseudo_rank, train_basis=False)
-    train_module(initial, tasks[0].x_train, tasks[0].y_train, steps=args.share_steps, lr=args.lr)
+    train_module(initial, xs[0], ys[0], steps=args.share_steps, lr=args.lr)
     coeffs = project_coefficients([initial.factors()], alpha, beta)
+    save_snapshot(output_root, stream.stream_id, 0, share_state(alpha, beta, coeffs))
 
-    history = []
-    for task_index, task in enumerate(tasks):
-        if task_index > 0:
-            tmp_alpha = alpha[:, : args.phi].clone()
-            tmp_beta = beta[:, : args.phi].clone()
-            temp = ShareTaskAdapter(base_weight, tmp_alpha, tmp_beta, args.pseudo_rank, train_basis=True)
-            train_module(temp, task.x_train, task.y_train, steps=args.share_steps, lr=args.lr)
-            merge_adapters = reconstruct_adapters(alpha, beta, coeffs)
-            merge_adapters.append(temp.factors())
-            alpha, beta = principal_factors(merge_adapters, args.k)
-            coeffs = project_coefficients(merge_adapters, alpha, beta)
-
-        seen_scores = {}
-        for j in range(task_index + 1):
-            logits = logits_from_coeffs(base_weight, alpha, beta, coeffs[j], tasks[j].x_test)
-            seen_scores[tasks[j].name] = _accuracy(logits, tasks[j].y_test)
-        history.append({"after_task": task.name, "seen_task_accuracy": seen_scores})
-
-    predictions_dir = Path(args.output_dir)
-    predictions_dir.mkdir(parents=True, exist_ok=True)
-    for j, task in enumerate(tasks):
-        logits = logits_from_coeffs(base_weight, alpha, beta, coeffs[j], task.x_test)
-        pred = logits.argmax(dim=1).cpu().numpy()
-        rows = ["task_id,example_id,prediction,label"]
-        for i, (p, y) in enumerate(zip(pred, task.y_test.cpu().numpy(), strict=True)):
-            rows.append(f"{j},{i},{int(p)},{int(y)}")
-        (predictions_dir / f"{task.name}.csv").write_text("\n".join(rows) + "\n")
-
-    deployed_share = int(alpha.numel() + beta.numel() + len(tasks) * args.k * args.pseudo_rank * 2)
-    temporary_adaptation = int(args.phi * (sum(base_weight.shape) + 2 * args.pseudo_rank))
-    trainable_lora_stream = int(len(tasks) * args.lora_rank * sum(base_weight.shape))
-    summary = {
-        "method": "share",
-        "meta": meta,
-        "hyperparameters": vars(args),
-        "history": history,
-        "parameter_counts": {
-            "share_parameters": deployed_share,
-            "temporary_adaptation_parameters": temporary_adaptation,
-            "independent_lora_stream_parameters": trainable_lora_stream,
-            "compression_ratio_vs_lora_stream": trainable_lora_stream / deployed_share,
-        },
-    }
-    (predictions_dir / "summary.json").write_text(json.dumps(summary, indent=2))
-    return summary
+    for t in range(1, len(stream.tasks)):
+        # Step 2: temporary expansion from the top-phi factors, trained on task t only.
+        temp = ShareTaskAdapter(base_weight, alpha[:, : args.phi], beta[:, : args.phi], args.pseudo_rank, train_basis=True)
+        train_module(temp, xs[t], ys[t], steps=args.share_steps, lr=args.lr)
+        # Step 3: merge previous (reconstructed) adapters with the new one; reproject coefficients.
+        merge_adapters = reconstruct_adapters(alpha, beta, coeffs)
+        merge_adapters.append(temp.factors())
+        alpha, beta = principal_factors(merge_adapters, args.k)
+        coeffs = project_coefficients(merge_adapters, alpha, beta)
+        save_snapshot(output_root, stream.stream_id, t, share_state(alpha, beta, coeffs))
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data", default="data/synthetic_share_tasks.npz")
-    parser.add_argument("--output-dir", default="checkpoints/share/predictions")
-    parser.add_argument("--seed", type=int, default=13)
+    parser.add_argument("--output-root", default="checkpoints/share")
+    parser.add_argument("--roles", nargs="+", default=["dev", "test"], help="which manifest streams to train on")
+    parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--lora-rank", type=int, default=12)
     parser.add_argument("--k", type=int, default=8)
     parser.add_argument("--pseudo-rank", type=int, default=4)
@@ -192,7 +174,16 @@ def main() -> None:
     parser.add_argument("--share-steps", type=int, default=1500)
     parser.add_argument("--lr", type=float, default=0.03)
     args = parser.parse_args()
-    train_share(args)
+
+    torch.set_num_threads(1)
+    output_root = Path(args.output_root)
+    output_root.mkdir(parents=True, exist_ok=True)
+    (output_root / "run_config.json").write_text(json.dumps({"method": "share", **vars(args)}, indent=2) + "\n")
+    manifest = load_manifest()
+    for role in args.roles:
+        for sid in stream_ids(role=role, manifest=manifest):
+            train_share_stream(load_stream(sid, manifest=manifest), args, output_root)
+            print(f"share: finished {sid}", flush=True)
 
 
 if __name__ == "__main__":

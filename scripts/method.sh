@@ -1,7 +1,8 @@
 #!/bin/bash
-# Run the paper's proposed method.
+# Run the paper's proposed method (Share) on every stream in
+# data/streams/manifest.json and score the development streams.
 #
-# This script trains/runs the paper's method using code in method/.
+# Writes deployed-state snapshots to checkpoints/share/<stream_id>/after_task_XX.npz.
 #
 # Usage:
 #   bash scripts/method.sh
@@ -10,8 +11,7 @@ set -e
 
 cd /home/user
 
-python -m method.share_linear \
-  --data data/synthetic_share_tasks.npz \
-  --output-dir checkpoints/share/predictions
+rm -rf checkpoints/share
+python -m method.share_linear --output-root checkpoints/share
 
 bash scripts/evaluate.sh

@@ -1,105 +1,72 @@
 {
   "experiments": {
-    "synthetic_continual_low_rank": {
-      "description": "Scaled continual low-rank classification benchmark for the Share core claim; paper reference shape is Table 1 GLUE performance/parameter tradeoff.",
-      "notes": "The paper reports the Share and independent-LoRA headline values on six-task Continual GLUE with RoBERTa-base. This gym uses a deterministic scaled synthetic classification stream, so reproduced scores are not expected to match the paper's absolute values. The frozen-backbone reference is the measured value on this scaled stream; parameter counts in the results section retain the paper-scale comparison context.",
+    "continual_6task_stream": {
+      "description": "Replay-free continual adaptation of a frozen linear classifier over six-task streams (the paper's Continual GLUE stream length, Table 1). Scored on six hidden streams, 1000 held-out examples per task.",
+      "notes": "Scaled setting: a frozen 20x96 linear map instead of RoBERTa-base on GLUE, synthetic related tasks instead of GLUE tasks. The paper's Table 1 averages are kept as context for the accuracy direction only; they are not on this benchmark's scale. Paper resource numbers are not on this scale either and are kept under _paper_reported. Runs that exceed the continual-learning budget (shared state > one rank-12 adapter = 1392 parameters, or > 139 parameters per task) or whose final average accuracy is below 40% are scored as failed with bounded worst values (accuracy 0, forgetting 100, parameter fraction 1).",
       "weight": 0.5,
       "primary_metric": "final_average_accuracy",
       "metrics": {
-        "final_average_accuracy": {"higher_is_better": true, "coefficient": 1.0, "description": "Mean final classification accuracy across all tasks in the stream."},
-        "average_forgetting": {"higher_is_better": false, "coefficient": -0.4, "description": "Average drop from each task's best historical accuracy to its final accuracy."},
-        "trainable_parameters": {"higher_is_better": false, "coefficient": 0.0, "description": "Reported final trainable or stored task-adaptation parameter count."},
-        "temporary_adaptation_parameters": {"higher_is_better": false, "coefficient": 0.0, "description": "Reported peak temporary adaptation parameter count used while learning a new task."},
-        "parameter_fraction_vs_lora_stream": {"higher_is_better": false, "coefficient": -0.5, "description": "Final adaptation parameters divided by the independent-LoRA stream parameter count."},
-        "temporary_parameter_fraction_vs_lora_stream": {"higher_is_better": false, "coefficient": -0.2, "description": "Peak temporary adaptation parameters divided by the independent-LoRA stream parameter count."},
-        "compression_ratio_vs_lora_stream": {"higher_is_better": true, "coefficient": 0.4, "description": "Independent-LoRA stream parameter count divided by the final adaptation parameter count."},
-        "task_0_accuracy": {"higher_is_better": true, "coefficient": 0.2, "description": "Final accuracy on the first task, catching early-task forgetting."},
-        "task_1_accuracy": {"higher_is_better": true, "coefficient": 0.2, "description": "Final accuracy on the second task."},
-        "task_2_accuracy": {"higher_is_better": true, "coefficient": 0.2, "description": "Final accuracy on the third task."},
-        "task_3_accuracy": {"higher_is_better": true, "coefficient": 0.2, "description": "Final accuracy on the fourth task."}
+        "final_average_accuracy": {"higher_is_better": true, "coefficient": 1.0, "description": "Mean over hidden streams of the final accuracy (%) averaged over all tasks of the stream, from the state deployed after the last task."},
+        "average_forgetting": {"higher_is_better": false, "coefficient": 0.2, "description": "Mean over streams of the average drop (percentage points) from each earlier task's best accuracy across the per-task snapshots to its final accuracy; recomputed by the evaluator from the snapshots."},
+        "parameter_fraction_vs_lora_stream": {"higher_is_better": false, "coefficient": 0.4, "description": "Parameters in the final deployed state (counted from its arrays) divided by the evaluator-fixed cost of storing one rank-12 adapter per task (T x 12 x (20 + 96))."},
+        "compression_ratio_vs_lora_stream": {"higher_is_better": true, "coefficient": 0.0, "description": "Inverse of parameter_fraction_vs_lora_stream; reported for comparison with the paper's compression claims, not scored separately."},
+        "stored_parameters": {"higher_is_better": false, "coefficient": 0.0, "description": "Raw count of parameters in the final deployed state (mean over streams); reported only."},
+        "worst_task_accuracy": {"higher_is_better": true, "coefficient": 0.0, "description": "Mean over streams of the lowest final per-task accuracy (%); reported only, as a collapse diagnostic."}
       },
       "results": {
-        "independent_lora": {
-          "type": "baseline",
-          "final_average_accuracy": 83.43,
-          "average_forgetting": 0.0,
-          "trainable_parameters": 7200000,
-          "temporary_adaptation_parameters": 7200000,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "temporary_parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 1.0
-        },
-        "frozen_backbone": {
-          "type": "baseline",
-          "final_average_accuracy": 8.875,
-          "average_forgetting": 0.0,
-          "trainable_parameters": 0,
-          "temporary_adaptation_parameters": 0,
-          "parameter_fraction_vs_lora_stream": 0.0,
-          "temporary_parameter_fraction_vs_lora_stream": 0.0,
-          "compression_ratio_vs_lora_stream": 0.0
-        },
-        "share": {
-          "type": "proposed",
-          "final_average_accuracy": 78.69,
-          "average_forgetting": 0.145,
-          "trainable_parameters": 12000,
-          "temporary_adaptation_parameters": 450000,
-          "parameter_fraction_vs_lora_stream": 0.001667,
-          "temporary_parameter_fraction_vs_lora_stream": 0.0625,
-          "compression_ratio_vs_lora_stream": 600.0
-        }
+        "share": {"type": "proposed", "final_average_accuracy": 78.69},
+        "independent_lora": {"type": "baseline", "final_average_accuracy": 83.43},
+        "frozen_backbone": {"type": "baseline"},
+        "sequential_lora": {"type": "baseline"},
+        "independent_rank1": {"type": "baseline"}
+      },
+      "_paper_reported": {
+        "source": "Table 1, Continual GLUE with RoBERTa-base, mean of 3 seeds",
+        "share_cl_average": 78.69,
+        "share_full_average": 83.44,
+        "lora_non_cl_average": 83.43,
+        "upper_bound_average": 83.90,
+        "share_parameters": 12000,
+        "lora_non_cl_parameters": 7200000,
+        "share_size_mb": 0.29,
+        "lora_non_cl_size_mb": 81.6,
+        "share_temporary_parameters": 450000,
+        "parameter_reduction": "100x",
+        "memory_savings": "281x"
       }
     },
-    "synthetic_continual_low_rank_seed21": {
-      "description": "Second deterministic scaled low-rank continual stream with the same procedure and a different seed.",
-      "notes": "This is an added robustness stream for the scaled gym, not a separate paper table. Paper-scale Share and independent-LoRA values are repeated for context; the frozen-backbone value is the measured scaled-stream baseline.",
+    "continual_10task_stream": {
+      "description": "Replay-free continual adaptation over ten-task streams (the paper's image-classification stream length, Table 2), where storage savings should grow with stream length and accumulated merges stress retention. Scored on four hidden streams, 1000 held-out examples per task.",
+      "notes": "Scaled setting: a frozen 20x96 linear map instead of a pretrained ViT-B/16 on class-incremental vision datasets. The paper's CIFAR-100 Share accuracy is kept as context for the direction only; it is not on this benchmark's scale. Same budget and task-success gate as the six-task experiment (budget 1392 shared + 139 per task; floor 40%).",
       "weight": 0.5,
       "primary_metric": "final_average_accuracy",
       "metrics": {
-        "final_average_accuracy": {"higher_is_better": true, "coefficient": 1.0, "description": "Mean final classification accuracy across all tasks in the stream."},
-        "average_forgetting": {"higher_is_better": false, "coefficient": -0.4, "description": "Average drop from each task's best historical accuracy to its final accuracy."},
-        "trainable_parameters": {"higher_is_better": false, "coefficient": 0.0, "description": "Reported final trainable or stored task-adaptation parameter count."},
-        "temporary_adaptation_parameters": {"higher_is_better": false, "coefficient": 0.0, "description": "Reported peak temporary adaptation parameter count used while learning a new task."},
-        "parameter_fraction_vs_lora_stream": {"higher_is_better": false, "coefficient": -0.5, "description": "Final adaptation parameters divided by the independent-LoRA stream parameter count."},
-        "temporary_parameter_fraction_vs_lora_stream": {"higher_is_better": false, "coefficient": -0.2, "description": "Peak temporary adaptation parameters divided by the independent-LoRA stream parameter count."},
-        "compression_ratio_vs_lora_stream": {"higher_is_better": true, "coefficient": 0.4, "description": "Independent-LoRA stream parameter count divided by the final adaptation parameter count."},
-        "task_0_accuracy": {"higher_is_better": true, "coefficient": 0.2, "description": "Final accuracy on the first task, catching early-task forgetting."},
-        "task_1_accuracy": {"higher_is_better": true, "coefficient": 0.2, "description": "Final accuracy on the second task."},
-        "task_2_accuracy": {"higher_is_better": true, "coefficient": 0.2, "description": "Final accuracy on the third task."},
-        "task_3_accuracy": {"higher_is_better": true, "coefficient": 0.2, "description": "Final accuracy on the fourth task."}
+        "final_average_accuracy": {"higher_is_better": true, "coefficient": 1.0, "description": "Mean over hidden streams of the final accuracy (%) averaged over all tasks of the stream, from the state deployed after the last task."},
+        "average_forgetting": {"higher_is_better": false, "coefficient": 0.2, "description": "Mean over streams of the average drop (percentage points) from each earlier task's best accuracy across the per-task snapshots to its final accuracy; recomputed by the evaluator from the snapshots."},
+        "parameter_fraction_vs_lora_stream": {"higher_is_better": false, "coefficient": 0.4, "description": "Parameters in the final deployed state (counted from its arrays) divided by the evaluator-fixed cost of storing one rank-12 adapter per task (T x 12 x (20 + 96))."},
+        "compression_ratio_vs_lora_stream": {"higher_is_better": true, "coefficient": 0.0, "description": "Inverse of parameter_fraction_vs_lora_stream; reported for comparison with the paper's compression claims, not scored separately."},
+        "stored_parameters": {"higher_is_better": false, "coefficient": 0.0, "description": "Raw count of parameters in the final deployed state (mean over streams); reported only."},
+        "worst_task_accuracy": {"higher_is_better": true, "coefficient": 0.0, "description": "Mean over streams of the lowest final per-task accuracy (%); reported only, as a collapse diagnostic."}
       },
       "results": {
-        "independent_lora": {
-          "type": "baseline",
-          "final_average_accuracy": 83.43,
-          "average_forgetting": 0.0,
-          "trainable_parameters": 7200000,
-          "temporary_adaptation_parameters": 7200000,
-          "parameter_fraction_vs_lora_stream": 1.0,
-          "temporary_parameter_fraction_vs_lora_stream": 1.0,
-          "compression_ratio_vs_lora_stream": 1.0
-        },
-        "frozen_backbone": {
-          "type": "baseline",
-          "final_average_accuracy": 8.875,
-          "average_forgetting": 0.0,
-          "trainable_parameters": 0,
-          "temporary_adaptation_parameters": 0,
-          "parameter_fraction_vs_lora_stream": 0.0,
-          "temporary_parameter_fraction_vs_lora_stream": 0.0,
-          "compression_ratio_vs_lora_stream": 0.0
-        },
-        "share": {
-          "type": "proposed",
-          "final_average_accuracy": 78.69,
-          "average_forgetting": 0.145,
-          "trainable_parameters": 12000,
-          "temporary_adaptation_parameters": 450000,
-          "parameter_fraction_vs_lora_stream": 0.001667,
-          "temporary_parameter_fraction_vs_lora_stream": 0.0625,
-          "compression_ratio_vs_lora_stream": 600.0
-        }
+        "share": {"type": "proposed", "final_average_accuracy": 94.20},
+        "independent_lora": {"type": "baseline"},
+        "frozen_backbone": {"type": "baseline"},
+        "sequential_lora": {"type": "baseline"},
+        "independent_rank1": {"type": "baseline"}
+      },
+      "_paper_reported": {
+        "source": "Table 2, CIFAR-100 split into 10 tasks, ViT-B/16 backbone",
+        "share_accuracy": 94.20,
+        "share_forgetting": 0.40,
+        "share_parameters": 100000,
+        "upper_bound_accuracy": 94.20,
+        "linear_seq_accuracy": 68.43,
+        "linear_seq_forgetting": 21.93,
+        "full_seq_accuracy": 30.39,
+        "full_seq_forgetting": 67.53,
+        "dap_accuracy": 94.05,
+        "dap_parameters": 190000
       }
     }
   }

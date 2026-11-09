@@ -1,15 +1,29 @@
-"""Independent LoRA and frozen-backbone baselines for the synthetic benchmark."""
+"""Baselines for the continual low-rank adaptation benchmark.
+
+* ``independent_lora`` -- one rank-12 LoRA adapter per task, trained and stored
+  separately (the paper's non-continual LoRA reference; it stores one full
+  adapter per task, so it exceeds the benchmark's continual-learning budget).
+* ``frozen_backbone`` -- no adaptation.
+* ``sequential_lora`` -- a single rank-12 LoRA adapter fine-tuned on each task
+  in turn with no per-task state (the sequential fine-tuning baseline).
+* ``independent_rank1`` -- one rank-1 adapter per task: the largest
+  independent per-task adapter that fits the per-task budget.
+
+Each writes deployed-state snapshots after every task in the same format as any
+method (see briefing/evaluation.md).
+"""
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 
 import torch
 import torch.nn.functional as F
 
-from data.synthetic_tasks import load_npz, write_npz
+from data.streams import load_manifest, load_stream, save_snapshot, stream_ids
 
 
 class LoRAAdapter(torch.nn.Module):
@@ -33,44 +47,49 @@ def train(module: torch.nn.Module, x: torch.Tensor, y: torch.Tensor, steps: int,
         opt.step()
 
 
-def write_predictions(output_dir: Path, task_id: int, pred: torch.Tensor, label: torch.Tensor) -> None:
-    rows = ["task_id,example_id,prediction,label"]
-    for i, (p, y) in enumerate(zip(pred.cpu().numpy(), label.cpu().numpy(), strict=True)):
-        rows.append(f"{task_id},{i},{int(p)},{int(y)}")
-    (output_dir / f"task_{task_id}.csv").write_text("\n".join(rows) + "\n")
+def stream_seed(seed: int, stream_id: str) -> int:
+    return int(hashlib.sha256(f"{seed}:{stream_id}".encode()).hexdigest()[:8], 16)
+
+
+def run_stream(kind: str, stream, args: argparse.Namespace, output_root: Path) -> None:
+    torch.manual_seed(stream_seed(args.seed, stream.stream_id))
+    base_weight = torch.tensor(stream.base)
+    state: dict = {}
+    sequential = LoRAAdapter(base_weight, args.rank) if kind == "sequential_lora" else None
+    for t, task in enumerate(stream.tasks):
+        x, y = torch.tensor(task.x_train), torch.tensor(task.y_train)
+        if kind in ("independent_lora", "independent_rank1"):
+            adapter = LoRAAdapter(base_weight, args.rank if kind == "independent_lora" else 1)
+            train(adapter, x, y, args.steps, args.lr)
+            state[f"task_{t}_A"] = adapter.a.detach().T.numpy().copy()  # (input_dim, rank)
+            state[f"task_{t}_B"] = adapter.b.detach().numpy().copy()  # (classes, rank)
+        elif kind == "sequential_lora":
+            train(sequential, x, y, args.steps, args.lr)
+            state = {"shared_A": sequential.a.detach().T.numpy().copy(), "shared_B": sequential.b.detach().numpy().copy()}
+        save_snapshot(output_root, stream.stream_id, t, state)
 
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--kind", choices=["lora", "frozen"], default="lora")
-    parser.add_argument("--data", default="data/synthetic_share_tasks.npz")
-    parser.add_argument("--output-dir", default="checkpoints/lora/predictions")
-    parser.add_argument("--seed", type=int, default=13)
+    parser.add_argument("--kind", choices=["independent_lora", "frozen_backbone", "sequential_lora", "independent_rank1"],
+                        default="independent_lora")
+    parser.add_argument("--output-root", default=None)
+    parser.add_argument("--roles", nargs="+", default=["dev", "test"])
+    parser.add_argument("--seed", type=int, default=0)
     parser.add_argument("--rank", type=int, default=12)
     parser.add_argument("--steps", type=int, default=700)
     parser.add_argument("--lr", type=float, default=0.03)
     args = parser.parse_args()
 
-    data_path = Path(args.data)
-    if not data_path.exists():
-        write_npz(data_path, seed=args.seed)
-    base_weight, tasks, meta = load_npz(data_path)
-    torch.manual_seed(args.seed)
-    output_dir = Path(args.output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    for task_id, task in enumerate(tasks):
-        if args.kind == "frozen":
-            pred = (task.x_test @ base_weight.T).argmax(dim=1)
-        else:
-            adapter = LoRAAdapter(base_weight, args.rank)
-            train(adapter, task.x_train, task.y_train, args.steps, args.lr)
-            pred = adapter(task.x_test).argmax(dim=1)
-        write_predictions(output_dir, task_id, pred, task.y_test)
-
-    params = 0 if args.kind == "frozen" else len(tasks) * args.rank * sum(base_weight.shape)
-    summary = {"method": args.kind, "meta": meta, "parameter_counts": {"trainable_parameters": int(params)}}
-    (output_dir / "summary.json").write_text(json.dumps(summary, indent=2))
+    torch.set_num_threads(1)
+    output_root = Path(args.output_root or f"checkpoints/{args.kind}")
+    output_root.mkdir(parents=True, exist_ok=True)
+    (output_root / "run_config.json").write_text(json.dumps(vars(args), indent=2) + "\n")
+    manifest = load_manifest()
+    for role in args.roles:
+        for sid in stream_ids(role=role, manifest=manifest):
+            run_stream(args.kind, load_stream(sid, manifest=manifest), args, output_root)
+            print(f"{args.kind}: finished {sid}", flush=True)
 
 
 if __name__ == "__main__":

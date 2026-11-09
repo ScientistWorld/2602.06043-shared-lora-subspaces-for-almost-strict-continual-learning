@@ -1,235 +1,269 @@
-"""Score the visible evaluation slice from saved prediction artifacts.
+"""Visible (development) scorer for the continual low-rank adaptation benchmark.
 
-This module deliberately reads only generic prediction CSVs and summary JSON
-metadata. It does not import method code, so any future method that writes the
-same artifacts can be scored here.
+Scores the development streams listed in ``data/streams/manifest.json`` on
+their labelled validation splits. The interface and every rule are the same as
+for the held-out test: a *run* is a directory under the prediction root
+(default ``checkpoints/``) holding ``<stream_id>/after_task_XX.npz`` deployed
+state snapshots, one after each task in stream order; the directory name is the
+method name. Every number is recomputed from those arrays; nothing else a run
+writes is read. See briefing/evaluation.md for the artifact format.
 """
 
 from __future__ import annotations
 
 import argparse
-import csv
 import json
+import math
 import re
+import traceback
 from pathlib import Path
 
 import numpy as np
 
+from data.streams import load_manifest, load_stream, stream_ids
 
 SLICE_NAME = "train"
-EXPERIMENTS_BY_SEED = {
-    13: {
-        "name": "synthetic_continual_low_rank",
-        "data": Path("data/synthetic_share_tasks.npz"),
-    },
-    21: {
-        "name": "synthetic_continual_low_rank_seed21",
-        "data": Path("data/synthetic_share_tasks_seed21.npz"),
-    },
+ROLE = "dev"
+
+REFERENCE_ADAPTER_RANK = 12
+MIN_FINAL_ACCURACY = {
+    "continual_6task_stream": 40.0,
+    "continual_10task_stream": 40.0,
 }
-KNOWN_RUN_NAMES = {
-    "share": "share",
-    "lora": "independent_lora",
-    "frozen": "frozen_backbone",
+MAX_SNAPSHOT_BYTES = 8 * 1024 * 1024
+FAILED_METRICS = {
+    "final_average_accuracy": 0.0,
+    "worst_task_accuracy": 0.0,
+    "average_forgetting": 100.0,
+    "parameter_fraction_vs_lora_stream": 1.0,
+    "compression_ratio_vs_lora_stream": 0.0,
 }
 
-
-def row_in_slice(row: dict[str, str]) -> bool:
-    """Split each task's prediction rows into a stable visible half."""
-
-    task_id = int(row.get("task_id", 0))
-    example_id = int(row["example_id"])
-    return ((task_id * 1_000_003 + example_id) % 2) == 0
+_SNAPSHOT_RE = re.compile(r"^after_task_(\d+)\.npz$")
+_TASK_KEY_RE = re.compile(r"^task_(0|[1-9][0-9]*)_(A|B)$")
 
 
-def read_summary(prediction_dir: Path) -> dict:
-    path = prediction_dir / "summary.json"
-    if not path.exists():
-        raise FileNotFoundError(f"Missing required parameter metadata: {path}")
-    return json.loads(path.read_text())
+class SubmissionError(Exception):
+    """The run's artifacts are missing, malformed or contain impossible values."""
 
 
-def read_truth_labels(data_path: Path) -> dict[str, dict[int, int]]:
-    if not data_path.exists():
-        raise FileNotFoundError(f"Missing canonical evaluation labels: {data_path}")
-    data = np.load(data_path)
-    num_tasks = int(data["meta_num_tasks"])
-    return {
-        f"task_{task_id}": {
-            example_id: int(label)
-            for example_id, label in enumerate(data[f"y_test_{task_id}"].tolist())
-        }
-        for task_id in range(num_tasks)
-    }
+class Limits:
+    def __init__(self, classes: int, dim: int):
+        self.classes = classes
+        self.dim = dim
+        self.one_adapter = REFERENCE_ADAPTER_RANK * (classes + dim)
+        self.shared_budget = self.one_adapter
+        self.per_task_budget = int(0.10 * self.one_adapter)
 
 
-def read_predictions(csv_path: Path) -> dict[int, int]:
-    predictions: dict[int, int] = {}
-    with csv_path.open(newline="") as handle:
-        for row in csv.DictReader(handle):
-            example_id = int(row["example_id"])
-            if example_id in predictions:
-                raise ValueError(f"Duplicate prediction for example_id={example_id} in {csv_path}")
-            predictions[example_id] = int(row["prediction"])
-    return predictions
+def _as_matrix(name: str, value: np.ndarray) -> np.ndarray:
+    if value.dtype.kind not in "fiu":
+        raise SubmissionError(f"{name}: dtype {value.dtype} is not a real numeric type")
+    if value.ndim != 2:
+        raise SubmissionError(f"{name}: expected a 2-D array, got shape {value.shape}")
+    matrix = value.astype(np.float64)
+    if not np.all(np.isfinite(matrix)):
+        raise SubmissionError(f"{name}: contains NaN or infinite values")
+    return matrix
 
 
-def read_accuracy(prediction_dir: Path, truth_labels: dict[str, dict[int, int]]) -> tuple[float, dict[str, float]]:
-    per_task = {}
-    total = 0
-    correct = 0
-    for task_name, labels in sorted(truth_labels.items()):
-        csv_path = prediction_dir / f"{task_name}.csv"
-        if not csv_path.exists():
-            raise FileNotFoundError(f"Missing predictions for {task_name}: {csv_path}")
-        predictions = read_predictions(csv_path)
-        invalid = sorted(set(predictions) - set(labels))
-        if invalid:
-            raise ValueError(
-                f"{csv_path} contains {len(invalid)} prediction IDs outside canonical labels; "
-                f"first invalid example_id={invalid[0]}"
-            )
-        expected_ids = [
-            example_id
-            for example_id in labels
-            if row_in_slice({"task_id": task_name.removeprefix("task_"), "example_id": str(example_id)})
-        ]
-        missing = sorted(set(expected_ids) - set(predictions))
-        if missing:
-            raise ValueError(
-                f"{csv_path} is missing {len(missing)} required {SLICE_NAME} predictions; "
-                f"first missing example_id={missing[0]}"
-            )
+def load_snapshot(path: Path, after_task: int, limits: Limits) -> tuple[list[np.ndarray], int, list[int]]:
+    if path.stat().st_size > MAX_SNAPSHOT_BYTES:
+        raise SubmissionError(f"{path}: snapshot larger than {MAX_SNAPSHOT_BYTES} bytes")
+    try:
+        with np.load(path, allow_pickle=False) as archive:
+            raw = {key: archive[key] for key in archive.files}
+    except Exception as exc:  # noqa: BLE001
+        raise SubmissionError(f"{path}: unreadable snapshot ({exc.__class__.__name__}: {exc})") from exc
 
-        task_total = len(expected_ids)
-        task_correct = sum(int(predictions[example_id] == labels[example_id]) for example_id in expected_ids)
-        if task_total == 0:
-            raise ValueError(f"No {SLICE_NAME} rows found in {csv_path}")
-        per_task[task_name] = task_correct / task_total
-        total += task_total
-        correct += task_correct
-    if total == 0:
-        raise FileNotFoundError(f"No canonical task labels found for {prediction_dir}")
-    return correct / total, per_task
-
-
-def require_number(mapping: dict, key: str, source: Path) -> float:
-    value = mapping.get(key)
-    if not isinstance(value, (int, float)):
-        raise ValueError(f"{source / 'summary.json'} missing numeric parameter_counts.{key}")
-    return float(value)
-
-
-def read_average_forgetting(summary: dict) -> float:
-    history = summary.get("history", [])
-    if not history:
-        return 0.0
-
-    best: dict[str, float] = {}
-    final: dict[str, float] = {}
-    for step in history:
-        for task_name, accuracy in step.get("seen_task_accuracy", {}).items():
-            best[task_name] = max(best.get(task_name, 0.0), float(accuracy))
-            final[task_name] = float(accuracy)
-
-    drops = [max(0.0, best[name] - final.get(name, best[name])) for name in best]
-    return sum(drops) / len(drops) if drops else 0.0
-
-
-def method_name_from_run(run_name: str) -> str:
-    base_name = re.sub(r"_seed\d+$", "", run_name)
-    return KNOWN_RUN_NAMES.get(base_name, base_name)
-
-
-def experiment_from_summary(summary: dict, prediction_dir: Path) -> str | None:
-    seed = summary.get("meta", {}).get("seed")
-    if not isinstance(seed, int):
-        raise ValueError(f"{prediction_dir / 'summary.json'} missing integer meta.seed")
-    experiment = EXPERIMENTS_BY_SEED.get(seed)
-    return experiment["name"] if experiment else None
-
-
-def data_path_from_summary(summary: dict, prediction_dir: Path) -> Path:
-    seed = summary.get("meta", {}).get("seed")
-    if not isinstance(seed, int):
-        raise ValueError(f"{prediction_dir / 'summary.json'} missing integer meta.seed")
-    experiment = EXPERIMENTS_BY_SEED.get(seed)
-    if experiment is None:
-        raise ValueError(f"No canonical train/test labels registered for seed={seed}")
-    return experiment["data"]
-
-
-def discover_prediction_dirs(prediction_root: Path) -> dict[str, dict[str, Path]]:
-    discovered: dict[str, dict[str, Path]] = {}
-    for prediction_dir in sorted(prediction_root.glob("*/predictions")):
-        if not prediction_dir.is_dir():
+    arrays: dict[str, np.ndarray] = {}
+    task_keys: dict[int, set[str]] = {}
+    for key, value in raw.items():
+        if key in ("shared_A", "shared_B"):
+            arrays[key] = _as_matrix(f"{path.name}:{key}", value)
             continue
-        summary = read_summary(prediction_dir)
-        experiment_name = experiment_from_summary(summary, prediction_dir)
-        if experiment_name is None:
-            continue
-        method_name = method_name_from_run(prediction_dir.parent.name)
-        methods = discovered.setdefault(experiment_name, {})
-        if method_name in methods:
-            raise ValueError(
-                f"Multiple prediction directories map to {experiment_name}.{method_name}: "
-                f"{methods[method_name]} and {prediction_dir}"
-            )
-        methods[method_name] = prediction_dir
-    return discovered
+        match = _TASK_KEY_RE.match(key)
+        if not match:
+            raise SubmissionError(f"{path.name}: unexpected array '{key}'")
+        task = int(match.group(1))
+        if task > after_task:
+            raise SubmissionError(f"{path.name}: holds state for task {task}, which comes after task {after_task}")
+        arrays[key] = _as_matrix(f"{path.name}:{key}", value)
+        task_keys.setdefault(task, set()).add(match.group(2))
+
+    shared_a, shared_b = arrays.get("shared_A"), arrays.get("shared_B")
+    if shared_a is not None and shared_a.shape[0] != limits.dim:
+        raise SubmissionError(f"{path.name}: shared_A must have {limits.dim} rows, got {shared_a.shape}")
+    if shared_b is not None and shared_b.shape[0] != limits.classes:
+        raise SubmissionError(f"{path.name}: shared_B must have {limits.classes} rows, got {shared_b.shape}")
+    shared_params = int(sum(a.size for a in (shared_a, shared_b) if a is not None))
+
+    deltas, task_params = [], []
+    for task in range(after_task + 1):
+        keys = task_keys.get(task, set())
+        if keys and keys != {"A", "B"}:
+            raise SubmissionError(f"{path.name}: task {task} must provide both task_{task}_A and task_{task}_B")
+        if keys:
+            coef_a, coef_b = arrays[f"task_{task}_A"], arrays[f"task_{task}_B"]
+            rows_a = shared_a.shape[1] if shared_a is not None else limits.dim
+            rows_b = shared_b.shape[1] if shared_b is not None else limits.classes
+            if coef_a.shape[0] != rows_a or coef_b.shape[0] != rows_b or coef_a.shape[1] != coef_b.shape[1]:
+                raise SubmissionError(
+                    f"{path.name}: task {task} shapes {coef_a.shape}/{coef_b.shape} do not match the shared state"
+                )
+            right = shared_a @ coef_a if shared_a is not None else coef_a
+            left = shared_b @ coef_b if shared_b is not None else coef_b
+            task_params.append(int(coef_a.size + coef_b.size))
+        elif shared_a is not None and shared_b is not None:
+            if shared_a.shape[1] != shared_b.shape[1]:
+                raise SubmissionError(f"{path.name}: task {task} has no state and shared_A/shared_B widths differ")
+            right, left = shared_a, shared_b
+            task_params.append(0)
+        elif shared_a is None and shared_b is None:
+            right = np.zeros((limits.dim, 0))
+            left = np.zeros((limits.classes, 0))
+            task_params.append(0)
+        else:
+            raise SubmissionError(f"{path.name}: task {task} has no state and only one shared factor is present")
+        delta = left @ right.T
+        if not np.all(np.isfinite(delta)):
+            raise SubmissionError(f"{path.name}: task {task} weight update is not finite")
+        deltas.append(delta)
+    return deltas, shared_params, task_params
 
 
-def score_method(method_name: str, prediction_dir: Path) -> dict[str, float]:
-    summary = read_summary(prediction_dir)
-    truth_labels = read_truth_labels(data_path_from_summary(summary, prediction_dir))
-    accuracy, per_task = read_accuracy(prediction_dir, truth_labels)
-    params = summary.get("parameter_counts", {})
-    if "share_parameters" in params:
-        trainable = require_number(params, "share_parameters", prediction_dir)
-        lora_stream = require_number(params, "independent_lora_stream_parameters", prediction_dir)
-        compression = require_number(params, "compression_ratio_vs_lora_stream", prediction_dir)
-        temporary = float(params.get("temporary_adaptation_parameters", trainable))
-    elif method_name == "independent_lora":
-        trainable = require_number(params, "trainable_parameters", prediction_dir)
-        lora_stream = max(trainable, 1.0)
-        compression = 1.0
-        temporary = trainable
-    else:
-        trainable = require_number(params, "trainable_parameters", prediction_dir)
-        lora_stream = require_number(params, "independent_lora_stream_parameters", prediction_dir) if (
-            "independent_lora_stream_parameters" in params
-        ) else max(trainable, 1.0)
-        compression = float(params.get("compression_ratio_vs_lora_stream", 0.0))
-        temporary = float(params.get("temporary_adaptation_parameters", trainable))
+def _accuracy(base: np.ndarray, delta: np.ndarray, x: np.ndarray, y: np.ndarray) -> float:
+    logits = x.astype(np.float64) @ (base.astype(np.float64) + delta).T
+    if not np.all(np.isfinite(logits)):
+        raise SubmissionError("non-finite logits")
+    return float((logits.argmax(axis=1) == y).mean())
 
+
+_STREAM_CACHE: dict[str, object] = {}
+
+
+def _stream(stream_id: str, manifest: dict):
+    if stream_id not in _STREAM_CACHE:
+        _STREAM_CACHE[stream_id] = load_stream(stream_id, manifest=manifest)
+    return _STREAM_CACHE[stream_id]
+
+
+def score_stream(run_dir: Path, stream_id: str, manifest: dict, limits: Limits) -> tuple[dict, list[str]]:
+    stream = _stream(stream_id, manifest)
+    count = len(stream.tasks)
+    stream_dir = run_dir / stream_id
+    if not stream_dir.is_dir():
+        raise SubmissionError(f"missing stream directory {stream_dir}")
+    present = {}
+    for item in stream_dir.iterdir():
+        match = _SNAPSHOT_RE.match(item.name)
+        if match:
+            present[int(match.group(1))] = item
+    extra = sorted(t for t in present if t >= count)
+    if extra:
+        raise SubmissionError(f"{stream_dir}: snapshot after_task_{extra[0]:02d} beyond the stream's {count} tasks")
+    missing = [t for t in range(count) if t not in present]
+    if missing:
+        raise SubmissionError(f"{stream_dir}: missing snapshot after_task_{missing[0]:02d}")
+
+    violations: list[str] = []
+    history = [[math.nan] * count for _ in range(count)]
+    shared_params = 0
+    task_params: list[int] = []
+    for t in range(count):
+        deltas, shared_params, task_params = load_snapshot(present[t], t, limits)
+        if shared_params > limits.shared_budget:
+            violations.append(f"{stream_id} after task {t}: shared state {shared_params} > {limits.shared_budget} parameters")
+        for j, used in enumerate(task_params):
+            if used > limits.per_task_budget:
+                violations.append(f"{stream_id} after task {t}: task {j} state {used} > {limits.per_task_budget} parameters")
+        for j in range(t + 1):
+            task = stream.tasks[j]
+            history[t][j] = _accuracy(stream.base, deltas[j], task.x_val, task.y_val)
+
+    final = [history[count - 1][j] for j in range(count)]
+    drops = [max(history[t][j] for t in range(j, count)) - final[j] for j in range(count - 1)]
+    stored = shared_params + sum(task_params)
     return {
-        "final_average_accuracy": accuracy * 100.0,
-        "average_forgetting": read_average_forgetting(summary) * 100.0,
-        "trainable_parameters": float(trainable),
-        "temporary_adaptation_parameters": float(temporary),
-        "parameter_fraction_vs_lora_stream": float(trainable) / float(lora_stream),
-        "temporary_parameter_fraction_vs_lora_stream": float(temporary) / float(lora_stream),
-        "compression_ratio_vs_lora_stream": float(compression),
-        **{f"{task}_accuracy": value * 100.0 for task, value in per_task.items()},
+        "final_average_accuracy": 100.0 * float(np.mean(final)),
+        "worst_task_accuracy": 100.0 * float(np.min(final)),
+        "average_forgetting": 100.0 * float(np.mean(drops)),
+        "stored_parameters": float(stored),
+        "lora_stream_parameters": float(count * limits.one_adapter),
+    }, violations
+
+
+def score_run(run_dir: Path, experiment: str, manifest: dict, limits: Limits) -> tuple[dict, dict | None, dict]:
+    per_stream, violations = {}, []
+    try:
+        for sid in stream_ids(ROLE, experiment, manifest):
+            per_stream[sid], stream_violations = score_stream(run_dir, sid, manifest, limits)
+            violations.extend(stream_violations)
+    except SubmissionError as exc:
+        return dict(FAILED_METRICS, stored_parameters=0.0), {"reason": f"invalid submission: {exc}"}, {}
+    except Exception as exc:  # noqa: BLE001
+        detail = traceback.format_exception_only(type(exc), exc)[-1].strip()
+        return dict(FAILED_METRICS, stored_parameters=0.0), {"reason": f"unreadable submission: {detail}"}, {}
+
+    def mean(key: str) -> float:
+        return float(np.mean([m[key] for m in per_stream.values()]))
+
+    stored, lora_stream = mean("stored_parameters"), mean("lora_stream_parameters")
+    measured = {
+        "final_average_accuracy": mean("final_average_accuracy"),
+        "worst_task_accuracy": mean("worst_task_accuracy"),
+        "average_forgetting": mean("average_forgetting"),
+        "parameter_fraction_vs_lora_stream": stored / lora_stream,
+        "compression_ratio_vs_lora_stream": lora_stream / stored if stored > 0 else 0.0,
+        "stored_parameters": stored,
     }
+    accuracy_by_stream = {sid: m["final_average_accuracy"] for sid, m in per_stream.items()}
+    if violations:
+        reason = f"parameter budget violated ({len(violations)}x), e.g. {violations[0]}"
+        return dict(FAILED_METRICS, stored_parameters=stored), {"reason": reason, "measured": measured}, accuracy_by_stream
+    floor = MIN_FINAL_ACCURACY[experiment]
+    if measured["final_average_accuracy"] < floor:
+        reason = f"task not solved: final average accuracy {measured['final_average_accuracy']:.2f}% < {floor}%"
+        return dict(FAILED_METRICS, stored_parameters=stored), {"reason": reason, "measured": measured}, accuracy_by_stream
+    return measured, None, accuracy_by_stream
+
+
+def discover_runs(prediction_root: Path) -> list[Path]:
+    if not prediction_root.is_dir():
+        raise FileNotFoundError(f"Prediction root not found: {prediction_root}")
+    return sorted(
+        path for path in prediction_root.iterdir() if path.is_dir() and not path.name.startswith((".", "_"))
+    )
 
 
 def build_scores(prediction_root: Path) -> dict:
-    discovered = discover_prediction_dirs(prediction_root)
+    manifest = load_manifest()
+    limits = Limits(int(manifest["num_classes"]), int(manifest["input_dim"]))
+    runs = discover_runs(prediction_root)
+    experiments = sorted(manifest["experiments"])
     output = {
         "_metadata": {
             "slice": SLICE_NAME,
-            "split_rule": "Rows where (task_id * 1000003 + example_id) % 2 == 0.",
+            "streams": {exp: stream_ids(ROLE, exp, manifest) for exp in experiments},
+            "validation_examples_per_task": manifest["val_per_task"],
+            "shared_parameter_budget": limits.shared_budget,
+            "per_task_parameter_budget": limits.per_task_budget,
+            "minimum_final_average_accuracy": MIN_FINAL_ACCURACY,
+            "lora_stream_rank": REFERENCE_ADAPTER_RANK,
         },
         "experiments": {},
     }
-    for experiment_name, method_dirs in sorted(discovered.items()):
-        output["experiments"][experiment_name] = {
-            "_metadata": {"slice": SLICE_NAME},
-            "results": {
-                method_name: score_method(method_name, prediction_dir)
-                for method_name, prediction_dir in sorted(method_dirs.items())
-            },
+    for experiment in experiments:
+        results, failures, by_stream = {}, {}, {}
+        for run_dir in runs:
+            metrics, failure, accuracy_by_stream = score_run(run_dir, experiment, manifest, limits)
+            results[run_dir.name] = metrics
+            by_stream[run_dir.name] = accuracy_by_stream
+            if failure is not None:
+                failures[run_dir.name] = failure
+        output["experiments"][experiment] = {
+            "_metadata": {"slice": SLICE_NAME, "failed_runs": failures, "final_accuracy_by_stream": by_stream},
+            "results": results,
         }
     return output
 
@@ -244,6 +278,11 @@ def main() -> None:
     out_path = Path(args.output)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(output, indent=2) + "\n")
+    for experiment, block in output["experiments"].items():
+        for name, metrics in block["results"].items():
+            status = "FAILED" if name in block["_metadata"]["failed_runs"] else "ok"
+            print(f"{experiment:26s} {name:32s} acc={metrics['final_average_accuracy']:7.3f} "
+                  f"forg={metrics['average_forgetting']:7.3f} frac={metrics['parameter_fraction_vs_lora_stream']:.4f} {status}")
 
 
 if __name__ == "__main__":

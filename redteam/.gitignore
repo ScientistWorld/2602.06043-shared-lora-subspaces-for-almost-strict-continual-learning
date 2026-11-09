@@ -4,3 +4,4 @@ _artifacts/
 _backup/
 *.npz
 *.pt
+hardening/runs/

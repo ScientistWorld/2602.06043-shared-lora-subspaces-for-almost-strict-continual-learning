@@ -1,9 +1,8 @@
 #!/bin/bash
-# Evaluate the held-out test slice from saved prediction artifacts.
+# Score every run under checkpoints/ on the held-out test streams.
 #
-# The test pass uses eval/test/ and writes scoring/scores_test.json. When
-# scoring/scores_train.json exists, the test evaluator scores every method entry
-# listed there so train/test comparisons use the same method set.
+# Imports only eval/test/; test inputs and labels are regenerated there at test
+# time. Writes scoring/scores_test.json. Runs with no arguments.
 
 set -e
 

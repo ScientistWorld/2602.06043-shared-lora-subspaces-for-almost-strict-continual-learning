@@ -1,36 +1,19 @@
 #!/bin/bash
-# Run a baseline method from the paper.
-#
-# Baselines are simple reference methods the paper compares against. 
-# Implement this only if applicable, i.e. the paper has baselines.
-# You do not need to implement all baselines to begin — 
-# just enough to validate that the evaluation pipeline works 
-# and provide a reference point. You can decide to expand more baselines later.
-# Each baseline must be actually run and scored through evaluate.sh
-# so the numbers are verified, not self-reported.
-# You can decide what this baseline script should do yourself.
+# Run one baseline on every stream and score the development streams.
 #
 # Usage:
-#   bash scripts/baseline.sh <name>
+#   bash scripts/baseline.sh <independent_lora|frozen_backbone|sequential_lora|independent_rank1>
 
 set -e
 
 cd /home/user
 
-name="${1:-lora}"
+name="${1:-independent_lora}"
 
 case "$name" in
-  lora)
-    python -m baseline.lora_linear \
-      --kind lora \
-      --data data/synthetic_share_tasks.npz \
-      --output-dir checkpoints/lora/predictions
-    ;;
-  frozen)
-    python -m baseline.lora_linear \
-      --kind frozen \
-      --data data/synthetic_share_tasks.npz \
-      --output-dir checkpoints/frozen/predictions
+  independent_lora|frozen_backbone|sequential_lora|independent_rank1)
+    rm -rf "checkpoints/$name"
+    python -m baseline.lora_linear --kind "$name" --output-root "checkpoints/$name"
     ;;
   *)
     echo "Unknown baseline: $name" >&2

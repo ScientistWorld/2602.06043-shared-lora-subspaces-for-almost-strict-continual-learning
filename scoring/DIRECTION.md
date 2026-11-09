@@ -2,16 +2,28 @@
 
 ## Research Problem
 
-The research problem is replay-free parameter-efficient continual adaptation. A method should learn a stream of tasks with small incremental parameter cost while preserving final performance on earlier tasks.
+Replay-free, parameter-efficient continual adaptation. A method learns a stream of tasks one at a time, adds only a small amount of stored state per task, and must keep performing on every earlier task without revisiting its data.
 
 ## Core Contribution
 
-This benchmark is about compact reusable structure across task adaptations. Valid improvements should still address how task-specific adaptation information is represented, merged, compressed, or reused across a task stream.
+This benchmark is about compact reusable structure across task adaptations. Valid improvements change how the knowledge in each new task's adaptation is represented, integrated into the state carried forward, compressed or reused, so that the deployed state serves the whole stream better or more cheaply.
 
 ## Approach Scope
 
-Methods may change the representation update rule, adaptation training, capacity allocation, regularization, merge schedule, or compression strategy. They may also add diagnostics or better parameter accounting, as long as the method remains a parameter-efficient continual adaptation method for the same task stream.
+Methods may change any of these, as long as tasks are learned in order from their own data and the deployed state stays within the budget:
+
+- the representation of shared and task-specific state;
+- how each new task is learned on top of the carried state;
+- how new information is merged into the shared state, and how earlier tasks' parts are kept consistent;
+- capacity allocation, regularisation, initialisation, optimisation schedules and hyperparameters.
+
+Better accounting or diagnostics are welcome.
 
 ## Out of Bounds
 
-Do not replace the problem with full independent models per task, external-data pretraining, test-set transduction, or a classifier that ignores the continual parameter-efficiency objective. A method that improves accuracy only by storing one full task-specific state or model per task without reporting that cost does not address the paper's research direction.
+- Replay, joint or multi-task training over several tasks' data, and using a later task's data before that task arrives.
+- Back-dating a later state into earlier snapshots, or otherwise writing snapshots that were not the deployed state at that time.
+- Storing independent per-task models or adapters outside the counted arrays.
+- External data or pretraining, training on development validation labels, and modifying the evaluator, budgets or data.
+
+A method that wins only by breaking these rules is not a contribution to this direction, even when its scores are higher.

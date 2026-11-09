@@ -1,9 +1,8 @@
 #!/bin/bash
-# Evaluate the visible train slice from saved prediction artifacts.
+# Score every run under checkpoints/ on the visible development streams.
 #
-# This mirrors scripts/evaluate.sh's method-agnostic contract: it imports only
-# eval/ code, reads prediction artifacts from checkpoints/, and writes a scores
-# JSON file under scoring/.
+# Imports only eval/train/ and the visible data loader; writes
+# scoring/scores_train.json. Runs with no arguments.
 
 set -e
 
