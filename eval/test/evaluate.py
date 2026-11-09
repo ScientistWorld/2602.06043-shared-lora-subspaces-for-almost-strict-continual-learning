@@ -21,9 +21,12 @@ import json
 import math
 import re
 import traceback
+import zipfile
 from pathlib import Path
 
 import numpy as np
+
+from eval.test.ranking import finalize
 
 import eval.test.streams as S
 
@@ -72,6 +75,9 @@ def load_snapshot(path: Path, after_task: int) -> tuple[list[np.ndarray], int, l
     if path.stat().st_size > MAX_SNAPSHOT_BYTES:
         raise SubmissionError(f"{path}: snapshot larger than {MAX_SNAPSHOT_BYTES} bytes")
     try:
+        with zipfile.ZipFile(path) as zipped:
+            if sum(info.file_size for info in zipped.infolist()) > MAX_SNAPSHOT_BYTES:
+                raise SubmissionError(f"{path}: expanded snapshot exceeds byte limit")
         with np.load(path, allow_pickle=False) as archive:
             raw = {key: archive[key] for key in archive.files}
     except Exception as exc:  # noqa: BLE001 - any unreadable archive is a malformed submission
@@ -158,7 +164,10 @@ def score_stream(run_dir: Path, stream_id: str) -> tuple[dict, list[str]]:
     for item in stream_dir.iterdir():
         match = _SNAPSHOT_RE.match(item.name)
         if match:
-            present[int(match.group(1))] = item
+            task_index = int(match.group(1))
+            if item.name != f"after_task_{task_index:02d}.npz":
+                raise SubmissionError(f"{stream_dir}: noncanonical snapshot filename {item.name}")
+            present[task_index] = item
     extra = sorted(t for t in present if t >= count)
     if extra:
         raise SubmissionError(f"{stream_dir}: snapshot after_task_{extra[0]:02d} beyond the stream's {count} tasks")
@@ -264,7 +273,7 @@ def build_scores(prediction_root: Path) -> dict:
             "_metadata": {"slice": SLICE_NAME, "failed_runs": failures, "final_accuracy_by_stream": by_stream},
             "results": results,
         }
-    return output
+    return finalize(output, FAILED_METRICS)
 
 
 def main() -> None:
@@ -276,7 +285,7 @@ def main() -> None:
     output = build_scores(Path(args.prediction_root))
     out_path = Path(args.output)
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(output, indent=2) + "\n")
+    out_path.write_text(json.dumps(output, indent=2, allow_nan=False) + "\n")
     for experiment, block in output["experiments"].items():
         for name, metrics in block["results"].items():
             status = "FAILED" if name in block["_metadata"]["failed_runs"] else "ok"

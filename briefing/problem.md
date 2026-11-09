@@ -8,7 +8,7 @@ The benchmark problem is parameter-efficient continual finetuning. A solution re
 
 ## The Benchmark
 
-Each *stream* consists of a frozen pretrained linear classifier `W0` (20 classes x 96 input features) and an ordered sequence of related classification tasks (6 or 10 tasks per stream). Each task has 900 labelled training examples and its own input distribution. Tasks of a stream are related, but each needs its own update of the frozen weights to be solved well; the frozen classifier alone is close to chance.
+Each *stream* consists of a frozen base linear classifier `W0` (20 classes x 96 input features) and an ordered sequence of related classification tasks (6 or 10 tasks per stream). Each task has 900 labelled training examples and its own input distribution. Tasks of a stream are related, but each needs its own update of the frozen weights to be solved well; the frozen classifier alone is close to chance.
 
 A solution adapts `W0` by a low-rank weight update per task, `W_t = W0 + L_t R_t^T`, where the factors may be built from state shared by all tasks of the stream and state specific to each task. Deployed state is limited the way an almost-strict continual learner must be: the shared part may be at most the size of one rank-12 adapter (12 x (20 + 96) = 1392 parameters) and each task may add at most 139 parameters (10% of one adapter). Storing a separate full-size adapter or a dense weight update for every task does not fit.
 

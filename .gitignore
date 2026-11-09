@@ -230,3 +230,7 @@ tmp/
 protocol.md
 *.egg-info
 core.[0-9]*
+
+# Generated hardening submissions and scratch artifact trees
+redteam/hardening/runs/
+redteam/hardening/status/

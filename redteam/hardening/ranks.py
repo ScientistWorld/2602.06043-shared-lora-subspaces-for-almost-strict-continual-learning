@@ -77,7 +77,7 @@ def summarize(scores: dict, spec: dict) -> dict:
             diffs = [mine[s] - ref[s] for s in sorted(ref) if s in mine]
             if diffs:
                 mean = sum(diffs) / len(diffs)
-                se = _sd(diffs) / math.sqrt(max(1, len(diffs) - 1)) if len(diffs) > 1 else float("nan")
+                se = _sd(diffs) / math.sqrt(max(1, len(diffs) - 1)) if len(diffs) > 1 else None
                 row["paired_streams"][exp] = {
                     "mean_accuracy_gain": mean,
                     "standard_error": se,
@@ -115,7 +115,7 @@ def to_markdown(summary: dict) -> str:
     lines.append("")
     lines.append("Paired per-stream accuracy gains vs reference_seed0 (mean ± s.e., streams won):")
     for case, row in summary["cases"].items():
-        parts = [f"{e}: {p['mean_accuracy_gain']:+.2f} ± {p['standard_error']:.2f} ({p['streams_won']}/{p['streams']})"
+        parts = [f"{e}: {p['mean_accuracy_gain']:+.2f} ± {p['standard_error'] if p['standard_error'] is not None else 'unavailable'} ({p['streams_won']}/{p['streams']})"
                  for e, p in row["paired_streams"].items()]
         if parts:
             lines.append(f"- {case}: " + "; ".join(parts))

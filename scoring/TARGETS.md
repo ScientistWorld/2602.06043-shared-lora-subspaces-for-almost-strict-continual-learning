@@ -1,6 +1,6 @@
 # Evaluation Targets
 
-Both experiments are scored by the same evaluator rules (see `briefing/evaluation.md`). Every number is recomputed from the deployed-state snapshots in `checkpoints/<method_name>/<stream_id>/after_task_XX.npz`. A run that has a malformed or non-finite snapshot, exceeds the parameter budget (shared state > 1392 values, or any task > 139 values), or whose final average accuracy is below 40% receives the failure values for that experiment: accuracy 0, forgetting 100, parameter fraction 1.
+Both experiments are scored by the same evaluator rules (see `briefing/evaluation.md`). Every number is recomputed from the deployed-state snapshots in `checkpoints/<method_name>/<stream_id>/after_task_XX.npz`. A run that has a malformed or non-finite snapshot, exceeds the parameter budget (shared state > 1392 values, or any task > 139 values), or whose final average accuracy is below 40% receives the failure values in both experiments: accuracy 0, forgetting 100, parameter fraction 1.
 
 ## continual_6task_stream
 

@@ -59,3 +59,9 @@
 - Initial scaffold was template-only.
 - The external stdout/stderr paths reported for job `61982c19-66d` were not visible from this container, but the job-updated workspace artifacts were present and passed validation.
 - The external stdout/stderr paths reported for job `11ed4ca8-276` were also not visible directly, but local copies under `jobs/11ed4ca8-276/` were available and showed a successful run.
+
+## Final hardening pass
+
+The current gym now submits model-state snapshots rather than CSV predictions and self-reported costs. The hidden generator is confined to eval/test; six- and ten-task experiments replace the historical four-task streams. See HARDENING.md for current scope, tradeoffs and remaining limitations. Historical entries above describe earlier benchmarks, not current score files.
+
+A final combined job will verify evaluator-owned comparison data, normalized rank, whole-attempt failure gates, raw-state scoring and public-data poisoning resistance. Training code and inputs are unchanged in this pass; saved better/weaker states are rescored while the reference and official baselines are rebuilt end to end.
