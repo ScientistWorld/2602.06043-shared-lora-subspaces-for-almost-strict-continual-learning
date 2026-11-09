@@ -29,3 +29,19 @@ all runs finish.
 Acceptance alone is not success. Each accepted shortcut will be compared with
 the original reference under directions, absolute coefficient magnitudes, and
 explicit cohort normalization. Nonfinite scores cannot be assigned a rank.
+
+## Focused follow-up after job b3083973-9e2
+
+The first batch finished without runner failures. Fresh reference accuracy varied
+from 63.125 to 68.125 on stream 13 and from 55.375 to 68.875 on stream 21. The
+refit candidate reached 73.25/77.125, but its scalar gain did not exceed reference
+rank spread. Repeat refit on the other two initialization seeds. Also test three
+seeds of a merge correction that uses uncentered SVD only in the merge phase,
+as specified by main-text equation (2), while retaining centered initialization.
+Both retain the core adaptation/SVD/reprojection procedure and no replay.
+
+All metadata shortcuts now reuse the *original* reference artifacts, so a gain
+or exact tie cannot be attributed to a fresh training run. Archive the first
+batch scores. Rerun all shortcuts. Fix the test-size trial by truncating all
+baseline CSVs too; the initial failure was out-of-range baseline IDs after the
+canonical dataset had been reduced. No changes to eval/ or its environment.

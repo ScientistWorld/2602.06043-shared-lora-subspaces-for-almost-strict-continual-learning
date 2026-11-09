@@ -116,7 +116,9 @@ def mutate_summary(seed, fn):
 def train_share_case(case, mode, seed_offset=0):
     import torch
     torch.set_num_threads(1)
-    if mode == 'better_refit':
+    if mode == 'better_stable':
+        from redteam.better_stable.share_linear import train_share
+    elif mode == 'better_refit':
         from redteam.better_refit.share_linear import train_share
     else:
         from redteam.reference.share_linear import train_share
@@ -131,7 +133,7 @@ def train_share_case(case, mode, seed_offset=0):
             args.share_steps = 4500
         elif mode == 'better_phi4':
             args.phi = 4
-        elif mode == 'better_refit':
+        elif mode in ('better_refit', 'better_stable'):
             args.phi = 4
             args.refit_steps = 700
         elif mode == 'weaker_untrained':
@@ -147,10 +149,18 @@ def prepare_case(name):
     if name.startswith('reference_seed'):
         train_share_case(name, 'reference', int(name.removeprefix('reference_seed')))
         return
+    if name.startswith('better_refit_seed'):
+        train_share_case(name, 'better_refit', int(name.removeprefix('better_refit_seed')))
+        return
+    if name.startswith('better_stable_seed'):
+        train_share_case(name, 'better_stable', int(name.removeprefix('better_stable_seed')))
+        return
     if name.startswith('better_') or name == 'weaker_untrained':
         train_share_case(name, name)
         return
-    install_case_artifacts('reference_seed0')
+    # Reuse the exact original reference predictions, avoiding attribution of
+    # retraining differences to a metadata-only shortcut.
+    install_case_artifacts('reference_existing')
     if name == 'baseline_frozen':
         for seed in SEEDS:
             source_name = 'frozen' if seed == 13 else 'frozen_seed21'
@@ -226,14 +236,16 @@ def prepare_case(name):
             np.savez(path, **arrays)
             # Use the existing method's predictions. One pass/fail sample per
             # task instead of 200, without knowing which half is held out.
-            for task in range(4):
-                csv_path = output_dir(seed) / f'task_{task}.csv'
-                with csv_path.open(newline='') as handle:
-                    rows = list(csv.DictReader(handle))[:2]
-                with csv_path.open('w', newline='') as handle:
-                    writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
-                    writer.writeheader()
-                    writer.writerows(rows)
+            suffix = '' if seed == 13 else '_seed21'
+            for run_name in ('share', 'lora', 'frozen'):
+                for task in range(4):
+                    csv_path = ROOT / 'checkpoints' / (run_name + suffix) / 'predictions' / f'task_{task}.csv'
+                    with csv_path.open(newline='') as handle:
+                        rows = list(csv.DictReader(handle))[:2]
+                    with csv_path.open('w', newline='') as handle:
+                        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
+                        writer.writeheader()
+                        writer.writerows(rows)
         return
     if name == 'shortcut_poison_comparison_baseline':
         for seed in SEEDS:
