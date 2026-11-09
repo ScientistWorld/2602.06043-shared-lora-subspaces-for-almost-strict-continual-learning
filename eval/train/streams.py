@@ -2,13 +2,11 @@
 
 A *stream* is a frozen base linear classifier ``W0`` (classes x input_dim) plus
 an ordered sequence of classification tasks. Every task comes with labelled
-training examples. Development streams (role ``dev``) also carry a labelled
-validation split, scored by ``eval/train``. For the scored streams (role
-``test``) only the training data is available; their held-out examples are not
-part of this repository.
+training examples and a labelled validation split, scored by ``eval/train``.
+This loader contains only the development streams and has no test dependency.
 
 Inputs are regenerated deterministically from public seeds; labels are stored
-in ``data/streams/manifest.json``. Every regenerated array is checked against a
+in ``eval/train/manifest.json``. Every regenerated array is checked against a
 stored checksum, so a numerical drift fails loudly instead of silently pairing
 inputs with the wrong labels.
 """

@@ -67,3 +67,12 @@ The current gym now submits model-state snapshots rather than CSV predictions an
 A final combined job will verify evaluator-owned comparison data, normalized rank, whole-attempt failure gates, raw-state scoring and public-data poisoning resistance. Training code and inputs are unchanged in this pass; saved better/weaker states are rescored while the reference and official baselines are rebuilt end to end.
 
 Job `dd9f0659-4e3` completed all training and audit inference, but an exact-equality assertion against archived reference training results stopped final packaging. The fresh test reference is 71.3361% / 64.8325%, a +0.339 / +0.168 point shift. The evaluator's frozen comparison now uses this fresh run; `redteam/hardening/final/reproduction_drift.json` preserves both versions. The continuation runs inference and validation only, without more training or changes to the learning procedure.
+
+
+## Final hardening completed — 2026-11-09
+
+Continuation `d9180772-7d8` exited 0. All 38 cases were rescored through the no-argument hidden command, including saved paired improvements/weak controls and repaired shortcuts. Independent rank arithmetic, whole-attempt failure ordering, public-data poisoning, frozen comparison and direct score overwrite checks passed. `python validate.py --post-design --compare` passed. No additional training was needed after the completed reference/baseline batch.
+
+The final reference is 71.3361% / 64.8325% hidden accuracy with 6.2900 / 12.5389 pp forgetting and 1312 / 1568 deployed values. Four-direction seed 0 reaches 77.5333% / 79.0700% at the same storage. Honest improvements gain +0.2571–0.3235 rank versus a reference-seed range of 0.0404; trained weak controls lose 0.2036–0.4175. Canonical score files were regenerated from the fresh reference and four official baselines alone.
+
+HARDENING.md records original/final variant and shortcut scores, headroom, changed weights, unexplained rerun drift and residual backdating/replay/state-copy shortcuts. Future-agent briefing and scoring documents match the raw-state interface. The reference end-to-end command is restored in scripts/run.sh; environment/setup.sh pins the tested public package versions. Milestone stays core_claim_plus, limited to the scaled computation and accuracy/storage claim.

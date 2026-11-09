@@ -1,4 +1,12 @@
-# Train/Test Evaluation Design Notes
+# Final evaluation design
+
+The active design uses raw deployed-state snapshots, independently held evaluation data, evaluator-owned reference and baseline comparisons, whole-attempt failure gates and normalized metric improvements. See [briefing/evaluation.md](briefing/evaluation.md) for the public interface and [HARDENING.md](HARDENING.md) for implementation decisions, measurements and residual limitations. Final verification is recorded in [VERIFICATION.md](VERIFICATION.md).
+
+The notes below are historical. Their CSV interface, public test labels, trusted summary costs and shared-row train/test split have all been superseded. They do not describe the current gym.
+
+---
+
+# Historical train/test evaluation design notes
 
 ## Checked
 

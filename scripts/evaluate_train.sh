@@ -1,7 +1,7 @@
 #!/bin/bash
 # Score every run under checkpoints/ on the visible development streams.
 #
-# Imports only eval/train/ and the visible data loader; writes
+# Imports only eval/train/, including its frozen development data; writes
 # scoring/scores_train.json. Runs with no arguments.
 
 set -e

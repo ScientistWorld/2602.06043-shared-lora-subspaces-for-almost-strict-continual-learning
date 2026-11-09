@@ -16,4 +16,6 @@
 
 set -e
 
-uv pip install --system numpy torch
+# Versions used by the completed reproduction and hardening jobs. Both are
+# public PyPI releases; no local model weights or external datasets are needed.
+uv pip install --system numpy==2.4.6 torch==2.12.0

@@ -2,7 +2,7 @@
 # Standard visible evaluation: scores every run under checkpoints/ on the
 # development streams and writes scoring/scores.json.
 #
-# Self-contained in eval/train/ (plus the visible data loader in data/); never
+# Self-contained in eval/train/, including its frozen development data; never
 # imports method/. A run is any directory checkpoints/<method_name>/ holding
 # <stream_id>/after_task_XX.npz deployed-state snapshots
 # (format: briefing/evaluation.md).

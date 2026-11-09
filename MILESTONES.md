@@ -39,5 +39,12 @@
 - Regenerated `scoring/scores.json` from existing prediction artifacts to include the declared temporary-parameter constraint metrics.
 - `python validate.py --compare` passes after the final packaging audit.
 
+### [2026-11-09] - core_claim_plus
+- Final training batch reran the actual Share procedure, including current-task coefficient refinement, and all four official baselines on six- and ten-task streams.
+- Reference hidden accuracy is 71.34% / 64.83%, with 6.37x / 8.88x deployed-state compression against independent LoRA. This is a synthetic scaled accuracy/storage result, not the paper-scale model results.
+- Added longer-stream headroom, independent hidden inputs/answers, raw-state inference, evaluator-owned comparisons, storage/task success gates and cohort-normalized ranking.
+- Successful final audit job `d9180772-7d8` checked 38 cases and passed `validate.py --post-design --compare`. Better variants exceed measured reference seed variation; weaker controls score lower.
+- Residual snapshot chronology/replay shortcuts and development/test calibration limits are quantified in HARDENING.md. Canonical scores contain only fresh reference and official baseline runs.
+
 ## Stop Justification
-- Completed at milestone `core_claim_plus`.
+- Completed at milestone `core_claim_plus`: the actual core computation and scaled accuracy/storage claim are demonstrated, with measured headroom. Transformer/multimodal experiments and actual training-memory claims remain outside the reproduced scope.
